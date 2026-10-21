@@ -1,4 +1,4 @@
-// Service worker de Mesa Lista.
+// Service worker de Ronda Cero.
 // - La app (HTML, JS, CSS, iconos) se guarda en caché al instalar: funciona sin conexión.
 // - games.json se pide primero a la red (para ver juegos nuevos en cuanto los hay) y,
 //   sin conexión, se usa la última copia guardada.
@@ -6,7 +6,7 @@
 //   que hay versión nueva y la app ofrece "Actualizar".
 
 const VERSION = '__VERSION__';
-const CACHE = `mesa-lista-${VERSION}`;
+const CACHE = `ronda-cero-${VERSION}`;
 const SHELL = __SHELL__;
 
 self.addEventListener('install', event => {
@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k.startsWith('mesa-lista-') && k !== CACHE).map(k => caches.delete(k))))
+      .then(keys => Promise.all(keys.filter(k => (k.startsWith('ronda-cero-') || k.startsWith('mesa-lista-')) && k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });

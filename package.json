@@ -2,7 +2,7 @@
   "name": "boardgames-setup",
   "version": "1.0.0",
   "private": true,
-  "description": "Mesa Lista: guía de preparación de juegos de mesa (PWA).",
+  "description": "Ronda Cero: guía de preparación de juegos de mesa (PWA).",
   "type": "module",
   "scripts": {
     "check": "node scripts/check.mjs",

@@ -1,4 +1,4 @@
-# Mesa Lista
+# Ronda Cero
 
 PWA que guía la preparación de nuestros juegos de mesa según el número de jugadores, las expansiones y el modo de juego.
 
