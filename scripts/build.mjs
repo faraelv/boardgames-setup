@@ -32,9 +32,15 @@ const hash = crypto.createHash('sha256');
 for (const f of shell) hash.update(f).update(fs.readFileSync(path.join(OUT, f)));
 const version = hash.digest('hex').slice(0, 12);
 
+// La versión visible en la app: fecha de publicación + hash corto.
+const stamp = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+const appVersion = `${stamp}-${version.slice(0, 6)}`;
+const idx = path.join(OUT, 'index.html');
+fs.writeFileSync(idx, fs.readFileSync(idx, 'utf8').replace('__APP_VERSION__', appVersion));
+
 const swPath = path.join(OUT, 'sw.js');
 fs.writeFileSync(swPath, fs.readFileSync(swPath, 'utf8')
   .replace('__VERSION__', version)
   .replace('__SHELL__', JSON.stringify(shellList)));
 
-console.log(`ok · versión ${version} · ${games.length} juegos: ${games.map(g => g.name).join(', ')}`);
+console.log(`ok · versión ${appVersion} · ${games.length} juegos: ${games.map(g => g.name).join(', ')}`);

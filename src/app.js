@@ -2,6 +2,7 @@
 import { evalCondition, buildContext, generateGuide, fill } from './engine.js';
 
 let GAMES = [];
+const APP_VERSION = document.documentElement.dataset.version || 'local';
 
 /* ---------- almacenamiento (opcional, solo en este navegador) ---------- */
 const store = {
@@ -111,7 +112,8 @@ function renderSheet() {
     el('p', { class: 'help' }, roster.length ? 'Antes de cada partida podrás elegir quién juega.' : 'Añade a quienes soléis jugar para elegirlos en cada partida y sortear quién empieza.'),
     roster.length > 0 && el('ul', { class: 'people' }, roster.map(n => el('li', {}, el('span', {}, n),
       el('button', { 'aria-label': 'Quitar a ' + n, onclick: () => save(roster.filter(x => x !== n)) }, '×')))),
-    el('form', { class: 'addp', onsubmit: add }, input, el('button', { type: 'submit' }, 'Añadir')));
+    el('form', { class: 'addp', onsubmit: add }, input, el('button', { type: 'submit' }, 'Añadir')),
+    el('p', { class: 'version' }, 'Ronda Cero · versión ' + APP_VERSION));
 }
 
 function seg(items, current, onPick) {
@@ -284,7 +286,11 @@ loadGames().then(list => { GAMES = list; render(); }).catch(() => {
 
 /* ---------- actualizaciones de la app ---------- */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+    // Comprobar novedades al abrir y cada vez que se vuelve a la app desde segundo plano.
+    const check = () => reg.update().catch(() => {});
+    check();
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
     const offer = worker => {
       const bar = document.getElementById('updateBar');
       bar.hidden = false;

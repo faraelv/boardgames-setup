@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-version="__APP_VERSION__">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -161,6 +161,7 @@ section.sec h2 .n { font-size: 13px; color: var(--muted); font-family: var(--bod
 .event .steps { padding: 0 10px 10px; }
 @media (prefers-reduced-motion: reduce) { .progress .fill { transition: none; } }
 
+.sheet .version { margin: 0; font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .updateBar { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: var(--ink); color: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .updateBar button { border: 0; border-radius: 10px; padding: 8px 16px; background: var(--accent); color: #fff; font-weight: 700; }
 </style>
