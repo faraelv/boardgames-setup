@@ -28,8 +28,29 @@ const el = (tag, attrs = {}, ...kids) => {
 const WHO = { table: 'Mesa', eachPlayer: 'Cada jugador', rival: 'Rival', firstPlayer: 'Jugador inicial' };
 const playersLabel = g => g.players.min === g.players.max ? `${g.players.min} jug.` : `${g.players.min}–${g.players.max} jug.`;
 
-function go(view) { state.view = view; render(); window.scrollTo(0, 0); }
-backBtn.addEventListener('click', () => go(state.view === 'guide' ? 'questions' : 'list'));
+/* ---------- navegación con el historial (botón atrás del móvil) ---------- */
+// Cada pantalla es una entrada del historial: list → questions → guide.
+// Abrir el panel del grupo añade otra entrada, así «atrás» primero lo cierra.
+function showView(view, gameId) {
+  if (gameId && state.game?.id !== gameId) {
+    const g = GAMES.find(x => x.id === gameId);
+    if (g) { state.game = g; state.answers = store.get('answers:' + g.id, {}); }
+  }
+  if (view !== 'list' && !state.game) view = 'list';
+  state.view = view; render(); window.scrollTo(0, 0);
+}
+function go(view) {
+  history.pushState({ view, gameId: state.game?.id }, '');
+  showView(view, state.game?.id);
+}
+history.replaceState({ view: 'list' }, '');
+window.addEventListener('popstate', e => {
+  const st = e.state || { view: 'list' };
+  if (!sheet.hidden && !st.sheet) hideSheet();
+  if (st.sheet) return;
+  if (st.view !== state.view || st.gameId !== state.game?.id) showView(st.view, st.gameId);
+});
+backBtn.addEventListener('click', () => history.back());
 
 function render() {
   app.replaceChildren();
@@ -58,14 +79,17 @@ function updateBadge() {
   groupBtn.setAttribute('aria-label', n ? `Vuestro grupo, ${n} jugadores` : 'Vuestro grupo');
 }
 function openSheet() {
+  history.pushState({ ...(history.state || {}), sheet: true }, '');
   renderSheet(); sheet.hidden = false; backdrop.hidden = false;
   groupBtn.setAttribute('aria-expanded', 'true');
   setTimeout(() => document.getElementById('newPlayer')?.focus(), 0);
 }
-function closeSheet() {
+function hideSheet() {
   sheet.hidden = true; backdrop.hidden = true;
   groupBtn.setAttribute('aria-expanded', 'false'); groupBtn.focus();
 }
+// Cerrar con ×, fondo o Esc: si el panel tiene su entrada en el historial, se quita con «atrás».
+function closeSheet() { history.state?.sheet ? history.back() : hideSheet(); }
 groupBtn.addEventListener('click', () => sheet.hidden ? openSheet() : closeSheet());
 backdrop.addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
