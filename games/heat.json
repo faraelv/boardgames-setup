@@ -1,0 +1,724 @@
+{
+  "schemaVersion": 1,
+  "id": "heat",
+  "name": "Heat: Pedal to the Metal",
+  "publisher": "Days of Wonder",
+  "sources": [
+    {
+      "title": "Reglamento Heat (juego básico)",
+      "file": "Heat.pdf"
+    },
+    {
+      "title": "Heat: Advanced Play and Championship System",
+      "url": "https://cdn.1j1ju.com/medias/be/1e/95-heat-pedal-to-the-metal-advanced-play-and-championship-system.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 6,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "mode",
+      "label": "Tipo de partida",
+      "type": "choice",
+      "default": "race",
+      "choices": [
+        {
+          "value": "race",
+          "label": "Carrera suelta"
+        },
+        {
+          "value": "championship",
+          "label": "Campeonato"
+        }
+      ]
+    },
+    {
+      "id": "season",
+      "label": "Temporada",
+      "type": "choice",
+      "default": "s1961",
+      "when": {
+        "eq": [
+          "mode",
+          "championship"
+        ]
+      },
+      "choices": [
+        {
+          "value": "s1961",
+          "label": "1961 (3 carreras)"
+        },
+        {
+          "value": "s1962",
+          "label": "1962 (3 carreras)"
+        },
+        {
+          "value": "s1963",
+          "label": "1963 (4 carreras)"
+        },
+        {
+          "value": "custom",
+          "label": "Temporada propia (4 carreras al azar)"
+        }
+      ]
+    },
+    {
+      "id": "circuit",
+      "label": "Circuito",
+      "type": "choice",
+      "default": "usa",
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      },
+      "choices": [
+        {
+          "value": "usa",
+          "label": "EE. UU."
+        },
+        {
+          "value": "francia",
+          "label": "Francia"
+        },
+        {
+          "value": "gb",
+          "label": "Gran Bretaña"
+        },
+        {
+          "value": "italia",
+          "label": "Italia"
+        }
+      ]
+    },
+    {
+      "id": "firstRace",
+      "label": "¿Es vuestra primera carrera?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      }
+    },
+    {
+      "id": "garage",
+      "label": "Módulo Garaje (mejoras)",
+      "type": "choice",
+      "default": "off",
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      },
+      "choices": [
+        {
+          "value": "off",
+          "label": "No (mejoras iniciales)"
+        },
+        {
+          "value": "quick",
+          "label": "Rápido: 3 mejoras básicas al azar"
+        },
+        {
+          "value": "basic",
+          "label": "Draft con mejoras básicas"
+        },
+        {
+          "value": "advanced",
+          "label": "Draft con mejoras avanzadas"
+        },
+        {
+          "value": "both",
+          "label": "Draft con básicas y avanzadas"
+        }
+      ]
+    },
+    {
+      "id": "weather",
+      "label": "¿Clima y estado de la pista?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      }
+    },
+    {
+      "id": "legends",
+      "label": "Leyendas (coches automáticos)",
+      "type": "choice",
+      "default": 0,
+      "choices": [
+        {
+          "value": 0,
+          "label": "Ninguna",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "value": 1,
+          "label": "1",
+          "when": {
+            "lte": [
+              "players",
+              5
+            ]
+          }
+        },
+        {
+          "value": 2,
+          "label": "2",
+          "when": {
+            "lte": [
+              "players",
+              4
+            ]
+          }
+        },
+        {
+          "value": 3,
+          "label": "3",
+          "when": {
+            "lte": [
+              "players",
+              3
+            ]
+          }
+        },
+        {
+          "value": 4,
+          "label": "4",
+          "when": {
+            "lte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "value": 5,
+          "label": "5",
+          "when": {
+            "lte": [
+              "players",
+              1
+            ]
+          }
+        }
+      ],
+      "help": "Con menos de 4 jugadores se recomiendan al menos 2. En solitario hace falta al menos 1."
+    },
+    {
+      "id": "proLegends",
+      "label": "¿Leyendas Pro?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "gte": [
+          "legends",
+          1
+        ]
+      },
+      "help": "Sube su velocidad máxima; los autores usan +2."
+    }
+  ],
+  "vars": {
+    "circuitName": [
+      {
+        "when": {
+          "eq": [
+            "circuit",
+            "francia"
+          ]
+        },
+        "value": "Francia"
+      },
+      {
+        "when": {
+          "eq": [
+            "circuit",
+            "gb"
+          ]
+        },
+        "value": "Gran Bretaña"
+      },
+      {
+        "when": {
+          "eq": [
+            "circuit",
+            "italia"
+          ]
+        },
+        "value": "Italia"
+      },
+      {
+        "value": "EE. UU."
+      }
+    ],
+    "upgradePool": [
+      {
+        "when": {
+          "eq": [
+            "garage",
+            "basic"
+          ]
+        },
+        "value": "solo las básicas"
+      },
+      {
+        "when": {
+          "eq": [
+            "garage",
+            "advanced"
+          ]
+        },
+        "value": "solo las avanzadas"
+      },
+      {
+        "value": "básicas y avanzadas"
+      }
+    ],
+    "marketSize": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": 8
+      },
+      {
+        "value": 9
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "track",
+      "title": "Circuito",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero en el centro por la cara del circuito de {circuitName}."
+        },
+        {
+          "id": "firstRaceTip",
+          "who": "table",
+          "when": {
+            "is": "firstRace"
+          },
+          "text": "Para la primera carrera se recomienda el circuito de EE. UU. a 1 vuelta en lugar de 2."
+        },
+        {
+          "id": "laps",
+          "who": "table",
+          "text": "Mira en el tablero cuántas vueltas tiene la carrera y cuántas cartas de Motor forzado y de Estrés usa cada piloto (normalmente 6 y 3)."
+        }
+      ],
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      }
+    },
+    {
+      "id": "weatherSetup",
+      "title": "Clima y estado de la pista",
+      "when": {
+        "all": [
+          {
+            "eq": [
+              "mode",
+              "race"
+            ]
+          },
+          {
+            "is": "weather"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "weatherToken",
+          "who": "table",
+          "text": "Baraja las 6 fichas de Clima, saca 1 para toda la carrera y ponla en el espacio de la valla publicitaria. Ajusta el Calor o el Estrés de cada piloto según indique."
+        },
+        {
+          "id": "road",
+          "who": "table",
+          "text": "Baraja las 12 fichas de estado de la pista y saca 1 por cada curva. Las que llevan flecha afectan al sector siguiente (hasta la próxima curva) y van en su carpa junto al circuito; las que no, afectan a la propia curva."
+        }
+      ]
+    },
+    {
+      "id": "championshipSetup",
+      "title": "Campeonato",
+      "when": {
+        "eq": [
+          "mode",
+          "championship"
+        ]
+      },
+      "steps": [
+        {
+          "id": "mat",
+          "who": "table",
+          "text": "Pon el tablero de Campeonato junto a la mesa y ten a mano una hoja de puntuación para la temporada."
+        },
+        {
+          "id": "customSeason",
+          "who": "table",
+          "when": {
+            "eq": [
+              "season",
+              "custom"
+            ]
+          },
+          "text": "Baraja las cartas de Evento y forma una temporada de 4 carreras; usa las cartas de Circuito para sortear el orden."
+        },
+        {
+          "id": "sponsors",
+          "who": "table",
+          "text": "Baraja las cartas de Patrocinio y déjalas boca abajo en el tablero de Campeonato."
+        },
+        {
+          "id": "upgrades",
+          "who": "table",
+          "text": "Elige las mejoras de la temporada (básicas, avanzadas o ambas), devuelve el resto a la caja y baraja las elegidas boca abajo en el tablero."
+        },
+        {
+          "id": "tokens",
+          "who": "table",
+          "text": "Baraja las fichas de Clima y las de estado de la pista en dos pilas boca abajo en el tablero."
+        },
+        {
+          "id": "reserve",
+          "who": "table",
+          "text": "Deja las cartas de Motor forzado y de Estrés boca arriba como reserva."
+        }
+      ]
+    },
+    {
+      "id": "beforeRace",
+      "title": "Antes de cada carrera del campeonato",
+      "when": {
+        "eq": [
+          "mode",
+          "championship"
+        ]
+      },
+      "steps": [
+        {
+          "id": "event",
+          "who": "table",
+          "text": "Pon boca arriba la carta de Evento de la carrera: indica el circuito y el tablero que va en el centro. Coge la carta de Circuito correspondiente y lee el evento en voz alta."
+        },
+        {
+          "id": "grid",
+          "who": "table",
+          "text": "Parrilla: en la primera carrera, al azar; en las siguientes, según la clasificación, con el líder en la pole.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "upgrade",
+          "who": "eachPlayer",
+          "text": "Revela {marketSize} mejoras (una por piloto más 3). Desde el último coche de la parrilla hacia delante, cada piloto coge 1. Después, el último (sin contar Leyendas) puede cambiar una de sus mejoras por una sobrante. Las sobrantes vuelven al mazo."
+        },
+        {
+          "id": "sponsorDraw",
+          "who": "eachPlayer",
+          "text": "Cada piloto roba las cartas de Patrocinio que indique el Evento para su mano inicial."
+        },
+        {
+          "id": "press",
+          "who": "table",
+          "text": "Coloca una figura de Prensa junto a las curvas que indique el Evento."
+        },
+        {
+          "id": "weatherC",
+          "who": "table",
+          "text": "Revela la primera ficha de Clima en la valla publicitaria y una de estado de la pista por curva. Cada piloto coge el Calor y el Estrés indicados, ajustados por el clima."
+        },
+        {
+          "id": "deckC",
+          "who": "eachPlayer",
+          "text": "Forma tu mazo con las 12 cartas Básicas, todas tus mejoras, los patrocinios guardados y el Estrés. Motor forzado en el Motor y peón en primera marcha. Coge los patrocinios guardados y roba hasta 7 (o lo que diga el Evento)."
+        }
+      ]
+    },
+    {
+      "id": "drivers",
+      "title": "Pilotos",
+      "when": {
+        "eq": [
+          "mode",
+          "race"
+        ]
+      },
+      "steps": [
+        {
+          "id": "pieces",
+          "who": "eachPlayer",
+          "text": "Cada piloto coge un coche de su color, su tablero de Piloto, su peón de Caja de cambio y sus 12 cartas Básicas."
+        },
+        {
+          "id": "startUpgrades",
+          "who": "eachPlayer",
+          "when": {
+            "all": [
+              {
+                "eq": [
+                  "mode",
+                  "race"
+                ]
+              },
+              {
+                "eq": [
+                  "garage",
+                  "off"
+                ]
+              }
+            ]
+          },
+          "text": "Cada piloto coge también sus 3 cartas de Mejora inicial."
+        },
+        {
+          "id": "noStartUpgrades",
+          "who": "table",
+          "when": {
+            "any": [
+              {
+                "eq": [
+                  "mode",
+                  "championship"
+                ]
+              },
+              {
+                "not": {
+                  "eq": [
+                    "garage",
+                    "off"
+                  ]
+                }
+              }
+            ]
+          },
+          "text": "Devuelve las cartas de Mejora inicial a la caja."
+        },
+        {
+          "id": "deck",
+          "who": "eachPlayer",
+          "text": "Baraja tus 12 cartas Básicas con tus mejoras y las cartas de Estrés que toquen, y deja el mazo boca abajo en el espacio izquierdo de tu tablero de Piloto.",
+          "tip": "Con Garaje, las mejoras se añaden al mazo después del draft y antes de robar la mano."
+        },
+        {
+          "id": "engine",
+          "who": "eachPlayer",
+          "text": "Pon tus cartas de Motor forzado boca arriba en el Motor (centro de tu tablero) y el peón de Caja de cambio en primera marcha.",
+          "tip": "Si un piloto con experiencia juega contra principiantes, puede quitarse 1 o 2 cartas de Motor forzado para igualar."
+        },
+        {
+          "id": "stress",
+          "who": "table",
+          "text": "Deja las cartas de Estrés restantes boca arriba junto al tablero como reserva."
+        },
+        {
+          "id": "grid",
+          "who": "table",
+          "text": "Coloca los coches al azar en la parrilla de salida (incluidas las Leyendas, si las hay), ocupando las casillas en orden: eso marca el orden de la primera ronda.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "hand",
+          "who": "eachPlayer",
+          "text": "Cada piloto roba 7 cartas de su mazo."
+        }
+      ]
+    },
+    {
+      "id": "garageSetup",
+      "title": "Garaje",
+      "when": {
+        "all": [
+          {
+            "eq": [
+              "mode",
+              "race"
+            ]
+          },
+          {
+            "not": {
+              "eq": [
+                "garage",
+                "off"
+              ]
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "quick",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "garage",
+              "quick"
+            ]
+          },
+          "text": "Baraja las mejoras básicas y reparte 3 al azar a cada piloto."
+        },
+        {
+          "id": "pool",
+          "who": "table",
+          "when": {
+            "not": {
+              "eq": [
+                "garage",
+                "quick"
+              ]
+            }
+          },
+          "text": "Usa {upgradePool} y baraja el mazo de mejoras. Revela {marketSize} (una por piloto más 3).",
+          "tip": "Si alguien es nuevo, mejor solo las básicas."
+        },
+        {
+          "id": "draft1",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "eq": [
+                "garage",
+                "quick"
+              ]
+            }
+          },
+          "text": "Ronda 1: desde el último coche de la parrilla hacia delante, cada piloto coge 1. Descarta las sobrantes y revela un mercado nuevo."
+        },
+        {
+          "id": "draft2",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "eq": [
+                "garage",
+                "quick"
+              ]
+            }
+          },
+          "text": "Ronda 2: ahora desde el primer coche hacia atrás. Descarta las sobrantes y revela otro mercado."
+        },
+        {
+          "id": "draft3",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "eq": [
+                "garage",
+                "quick"
+              ]
+            }
+          },
+          "text": "Ronda 3: otra vez desde el último coche. Descarta las sobrantes."
+        },
+        {
+          "id": "shuffleIn",
+          "who": "eachPlayer",
+          "text": "Cada piloto baraja sus 3 mejoras en su mazo antes de robar la mano inicial de 7."
+        }
+      ]
+    },
+    {
+      "id": "legendsSetup",
+      "title": "Leyendas",
+      "when": {
+        "gte": [
+          "legends",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "cars",
+          "who": "rival",
+          "text": "Usa {legends} coche(s) de colores libres como Leyendas y colócalos en la parrilla junto a los de los jugadores, al azar."
+        },
+        {
+          "id": "deckL",
+          "who": "rival",
+          "text": "Baraja las 10 cartas de Leyenda y déjalas boca abajo en el tablero de Leyendas."
+        },
+        {
+          "id": "pro",
+          "who": "rival",
+          "when": {
+            "is": "proLegends"
+          },
+          "text": "Leyendas Pro: suma +2 (o lo que acordéis) a la velocidad máxima de todas las Leyendas."
+        },
+        {
+          "id": "howto",
+          "who": "rival",
+          "text": "Recordad: en cada ronda, cuando le toque mover a la primera Leyenda, revela una carta de Leyenda; todas la usan esa ronda. Si se acaba el mazo, baraja las 10 de nuevo."
+        }
+      ]
+    }
+  ]
+}

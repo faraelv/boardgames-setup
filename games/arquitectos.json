@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "id": "arquitectos",
+  "name": "Arquitectos del Reino del Oeste",
+  "publisher": "Garphill Games",
+  "sources": [
+    {
+      "title": "Reglamento Arquitectos del Reino del Oeste",
+      "file": "Arquitectos_reinos_del_oeste.pdf"
+    },
+    {
+      "title": "Resumen de reglas (Inicio Variable y solitario)",
+      "url": "https://rulespal.com/architects-of-the-west-kingdom/rulebook"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 5,
+    "default": 3
+  },
+  "options": [
+    {
+      "id": "boardSide",
+      "label": "Lado del tablero de jugador",
+      "type": "choice",
+      "default": "sym",
+      "choices": [
+        {
+          "value": "sym",
+          "label": "Simétrico (cara 1, todos igual)"
+        },
+        {
+          "value": "asym",
+          "label": "Asimétrico (cara 2, Inicio Variable)"
+        }
+      ]
+    },
+    {
+      "id": "bot",
+      "label": "Bot rival",
+      "type": "choice",
+      "default": "constantine",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": "constantine",
+          "label": "Constantine (normal)"
+        },
+        {
+          "value": "helena",
+          "label": "Helena (difícil)"
+        }
+      ]
+    }
+  ],
+  "vars": {
+    "rewardCards": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 9
+      },
+      {
+        "value": 11
+      }
+    ],
+    "botName": [
+      {
+        "when": {
+          "eq": [
+            "bot",
+            "helena"
+          ]
+        },
+        "value": "Helena"
+      },
+      {
+        "value": "Constantine"
+      }
+    ],
+    "guildVp": [
+      {
+        "when": {
+          "eq": [
+            "bot",
+            "helena"
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 1
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero y mazos",
+      "steps": [
+        {
+          "id": "mainBoard",
+          "who": "table",
+          "text": "Coloca el tablero principal en el centro de la mesa."
+        },
+        {
+          "id": "blackMarket",
+          "who": "table",
+          "text": "Baraja las cartas de Mercado Negro y apílalas a la izquierda del Mercado Negro, con la cara «Mercado Pequeño» hacia arriba."
+        },
+        {
+          "id": "rewards",
+          "who": "table",
+          "text": "Baraja las cartas de Recompensa y deja {rewardCards} boca abajo a la derecha de la Catedral (2 por jugador más 1). Devuelve el resto a la caja."
+        },
+        {
+          "id": "debts",
+          "who": "table",
+          "text": "Pon las cartas de Deuda en un montón junto a la Prisión, con la cara «no pagado» hacia arriba, y las cartas Multiplicadoras cerca del tablero."
+        },
+        {
+          "id": "apprentices",
+          "who": "table",
+          "text": "Baraja las cartas de Aprendiz, déjalas boca abajo a la derecha del tablero y revela 1 en cada uno de los 8 espacios a la derecha del Taller."
+        },
+        {
+          "id": "buildings",
+          "who": "table",
+          "text": "Baraja las cartas de Edificio y déjalas boca abajo a la izquierda del Taller."
+        },
+        {
+          "id": "supply",
+          "who": "table",
+          "text": "Forma el suministro con la arcilla, madera, piedra, oro, mármol y plata.",
+          "tip": "Los recursos y las deudas son ilimitados: si se acaban, usa las cartas Multiplicadoras."
+        },
+        {
+          "id": "taxHouse",
+          "who": "table",
+          "text": "Pon 4 de plata del suministro en la Casa de Impuestos."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "playerBoard",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "boardSide",
+              "sym"
+            ]
+          },
+          "text": "Cada jugador coge un tablero de jugador por la cara 1 y los 20 trabajadores de su color."
+        },
+        {
+          "id": "playerBoardVar",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "boardSide",
+              "asym"
+            ]
+          },
+          "text": "Repartid los tableros al azar (o elegidlos) por la cara 2. Cada jugador coge los 20 trabajadores de su color y los recursos iniciales de su personaje:",
+          "substeps": [
+            {
+              "id": "ada",
+              "text": "Ada: 0 plata, 11 de Virtud, 1 oro y 1 carta de Edificio extra."
+            },
+            {
+              "id": "caroline",
+              "text": "Caroline: 10 plata, 3 de Virtud, 8 prisioneros, 1 Deuda sin pagar y 1 mármol."
+            },
+            {
+              "id": "frederick",
+              "text": "Frederick: 4 plata, 7 de Virtud y 1 piedra."
+            },
+            {
+              "id": "rudolf",
+              "text": "Rudolf: 3 plata, 9 de Virtud y 1 madera."
+            },
+            {
+              "id": "therese",
+              "text": "Therese: 5 plata, 5 de Virtud, 4 prisioneros y 1 carta de Edificio extra."
+            }
+          ],
+          "tip": "Comprueba los valores en tu tablero: las cifras salen de un resumen de reglas, no del PDF del proyecto."
+        },
+        {
+          "id": "markers",
+          "who": "eachPlayer",
+          "text": "Cada jugador pone un marcador debajo de la Catedral y el otro en el medidor de Virtud: en la casilla 7, o en la que indique su personaje si jugáis con la cara 2."
+        },
+        {
+          "id": "draft",
+          "who": "eachPlayer",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "text": "Reparte 4 cartas de Edificio a cada jugador. Cada uno se queda 1 boca abajo y pasa el resto a la izquierda; repetid hasta tener 3 cartas cada uno. La última sobrante va boca abajo bajo el mazo.",
+          "tip": "Con la cara 2, quien tenga carta de Edificio extra la roba además de estas 3."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "when": {
+            "all": [
+              {
+                "eq": [
+                  "boardSide",
+                  "sym"
+                ]
+              },
+              {
+                "gte": [
+                  "players",
+                  2
+                ]
+              }
+            ]
+          },
+          "text": "Elige al jugador inicial al azar. Recibe 3 de plata; el segundo, 4; el tercero, 5; y así sucesivamente.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "firstPlayerVar",
+          "who": "table",
+          "when": {
+            "all": [
+              {
+                "eq": [
+                  "boardSide",
+                  "asym"
+                ]
+              },
+              {
+                "gte": [
+                  "players",
+                  2
+                ]
+              }
+            ]
+          },
+          "text": "Empieza el jugador con más Virtud. Con la cara 2 no se recibe plata extra por el orden de turno."
+        }
+      ]
+    },
+    {
+      "id": "solo",
+      "title": "Solitario contra {botName}",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "base",
+          "who": "table",
+          "text": "Prepara la mesa como en una partida de 2 jugadores, con 5 cartas de Recompensa."
+        },
+        {
+          "id": "removeMarket",
+          "who": "table",
+          "text": "Retira del mazo de Edificios las 4 cartas de «Mercado de Recursos»."
+        },
+        {
+          "id": "you",
+          "who": "eachPlayer",
+          "text": "Empiezas con 3 de plata y 7 de Virtud (o los valores de tu personaje con la cara 2). Roba 5 cartas de Edificio y quédate 3."
+        },
+        {
+          "id": "botPieces",
+          "who": "rival",
+          "text": "Da al bot su tablero y 20 trabajadores. Pon su marcador bajo la Catedral y en la casilla 7 de Virtud. No recibe plata ni cartas de Edificio."
+        },
+        {
+          "id": "schemes",
+          "who": "rival",
+          "text": "Separa las 20 cartas de Plan Inicial (cabecera marrón) de las 10 de Plan Futuro (cabecera negra).",
+          "warning": "Cómo se combinan los dos mazos de Plan viene en la hoja del bot; compruébalo en la caja."
+        },
+        {
+          "id": "turnOrder",
+          "who": "table",
+          "text": "Empiezas tú y después juega el bot. La partida dura 12 construcciones, como a 2 jugadores."
+        },
+        {
+          "id": "botScore",
+          "who": "rival",
+          "text": "Al final, cada trabajador del bot en el Ayuntamiento vale {guildVp} PV."
+        }
+      ]
+    }
+  ]
+}

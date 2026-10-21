@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "id": "puertoRico",
+  "name": "Puerto Rico 1897",
+  "publisher": "Ravensburger / alea",
+  "sources": [
+    {
+      "title": "Reglamento Puerto Rico 1897",
+      "file": "Puerto_rico.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 5,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "expNewBuildings",
+      "label": "¿1ª expansión: Los nuevos edificios?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expBurghers",
+      "label": "¿2ª expansión: Los burgueses?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expSmuggler",
+      "label": "¿3ª expansión: El contrabandista?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expFestival",
+      "label": "¿4ª expansión: El festival?",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "vars": {
+    "coins": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "vp": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 65
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 75
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 100
+      },
+      {
+        "value": 126
+      }
+    ],
+    "workers": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 40
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 55
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 75
+      },
+      {
+        "value": 95
+      }
+    ],
+    "ships": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": "4 y 6"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "4, 5 y 6"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "5, 6 y 7"
+      },
+      {
+        "value": "6, 7 y 8"
+      }
+    ],
+    "roles": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "todas menos los dos Aventureros (6)"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": "las 8"
+      },
+      {
+        "value": "todas menos un Aventurero (7)"
+      }
+    ],
+    "startPlantations": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": "el primero (Gobernador) fruta; el segundo, maíz"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "el primero (Gobernador) y el segundo, fruta; el tercero, maíz"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "el primero (Gobernador) y el segundo, fruta; el tercero y el cuarto, maíz"
+      },
+      {
+        "value": "el primero (Gobernador), el segundo y el tercero, fruta; el cuarto y el quinto, maíz"
+      }
+    ],
+    "faceUpPlantations": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 5
+      },
+      {
+        "value": 6
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero central",
+      "steps": [
+        {
+          "id": "central",
+          "who": "table",
+          "text": "Coloca el tablero central con la banca en el centro y deja las 51 monedas en la banca."
+        },
+        {
+          "id": "buildings",
+          "who": "table",
+          "when": {
+            "all": [
+              {
+                "not": {
+                  "is": "expNewBuildings"
+                }
+              },
+              {
+                "gte": [
+                  "players",
+                  3
+                ]
+              }
+            ]
+          },
+          "text": "Pon todos los edificios del juego base en el tablero central, según indica el tablero."
+        },
+        {
+          "id": "buildings2p",
+          "who": "table",
+          "when": {
+            "all": [
+              {
+                "not": {
+                  "is": "expNewBuildings"
+                }
+              },
+              {
+                "eq": [
+                  "players",
+                  2
+                ]
+              }
+            ]
+          },
+          "text": "Con 2 jugadores, pon en el tablero central 1 de cada edificio beis y 2 de cada uno de los 6 edificios productores."
+        },
+        {
+          "id": "newBuildings",
+          "who": "table",
+          "when": {
+            "is": "expNewBuildings"
+          },
+          "text": "Pon los edificios productores en el tablero como siempre. Extiende al lado los 55 edificios beis (antiguos y nuevos). Empezando por el jugador inicial, cada uno elige uno y lo coloca en una casilla libre de su coste, hasta cubrir las 12 + 5 casillas beis. El resto, a la caja.",
+          "tip": "En los costes 2, 5 y 8 se pueden elegir dos cualesquiera de los cuatro disponibles."
+        },
+        {
+          "id": "burghersBuildings",
+          "who": "table",
+          "when": {
+            "is": "expBurghers"
+          },
+          "text": "Añade los edificios de los burgueses al tablero central según su coste (filas 1 a 4) y deja el dinero junto a la banca."
+        },
+        {
+          "id": "vp",
+          "who": "table",
+          "text": "Prepara {vp} puntos de victoria en 2 montones."
+        },
+        {
+          "id": "quarries",
+          "who": "table",
+          "text": "Deja las 8 losetas de cantera boca arriba."
+        },
+        {
+          "id": "plantations2p",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Con 2 jugadores, retira del juego 3 losetas de cada tipo (maíz, fruta, azúcar, tabaco, café y cantera)."
+        },
+        {
+          "id": "plantations",
+          "who": "table",
+          "text": "Mezcla boca abajo las losetas de plantación restantes en pilas y revela {faceUpPlantations} junto a las canteras (una más que jugadores)."
+        },
+        {
+          "id": "roles",
+          "who": "table",
+          "text": "Tarjetas de rol: usa {roles}."
+        },
+        {
+          "id": "smugglerRole",
+          "who": "table",
+          "when": {
+            "is": "expSmuggler"
+          },
+          "text": "Añade la tarjeta de rol Contrabandista y deja a mano los carteles de contrabandista."
+        },
+        {
+          "id": "ships",
+          "who": "table",
+          "text": "Barcos cargueros: los de {ships} casillas."
+        },
+        {
+          "id": "barrels",
+          "who": "table",
+          "text": "Deja los barriles de mercancía en 5 montones y la Casa de Comercio junto al tablero."
+        },
+        {
+          "id": "barrels2p",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Con 2 jugadores, retira 2 barriles de cada tipo."
+        },
+        {
+          "id": "workers",
+          "who": "table",
+          "when": {
+            "not": {
+              "is": "expBurghers"
+            }
+          },
+          "text": "Pon {players} trabajadores en el Registro de Empleo y deja {workers} como reserva."
+        },
+        {
+          "id": "workersBurghers",
+          "who": "table",
+          "when": {
+            "is": "expBurghers"
+          },
+          "text": "Deja los trabajadores y los 20 burgueses como reserva (no hace falta contarlos). Pon un burgués en el Registro de Empleo en lugar de un trabajador."
+        },
+        {
+          "id": "festival",
+          "who": "table",
+          "when": {
+            "is": "expFestival"
+          },
+          "text": "Coloca la tabla Festival y sortea sus tres objetivos.",
+          "substeps": [
+            {
+              "id": "fPlant",
+              "text": "Plantaciones: mezcla una de cada tipo de cultivo y pon una al azar; las otras vuelven a la reserva."
+            },
+            {
+              "id": "fGoods",
+              "text": "Mercancías: mezcla 3 barriles de cada tipo y pon 3 al azar (pueden repetirse)."
+            },
+            {
+              "id": "fBuild",
+              "text": "Edificios: mezcla un edificio de cada tipo de la tercera fila y pon uno al azar. Si coincide con el productor de la plantación elegida, repite. Con 2 jugadores, rellena el hueco en el tablero con su gemelo."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "boards",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge un tablero individual y {coins} monedas, que deja a la vista sobre su retrato."
+        },
+        {
+          "id": "governor",
+          "who": "table",
+          "text": "Sortea el jugador inicial: recibe la tarjeta de Gobernador.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "startPlant",
+          "who": "eachPlayer",
+          "text": "Plantación inicial, en orden de turno: {startPlantations}. Cada uno la pone boca arriba en una casilla de cultivo de su isla."
+        },
+        {
+          "id": "rounds2p",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Con 2 jugadores, en cada ronda se eligen 6 de los 7 roles (3 cada uno); el séptimo recibe 1 moneda y después cambia el Gobernador."
+        }
+      ]
+    }
+  ]
+}

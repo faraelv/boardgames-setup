@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "id": "catan",
+  "name": "Catan",
+  "publisher": "Devir / Kosmos",
+  "sources": [
+    {
+      "title": "Reglamento Catan (edición 2015)",
+      "file": "Catan.pdf"
+    }
+  ],
+  "players": {
+    "min": 3,
+    "max": 4,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "tradeAnyOrder",
+      "label": "¿Jugáis con comercio y construcción en cualquier orden?",
+      "type": "boolean",
+      "default": true,
+      "help": "Variante recomendada por el reglamento para jugadores con experiencia."
+    }
+  ],
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero variable",
+      "steps": [
+        {
+          "id": "frame",
+          "who": "table",
+          "text": "Encaja las 6 piezas de marco en el orden que quieras, usando solo la cara que tiene puertos."
+        },
+        {
+          "id": "hexes",
+          "who": "table",
+          "text": "Mezcla boca abajo los 19 hexágonos de terreno y colócalos uno a uno dentro del marco, dándoles la vuelta, hasta llenarlo.",
+          "components": [
+            {
+              "name": "Bosques",
+              "qty": 4
+            },
+            {
+              "name": "Pastos",
+              "qty": 4
+            },
+            {
+              "name": "Sembrados",
+              "qty": 3
+            },
+            {
+              "name": "Cerros",
+              "qty": 3
+            },
+            {
+              "name": "Montañas",
+              "qty": 3
+            },
+            {
+              "name": "Desierto",
+              "qty": 1
+            }
+          ]
+        },
+        {
+          "id": "numbers",
+          "who": "table",
+          "text": "Coloca las 18 fichas numeradas por orden alfabético (cara con letra visible), empezando en un hexágono de una esquina y siguiendo en sentido antihorario hacia el centro. Sáltate el desierto.",
+          "substeps": [
+            {
+              "id": "flipNumbers",
+              "text": "Cuando estén todas, dales la vuelta para que se vea el número."
+            }
+          ]
+        },
+        {
+          "id": "robber",
+          "who": "table",
+          "text": "Pon el ladrón en el desierto."
+        }
+      ]
+    },
+    {
+      "id": "supply",
+      "title": "Reserva",
+      "steps": [
+        {
+          "id": "resources",
+          "who": "table",
+          "text": "Separa las cartas de materias primas en 5 montones y colócalos boca arriba en los dos portacartas, junto al tablero.",
+          "components": [
+            {
+              "name": "Cartas de materias primas",
+              "qty": 95
+            }
+          ]
+        },
+        {
+          "id": "devCards",
+          "who": "table",
+          "text": "Baraja las 25 cartas de desarrollo y déjalas boca abajo junto a los portacartas."
+        },
+        {
+          "id": "specials",
+          "who": "table",
+          "text": "Deja a mano las tarjetas de «Mayor ruta comercial» y «Mayor ejército» y los 2 dados."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "pieces",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge 5 poblados, 4 ciudades, 15 carreteras y una tabla de costes.",
+          "tip": "Con {players} jugadores sobran los colores que nadie use; déjalos en la caja."
+        },
+        {
+          "id": "startPlayer",
+          "who": "table",
+          "text": "Decidid quién empieza: según el reglamento, cada jugador tira los dos dados y empieza quien saque más. También podéis sortearlo aquí.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        }
+      ]
+    },
+    {
+      "id": "founding",
+      "title": "Fase de fundación",
+      "steps": [
+        {
+          "id": "round1",
+          "who": "eachPlayer",
+          "text": "Primera ronda, en sentido horario desde el jugador inicial: cada uno coloca 1 poblado en una encrucijada libre y 1 carretera pegada a él.",
+          "warning": "Regla de la distancia: ninguna de las 3 encrucijadas contiguas puede tener otro poblado o ciudad."
+        },
+        {
+          "id": "round2",
+          "who": "eachPlayer",
+          "text": "Segunda ronda, en sentido antihorario empezando por el último jugador: cada uno coloca su segundo poblado (puede ir en cualquier sitio que respete la distancia) y una carretera pegada a él."
+        },
+        {
+          "id": "startResources",
+          "who": "eachPlayer",
+          "text": "Al colocar el segundo poblado, cada jugador coge 1 carta de materia prima por cada terreno que toque ese poblado."
+        },
+        {
+          "id": "begin",
+          "who": "firstPlayer",
+          "text": "Empieza el jugador inicial tirando los dados para la primera producción."
+        },
+        {
+          "id": "variantReminder",
+          "who": "table",
+          "when": {
+            "is": "tradeAnyOrder"
+          },
+          "text": "Recordad: tras tirar los dados se puede comerciar y construir en cualquier orden."
+        }
+      ]
+    }
+  ]
+}

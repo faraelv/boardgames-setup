@@ -1,0 +1,1087 @@
+{
+  "schemaVersion": 1,
+  "id": "seti",
+  "name": "SETI: Search for Extraterrestrial Intelligence",
+  "publisher": "Czech Games Edition",
+  "sources": [
+    {
+      "title": "Reglamento SETI (base)",
+      "file": "SETI.pdf"
+    },
+    {
+      "title": "Reglamento SETI: Space Agencies",
+      "file": "SETI_expansion.pdf"
+    },
+    {
+      "title": "Hojas de especies alienígenas (CGE)",
+      "url": "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
+  "options": [
+    {
+      "id": "spaceAgencies",
+      "label": "¿Juegas con la expansión Space Agencies?",
+      "type": "boolean",
+      "default": false,
+      "help": "Sus cartas, alienígenas y fichas de señal se añaden siempre que juegues con la expansión."
+    },
+    {
+      "id": "withOrganizations",
+      "label": "¿Usar organizaciones y cartas de inicio rápido?",
+      "type": "boolean",
+      "default": true,
+      "when": {
+        "is": "spaceAgencies"
+      },
+      "help": "La partida pasa a 4 rondas (de la 2 a la 5)."
+    },
+    {
+      "id": "firstGame",
+      "label": "¿Es vuestra primera partida con organizaciones?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "all": [
+          {
+            "is": "spaceAgencies"
+          },
+          {
+            "is": "withOrganizations"
+          }
+        ]
+      }
+    },
+    {
+      "id": "neutralQuickStart",
+      "label": "¿Usar 4 cartas de inicio rápido neutrales?",
+      "type": "boolean",
+      "default": true,
+      "when": {
+        "all": [
+          {
+            "is": "spaceAgencies"
+          },
+          {
+            "lte": [
+              "players",
+              2
+            ]
+          }
+        ]
+      },
+      "help": "Ajuste recomendado para 1–2 jugadores: el tablero arranca con algo de actividad."
+    },
+    {
+      "id": "difficulty",
+      "label": "Dificultad del Rival",
+      "type": "choice",
+      "default": 2,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": 1,
+          "label": "★ — sin objetivos (recomendada para la primera partida)"
+        },
+        {
+          "value": 2,
+          "label": "★★"
+        },
+        {
+          "value": 3,
+          "label": "★★★"
+        },
+        {
+          "value": 4,
+          "label": "★★★★"
+        },
+        {
+          "value": 5,
+          "label": "★★★★★"
+        }
+      ]
+    }
+  ],
+  "vars": {
+    "useOrgs": [
+      {
+        "when": {
+          "all": [
+            {
+              "is": "spaceAgencies"
+            },
+            {
+              "is": "withOrganizations"
+            }
+          ]
+        },
+        "value": true
+      },
+      {
+        "value": false
+      }
+    ],
+    "roundsText": [
+      {
+        "when": {
+          "is": "useOrgs"
+        },
+        "value": "4 rondas (se juegan de la 2 a la 5)"
+      },
+      {
+        "value": "5 rondas"
+      }
+    ],
+    "endRoundStacks": [
+      {
+        "when": {
+          "is": "useOrgs"
+        },
+        "value": "3 montones (rondas 2, 3 y 4)"
+      },
+      {
+        "value": "4 montones (rondas 1 a 4)"
+      }
+    ],
+    "cardsPerStack": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 5
+      }
+    ],
+    "neutralPerMilestone": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 1
+      },
+      {
+        "value": 0
+      }
+    ],
+    "startPublicity": [
+      {
+        "when": {
+          "is": "useOrgs"
+        },
+        "value": 0
+      },
+      {
+        "value": 4
+      }
+    ],
+    "orgsDealt": [
+      {
+        "when": {
+          "is": "firstGame"
+        },
+        "value": "1 organización de las numeradas 1–4"
+      },
+      {
+        "value": "2 organizaciones al azar"
+      }
+    ],
+    "quickStartDealt": [
+      {
+        "when": {
+          "is": "firstGame"
+        },
+        "value": 2
+      },
+      {
+        "value": 3
+      }
+    ],
+    "objI": [
+      {
+        "when": {
+          "is": "useOrgs"
+        },
+        "value": 0
+      },
+      {
+        "value": 2
+      }
+    ],
+    "objII": [
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            4
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            5
+          ]
+        },
+        "value": 7
+      },
+      {
+        "value": 0
+      }
+    ],
+    "objIII": [
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            2
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            3
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            4
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "difficulty",
+            5
+          ]
+        },
+        "value": 8
+      },
+      {
+        "value": 0
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa común",
+      "steps": [
+        {
+          "id": "mainBoard",
+          "who": "table",
+          "text": "Monta el tablero principal uniendo el tablero planetario, el del sistema solar y el de tecnologías, y ponlo en el centro."
+        },
+        {
+          "id": "expansionCards",
+          "who": "table",
+          "when": {
+            "is": "spaceAgencies"
+          },
+          "text": "Baraja las 42 cartas nuevas de Space Agencies dentro del mazo principal y mezcla los 3 alienígenas nuevos con los 5 del juego base."
+        },
+        {
+          "id": "aliens",
+          "who": "table",
+          "text": "Coloca 2 tableros de alienígena al azar, boca abajo, en los huecos del borde del tablero planetario. Devuelve el resto a la caja sin mirarlos y deja sus cartas y piezas guardadas.",
+          "randomizer": {
+            "type": "pick",
+            "count": 2,
+            "hidden": true,
+            "from": [
+              "Mascamites",
+              "Exertianos",
+              "Anomalías",
+              "Centaurianos",
+              "'Oumuamua"
+            ],
+            "fromWhen": [
+              {
+                "when": {
+                  "is": "spaceAgencies"
+                },
+                "items": [
+                  "Amoeba",
+                  "Arkhos",
+                  "Glyphids"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "solarSystem",
+          "who": "table",
+          "text": "Coloca los 3 discos y los 4 sectores en una posición aleatoria, cuidando que formen 8 sectores bien definidos con una estrella cercana en cada uno.",
+          "link": "https://seti-solarsystem.czechgames.com",
+          "tip": "La app oficial de CGE genera una disposición aleatoria."
+        },
+        {
+          "id": "cardRow",
+          "who": "table",
+          "text": "Baraja el mazo principal y reparte 3 cartas boca arriba: es la fila de cartas."
+        },
+        {
+          "id": "supply",
+          "who": "table",
+          "text": "Deja las fichas de crédito y de energía al alcance de todos."
+        },
+        {
+          "id": "signalTokens",
+          "who": "table",
+          "when": {
+            "is": "spaceAgencies"
+          },
+          "text": "Deja también a mano las fichas de señal."
+        },
+        {
+          "id": "data",
+          "who": "table",
+          "text": "Llena con fichas de dato el hueco de datos de cada estrella cercana (no todas tienen el mismo tamaño). El resto, a la reserva."
+        },
+        {
+          "id": "techs",
+          "who": "table",
+          "text": "Para cada una de las 12 tecnologías, baraja sus 4 losetas, apílalas boca abajo en su espacio del tablero de tecnologías y pon una loseta de 2 puntos encima.",
+          "components": [
+            {
+              "name": "Losetas de tecnología",
+              "qty": 48
+            },
+            {
+              "name": "Losetas de 2 puntos",
+              "qty": 12
+            }
+          ]
+        },
+        {
+          "id": "goldTiles",
+          "who": "table",
+          "text": "Coloca las 4 losetas doradas de puntuación junto al tablero, cada una con una cara al azar."
+        },
+        {
+          "id": "neutralMilestones",
+          "who": "table",
+          "when": {
+            "lte": [
+              "players",
+              3
+            ]
+          },
+          "text": "Pon {neutralPerMilestone} marcador(es) de un color no usado sobre la casilla 20 y otros {neutralPerMilestone} sobre la 30 de la pista de puntuación (hitos neutrales)."
+        },
+        {
+          "id": "endRound",
+          "who": "table",
+          "text": "Prepara {endRoundStacks} de cartas de fin de ronda, con {cardsPerStack} cartas cada uno.",
+          "tip": "Cada montón lleva una carta más que el número de jugadores; en solitario se prepara como en una partida de 2."
+        },
+        {
+          "id": "rotationTokens",
+          "who": "table",
+          "text": "Pon una ficha de rotación en su casilla del tablero de tecnologías y la otra encima del primer montón de fin de ronda, como recordatorio."
+        }
+      ]
+    },
+    {
+      "id": "neutralQS",
+      "title": "Cartas de inicio rápido neutrales",
+      "when": {
+        "all": [
+          {
+            "is": "spaceAgencies"
+          },
+          {
+            "lte": [
+              "players",
+              2
+            ]
+          },
+          {
+            "is": "neutralQuickStart"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "nqsReveal",
+          "who": "table",
+          "text": "Antes de elegir organizaciones, revela 4 cartas de inicio rápido al azar."
+        },
+        {
+          "id": "nqsMark",
+          "who": "table",
+          "text": "Marca con piezas de un color neutral los orbitadores, señales y rastros de su mitad superior. Ignora la mitad inferior.",
+          "tip": "Los datos que se retiran al marcar estas señales vuelven a la reserva."
+        },
+        {
+          "id": "nqsRule",
+          "who": "table",
+          "text": "Al completar un sector, los marcadores neutrales cuentan como otro jugador. Nunca pueden ganarlo, pero si quedan segundos se deja uno en el sector."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "color",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge su tablero, figuras, marcadores, contador de publicidad y de puntuación, la ficha de 100/200 y su hoja de referencia."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Elige el jugador inicial y dale el marcador de jugador inicial. Puntuación inicial según el orden: 1 punto el primero, 2 el segundo, 3 el tercero y 4 el cuarto.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "publicity",
+          "who": "eachPlayer",
+          "text": "Coloca tu contador de publicidad en {startPublicity}."
+        },
+        {
+          "id": "incomeCard",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "is": "useOrgs"
+            }
+          },
+          "text": "Coge tu carta de ingresos inicial: empiezas con 4 créditos, 3 de energía y 5 cartas del mazo.",
+          "substeps": [
+            {
+              "id": "tuckOne",
+              "text": "Mete una de tus cartas debajo de la carta de ingresos y gana ya el recurso de su esquina inferior derecha."
+            }
+          ]
+        },
+        {
+          "id": "orgDeal",
+          "who": "eachPlayer",
+          "when": {
+            "is": "useOrgs"
+          },
+          "text": "Reparte a cada jugador {orgsDealt}, {quickStartDealt} cartas de inicio rápido y 4 cartas del mazo principal.",
+          "tip": "Mirar primero las 4 cartas del mazo ayuda a elegir organización."
+        },
+        {
+          "id": "orgChoose",
+          "who": "eachPlayer",
+          "when": {
+            "is": "useOrgs"
+          },
+          "text": "Cada jugador se queda 1 organización y 2 cartas de inicio rápido, y conserva las 4 cartas del mazo."
+        },
+        {
+          "id": "quickStartResolve",
+          "who": "eachPlayer",
+          "when": {
+            "is": "useOrgs"
+          },
+          "text": "Resolved a la vez las 2 cartas de inicio rápido.",
+          "substeps": [
+            {
+              "id": "qsTop",
+              "text": "Mitad superior: coloca el orbitador, rastro o señales que indique, sin ganar ningún beneficio por ello."
+            },
+            {
+              "id": "qsBottom",
+              "text": "Mitad inferior: gana los recursos, puntos y efectos indicados."
+            },
+            {
+              "id": "qsDiscard",
+              "text": "Devuelve las cartas a la caja, salvo las que hayas metido como ingreso."
+            }
+          ]
+        },
+        {
+          "id": "orgResolve",
+          "who": "eachPlayer",
+          "when": {
+            "is": "useOrgs"
+          },
+          "text": "Gana los recursos y efectos iniciales de tu organización (sustituye a la carta de ingresos del juego base). Después haz sus aumentos de ingresos metiendo cartas debajo y gana su recurso al momento.",
+          "warning": "No se cobran ingresos ahora: se cobran al inicio de las rondas 3, 4 y 5."
+        },
+        {
+          "id": "rounds",
+          "who": "table",
+          "text": "Recordad: la partida dura {roundsText}."
+        }
+      ]
+    },
+    {
+      "id": "rival",
+      "title": "Rival (modo solitario)",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "rivalBoard",
+          "who": "rival",
+          "text": "Da al Rival el tablero de jugador por la cara de dificultad {difficulty} (las dificultades 1 y 2 comparten tablero) y todas las piezas de un color."
+        },
+        {
+          "id": "rivalProgress",
+          "who": "rival",
+          "text": "Pon un marcador del Rival en la casilla inicial de su pista de progreso y su publicidad en 4."
+        },
+        {
+          "id": "rivalDeck",
+          "who": "rival",
+          "text": "Baraja boca abajo las 4 cartas básicas (S.1–S.4) para formar el mazo de acciones del Rival.",
+          "substeps": [
+            {
+              "id": "rivalNewStart",
+              "when": {
+                "is": "useOrgs"
+              },
+              "text": "Añade la nueva carta inicial del Rival de Space Agencies."
+            },
+            {
+              "id": "rivalAdvanced",
+              "when": {
+                "gte": [
+                  "difficulty",
+                  3
+                ]
+              },
+              "text": "Añade 1 carta avanzada al azar (S.5–S.14)."
+            },
+            {
+              "id": "rivalAdvancedAside",
+              "text": "Deja el resto de cartas avanzadas barajadas a un lado y aparta también las cartas especiales del Rival de cada alienígena."
+            }
+          ]
+        },
+        {
+          "id": "rivalNoOrg",
+          "who": "rival",
+          "when": {
+            "is": "useOrgs"
+          },
+          "text": "El Rival no recibe organización ni cartas de inicio rápido."
+        },
+        {
+          "id": "objectives",
+          "who": "table",
+          "when": {
+            "gte": [
+              "difficulty",
+              2
+            ]
+          },
+          "text": "Monta la pila de objetivos: {objIII} de nivel III abajo, {objII} de nivel II en medio y {objI} de nivel I arriba, cada nivel barajado. Devuelve el resto a la caja.",
+          "tip": "Comprueba las cantidades en el lateral del tablero del Rival.",
+          "substeps": [
+            {
+              "id": "objRemoveI",
+              "when": {
+                "is": "useOrgs"
+              },
+              "text": "Con organizaciones se retiran todos los objetivos de nivel I."
+            },
+            {
+              "id": "objReveal",
+              "text": "Revela los 3 objetivos superiores."
+            },
+            {
+              "id": "longTerm",
+              "when": {
+                "is": "useOrgs"
+              },
+              "text": "Baraja las 3 losetas de objetivo a largo plazo y revela 2. La tercera no se usa."
+            }
+          ]
+        },
+        {
+          "id": "objStartNote",
+          "who": "table",
+          "when": {
+            "all": [
+              {
+                "is": "useOrgs"
+              },
+              {
+                "gte": [
+                  "difficulty",
+                  2
+                ]
+              }
+            ]
+          },
+          "text": "Los efectos iniciales de organizaciones y cartas de inicio rápido no completan tareas de objetivos."
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "discoveryGeneral",
+      "group": "Descubrir especie",
+      "title": "Antes de cualquier especie",
+      "steps": [
+        {
+          "id": "milestonesFirst",
+          "who": "table",
+          "text": "Termina el turno y resuelve primero los hitos pendientes (dorados y neutrales). El descubrimiento va después."
+        },
+        {
+          "id": "flip",
+          "who": "table",
+          "text": "Da la vuelta al tablero de la especie, lee su hoja de reglas y sigue los pasos de esa especie en esta lista."
+        },
+        {
+          "id": "rivalCards",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Si el Rival recibe cartas por sus marcadores de descubrimiento, no las guarda: avanza 1 casilla de progreso por cada carta.",
+          "tip": "Cuando salga una carta del Rival que empieza comprobando si esta especie está descubierta, retírala del juego y sustitúyela por la carta especial del Rival de esa especie (está apartada)."
+        }
+      ]
+    },
+    {
+      "id": "mascamites",
+      "group": "Descubrir especie",
+      "title": "Mascamites",
+      "steps": [
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo. Cada jugador que marcó una casilla de descubrimiento recibe 1 carta por marcador. Deja el mazo junto al tablero de la especie y pon la carta superior boca arriba a su lado."
+        },
+        {
+          "id": "samples",
+          "who": "table",
+          "text": "Baraja boca abajo las 7 fichas de muestra. Pon 3 sobre Júpiter y 3 sobre Saturno en el tablero del sistema solar.",
+          "components": [
+            {
+              "name": "Fichas de muestra",
+              "qty": 7
+            }
+          ]
+        },
+        {
+          "id": "lastSample",
+          "who": "table",
+          "text": "Pon la muestra restante boca arriba en su espacio del tablero de la especie."
+        },
+        {
+          "id": "reminder",
+          "who": "table",
+          "text": "Recuerda: las muestras se recogen al aterrizar con una carta que lo permita y viajan como cápsulas hasta el destino de su misión."
+        }
+      ]
+    },
+    {
+      "id": "exertians",
+      "group": "Descubrir especie",
+      "title": "Exertianos",
+      "steps": [
+        {
+          "id": "deal",
+          "who": "eachPlayer",
+          "text": "Baraja su mazo y reparte 3 cartas a cada jugador, más 1 extra por cada marcador que tenga en las casillas de descubrimiento. Devuelve el resto del mazo a la caja."
+        },
+        {
+          "id": "rivalNoCards",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "El Rival no roba ni juega cartas ahora: avanza 1 casilla de progreso por cada marcador suyo en las casillas de descubrimiento. Solo juega cartas exertianas con su carta especial e ignora los hitos exertianos."
+        },
+        {
+          "id": "playNow",
+          "who": "eachPlayer",
+          "text": "Cada jugador puede jugar boca abajo 1 carta exertiana por cada marcador suyo de descubrimiento. Se revelan al final de la partida.",
+          "tip": "Las cartas exertianas no cuentan como mano: no cuentan para el límite ni se pueden descartar."
+        },
+        {
+          "id": "milestones",
+          "who": "table",
+          "text": "Coloca el hito exertiano 1 en la pista de puntuación 20 puntos por delante de quien vaya en cabeza, y el hito 2, 40 puntos por delante.",
+          "warning": "Al cruzar el segundo hito, jugar la carta cuesta 1 crédito; si no lo tienes en ese momento, pierdes la oportunidad."
+        },
+        {
+          "id": "danger",
+          "who": "table",
+          "text": "Al final, quien sume más peligro (cartas jugadas + marcadores del tablero exertiano: 3, 2 o 1 según la fila) pierde una décima parte de sus puntos, redondeando hacia abajo."
+        }
+      ]
+    },
+    {
+      "id": "anomalies",
+      "group": "Descubrir especie",
+      "title": "Anomalías",
+      "steps": [
+        {
+          "id": "tokens",
+          "who": "table",
+          "text": "Coloca las 3 fichas de anomalía, con una cara al azar, en el anillo exterior: una en el sector de la Tierra, otra 3 sectores en sentido antihorario y otra 3 sectores en sentido horario.",
+          "warning": "Si una ficha caería sobre Neptuno o Urano, colócala sin tapar el planeta.",
+          "randomizer": {
+            "type": "pick",
+            "from": [
+              "Cara A",
+              "Cara B"
+            ],
+            "count": 1
+          }
+        },
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo y reparte 1 carta por cada marcador de descubrimiento. Pon la carta superior boca arriba junto al mazo."
+        },
+        {
+          "id": "trigger",
+          "who": "table",
+          "text": "Recuerda: cada vez que rote el sistema solar, si la Tierra comparte sector con una anomalía, se resuelve en ese momento y gana la recompensa quien tenga el marcador más alto en su columna."
+        }
+      ]
+    },
+    {
+      "id": "centaurians",
+      "group": "Descubrir especie",
+      "title": "Centaurianos",
+      "steps": [
+        {
+          "id": "messages",
+          "who": "eachPlayer",
+          "text": "Cada jugador coloca la loseta de mensaje de su color como hito 15 puntos por delante de su puntuación actual."
+        },
+        {
+          "id": "rival",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "El Rival coloca también su hito de mensaje y se queda todas las losetas sobrantes, que usará con su carta especial. Al alcanzarlo elige la recompensa disponible más a la izquierda o a la derecha según la flecha de decisión."
+        },
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo y reparte 1 carta por cada marcador de descubrimiento. Pon la carta superior boca arriba junto al mazo."
+        },
+        {
+          "id": "reminder",
+          "who": "table",
+          "text": "Recuerda: las cartas centaurianas se pagan con energía. Al jugarlas pones un marcador 15 puntos por delante y resuelves su parte verde al alcanzarlo."
+        }
+      ]
+    },
+    {
+      "id": "oumuamua",
+      "group": "Descubrir especie",
+      "title": "'Oumuamua",
+      "steps": [
+        {
+          "id": "tile",
+          "who": "table",
+          "text": "Coloca la loseta de 'Oumuamua en el espacio indicado del disco 3. Si hay una sonda en ese espacio, ponla encima y su dueño gana 1 de publicidad."
+        },
+        {
+          "id": "data",
+          "who": "table",
+          "text": "Pon 3 fichas de dato en el hueco de datos de la loseta."
+        },
+        {
+          "id": "fossils",
+          "who": "table",
+          "text": "Deja las fichas de exofósil junto al tablero de la especie."
+        },
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo y reparte 1 carta por cada marcador de descubrimiento. Pon la carta superior boca arriba junto al mazo."
+        },
+        {
+          "id": "rival",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "El Rival acumula exofósiles. Cuando su acción le dé el icono de 'Oumuamua, siempre marca la señal sobre la loseta."
+        }
+      ]
+    },
+    {
+      "id": "amoeba",
+      "group": "Descubrir especie",
+      "title": "Amoeba",
+      "when": {
+        "is": "spaceAgencies"
+      },
+      "steps": [
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo y reparte 1 carta por cada marcador de descubrimiento. Deja el mazo junto al tablero de la especie y pon la carta superior boca arriba a su lado."
+        },
+        {
+          "id": "organelles",
+          "who": "table",
+          "text": "Baraja las 5 fichas de orgánulo y colócalas boca arriba en los espacios marcados del tablero de Amoeba.",
+          "components": [
+            {
+              "name": "Fichas de orgánulo",
+              "qty": 5
+            }
+          ]
+        },
+        {
+          "id": "reminder",
+          "who": "table",
+          "text": "Recuerda: al marcar un espacio de Amoeba ganas además los orgánulos de la sección de su color, y cada vez que ganes orgánulos se mueven 1 espacio (los exteriores en sentido horario y el interior en sentido antihorario, saltando los ocupados)."
+        },
+        {
+          "id": "rival",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Al elegir dónde marcar, el Rival ignora los espacios de Amoeba que le den 0 o 1 orgánulos."
+        }
+      ]
+    },
+    {
+      "id": "arkhos",
+      "group": "Descubrir especie",
+      "title": "Arkhos",
+      "when": {
+        "is": "spaceAgencies"
+      },
+      "steps": [
+        {
+          "id": "exploration",
+          "who": "table",
+          "text": "Baraja boca abajo las 9 cartas de exploración y aparta 4 sin mirarlas. Las otras 5 forman el mazo de exploración."
+        },
+        {
+          "id": "minorRewards",
+          "who": "eachPlayer",
+          "text": "Por cada casilla de descubrimiento marcada, revela una carta del mazo de exploración: el dueño de ese marcador gana la recompensa de exploración menor de la carta. Deja las cartas reveladas en un descarte junto al mazo."
+        },
+        {
+          "id": "security",
+          "who": "eachPlayer",
+          "text": "Reparte a cada jugador 3 cartas de seguridad, boca arriba por la cara de rastro, delante de él (no en la mano): una al azar con rastro rosa, otra con rastro azul y otra con rastro amarillo.",
+          "components": [
+            {
+              "name": "Juegos de cartas de seguridad",
+              "qty": 4
+            }
+          ]
+        },
+        {
+          "id": "rivalSecurity",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "El Rival también recibe sus 3 cartas de seguridad."
+        },
+        {
+          "id": "leftover",
+          "who": "table",
+          "when": {
+            "lte": [
+              "players",
+              3
+            ]
+          },
+          "text": "Devuelve las cartas de seguridad sobrantes a la caja sin mirarlas."
+        },
+        {
+          "id": "levels",
+          "who": "table",
+          "text": "Recuerda los niveles del tablero de Arkhos: al principio solo se pueden marcar los 3 espacios superiores (nivel 0). Con 1 carta de seguridad rota accedes al nivel 1; con 2, al nivel 2; con las 3, a todo el tablero.",
+          "tip": "Rompes una carta de seguridad al marcar un espacio de desbordamiento bajo el tablero de Arkhos con su mismo rastro: pasa a tu mano y no pierdes el acceso aunque luego la uses."
+        },
+        {
+          "id": "securityUse",
+          "who": "table",
+          "text": "Una carta de seguridad en la mano cuenta para el límite de mano. Descartarla por su acción gratuita da una recompensa de exploración menor; jugarla como acción principal por 2 créditos da una mayor."
+        },
+        {
+          "id": "deckOut",
+          "who": "table",
+          "text": "Cuando se agote el mazo de exploración, baraja las cartas reveladas con las 4 apartadas, forma un nuevo mazo de 5 y vuelve a apartar las 4 restantes."
+        },
+        {
+          "id": "rival",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Al descubrirse, el Rival gana recompensas menores por sus marcadores como cualquier jugador; si una le daría una carta, avanza 1 de progreso en su lugar. Solo rompe sus cartas de seguridad jugando su carta especial de Arkhos, ignora los espacios a los que aún no tiene acceso y, entre espacios del mismo nivel, prefiere los de Arkhos a los de otras especies."
+        }
+      ]
+    },
+    {
+      "id": "glyphids",
+      "group": "Descubrir especie",
+      "title": "Glyphids",
+      "when": {
+        "is": "spaceAgencies"
+      },
+      "steps": [
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja su mazo y reparte 1 carta por cada marcador de descubrimiento. Deja el mazo junto al tablero de la especie y pon la carta superior boca arriba a su lado."
+        },
+        {
+          "id": "translation",
+          "who": "table",
+          "text": "Une el tablero de traducción al tablero de Glyphids e inserta las 2 tiras en sus ranuras, cada una por una cara al azar."
+        },
+        {
+          "id": "glyphs",
+          "who": "table",
+          "text": "Baraja todas las fichas de glifo y coloca una boca arriba al azar en cada uno de estos sitios:",
+          "substeps": [
+            {
+              "id": "g1",
+              "text": "Los 6 espacios marcados del tablero de Glyphids."
+            },
+            {
+              "id": "g2",
+              "text": "Junto a cada uno de los 7 planetas del tablero planetario."
+            },
+            {
+              "id": "g3",
+              "text": "En cada uno de los 8 sectores."
+            },
+            {
+              "id": "g4",
+              "text": "En cada pila de tecnología que todavía tenga la loseta de 2 puntos."
+            }
+          ],
+          "components": [
+            {
+              "name": "Fichas de glifo",
+              "qty": 35
+            }
+          ]
+        },
+        {
+          "id": "stack",
+          "who": "table",
+          "text": "Deja el resto de fichas boca abajo en una pila junto al tablero de la especie."
+        },
+        {
+          "id": "reminder",
+          "who": "table",
+          "text": "Recuerda: se gana el glifo al orbitar o aterrizar en ese planeta, ganar ese sector, desarrollar esa tecnología o marcar ese espacio. Al final, los glifos no colocados puntúan por sets distintos: 1/3/5/8/11/15/20."
+        },
+        {
+          "id": "rival",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "El Rival gana glifos igual que un jugador. Si consigue uno aún sin descifrar, lo coloca enseguida en el tablero de traducción (prefiere las casillas de arriba; la flecha desempata). Ignora los espacios superiores vacíos y al final suma 3 puntos por cada glifo que tenga."
+        }
+      ]
+    }
+  ]
+}

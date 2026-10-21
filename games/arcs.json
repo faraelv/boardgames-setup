@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "id": "arcs",
+  "name": "Arcs",
+  "publisher": "Leder Games",
+  "sources": [
+    {
+      "title": "Reglamento Arcs",
+      "file": "ARCS.pdf"
+    },
+    {
+      "title": "Arcs: Leaders & Lore Pack (contenido)",
+      "url": "https://frogames.it/en/products/arcs-kit-leaders-lore-espansione"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 4,
+    "default": 3
+  },
+  "options": [
+    {
+      "id": "leaders",
+      "label": "¿Jugáis con Líderes y Sabiduría (trasfondo)?",
+      "type": "boolean",
+      "default": false,
+      "help": "No recomendado para la primera partida."
+    },
+    {
+      "id": "leaderPack",
+      "label": "¿Añadir el pack Líderes y Trasfondo?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "leaders"
+      },
+      "help": "8 líderes y 14 cartas de trasfondo más para elegir; la preparación es la misma."
+    }
+  ],
+  "vars": {
+    "courtCards": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "outClusters": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "el clúster marcado"
+      },
+      {
+        "value": "los 2 clústeres marcados"
+      }
+    ],
+    "powerGoal": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 33
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 30
+      },
+      {
+        "value": 27
+      }
+    ],
+    "leaderRow": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 5
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "map",
+          "who": "table",
+          "text": "Coloca el mapa y deja a mano los 18 dados de batalla y las 25 fichas de recurso."
+        },
+        {
+          "id": "initiative",
+          "who": "table",
+          "text": "Da el marcador de iniciativa a un jugador al azar.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "actionDeck",
+          "who": "table",
+          "text": "Baraja las 20 cartas de acción marcadas del 2 al 6: son el mazo de acción."
+        },
+        {
+          "id": "actionDeck4p",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              4
+            ]
+          },
+          "text": "Con 4 jugadores, añade también las 8 cartas de acción marcadas con 1 y 7."
+        },
+        {
+          "id": "actionDeckBox",
+          "who": "table",
+          "when": {
+            "lte": [
+              "players",
+              3
+            ]
+          },
+          "text": "Devuelve a la caja las cartas de acción marcadas con 1 y 7."
+        },
+        {
+          "id": "ambitions",
+          "who": "table",
+          "text": "Pon los 3 marcadores de ambición por su cara azul, con el número más bajo, en la sección de Marcadores Disponibles del mapa."
+        },
+        {
+          "id": "chapter",
+          "who": "table",
+          "text": "Coloca el marcador de capítulo en la casilla 1 y el marcador cero en el espacio de Ambición Declarada."
+        },
+        {
+          "id": "court",
+          "who": "table",
+          "text": "Baraja las 6 cartas Vox con las 25 de Gremio para formar el mazo de la Corte y revela {courtCards} para la fila de la Corte."
+        },
+        {
+          "id": "setupCard",
+          "who": "table",
+          "text": "Baraja las cartas de preparación inicial de {players} jugadores y roba 1."
+        },
+        {
+          "id": "outOfPlay",
+          "who": "table",
+          "text": "En {outClusters} como «Out of Play» en la carta de preparación, pon un marcador de ruta sobre su portal numerado y 3 marcadores de fuera del juego sobre los planetas que tocan ese portal."
+        },
+        {
+          "id": "twoPlayerRes",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Con 2 jugadores, pon en los recuadros de ambición las 6 fichas de recurso de los planetas tapados: Material y Combustible en Magnate, Armas en Señor de la Guerra, Reliquias en Guardián y Psiónicos en Empatía."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "pieces",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge su tablero, 5 ciudades, 5 puertos estelares, 15 naves y 10 agentes. Coloca ciudades y puertos en los espacios triangulares de la parte superior de su tablero."
+        },
+        {
+          "id": "power",
+          "who": "eachPlayer",
+          "text": "Cada jugador pone su marcador de Poder en la casilla 0. Recordad: la partida termina cuando alguien llega a {powerGoal} de Poder."
+        },
+        {
+          "id": "startPieces",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "is": "leaders"
+            }
+          },
+          "text": "A la vez, cada jugador coloca sus piezas iniciales según la carta de preparación. El de la iniciativa usa los sistemas 1A, 1B y 1C; los siguientes en sentido horario, 2A-C, 3A-C y 4A-C.",
+          "substeps": [
+            {
+              "id": "sysA",
+              "text": "Sistema A: 3 naves y 1 ciudad (la ciudad de más a la izquierda de tu tablero)."
+            },
+            {
+              "id": "sysB",
+              "text": "Sistema B: 3 naves y 1 puerto estelar."
+            },
+            {
+              "id": "sysC",
+              "text": "Sistema C: 2 naves (en 2 sistemas C si jugáis 2)."
+            }
+          ]
+        },
+        {
+          "id": "startRes",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "is": "leaders"
+            }
+          },
+          "text": "Cada jugador gana las 2 fichas de recurso de los planetas de sus sistemas A y B y las pone en los 2 espacios circulares de más a la izquierda de su tablero."
+        },
+        {
+          "id": "leaderPackMix",
+          "who": "table",
+          "when": {
+            "is": "leaderPack"
+          },
+          "text": "Mezcla los líderes y las cartas de trasfondo del pack con los del juego base antes de desplegar las filas."
+        },
+        {
+          "id": "leaderDraft",
+          "who": "eachPlayer",
+          "when": {
+            "is": "leaders"
+          },
+          "text": "Despliega boca arriba {leaderRow} cartas de líder y {leaderRow} de sabiduría (una más que jugadores). En orden inverso, empezando por quien está a la derecha de la iniciativa, cada uno coge 1 carta de líder o de sabiduría hasta tener 1 de cada.",
+          "tip": "Variante caótica: añade una carta de sabiduría extra por jugador y elegid hasta tener 1 líder y 2 de sabiduría."
+        },
+        {
+          "id": "leaderPieces",
+          "who": "eachPlayer",
+          "when": {
+            "is": "leaders"
+          },
+          "text": "Cada jugador coloca sus piezas iniciales en sus sistemas de la carta de preparación según los recuadros A, B y C de su carta de líder, y gana las 2 fichas de recurso que muestra, en sus 2 espacios de más a la izquierda."
+        },
+        {
+          "id": "hand",
+          "who": "eachPlayer",
+          "text": "Cada jugador roba 6 cartas de acción."
+        },
+        {
+          "id": "mulligan",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Con 2 jugadores, el que no tiene la iniciativa puede descartar sus 6 cartas y robar otras 6."
+        },
+        {
+          "id": "discard",
+          "who": "table",
+          "text": "Las cartas de acción que no estén en ninguna mano van boca abajo a la pila de descartes de acción del mapa."
+        }
+      ]
+    }
+  ]
+}

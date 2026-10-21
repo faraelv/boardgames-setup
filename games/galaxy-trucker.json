@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "galaxyTrucker",
+  "name": "Galaxy Trucker",
+  "publisher": "Czech Games Edition",
+  "sources": [ { "title": "La guía del transportista galáctico (2ª edición)", "file": "galaxy_trucker.pdf" } ],
+  "players": { "min": 2, "max": 4, "default": 4 },
+  "options": [
+    { "id": "mode", "label": "¿Qué vais a jugar?", "type": "choice", "default": "trip",
+      "choices": [
+        { "value": "intro", "label": "Vuelo de iniciación (tablero L, primera partida)" },
+        { "value": "single", "label": "Un solo vuelo de nivel I, II o III" },
+        { "value": "trip", "label": "Travesía Intergaláctica (vuelos I, II y III)" }
+      ] },
+    { "id": "level", "label": "Nivel del vuelo", "type": "choice", "default": 1, "when": { "eq": ["mode", "single"] },
+      "choices": [ { "value": 1, "label": "I" }, { "value": 2, "label": "II" }, { "value": 3, "label": "III" } ] }
+  ],
+  "vars": {
+    "levelName": [
+      { "when": { "eq": ["mode", "trip"] }, "value": "I" },
+      { "when": { "eq": ["level", 2] }, "value": "II" },
+      { "when": { "eq": ["level", 3] }, "value": "III" },
+      { "value": "I" }
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro", "title": "Vuelo de iniciación", "when": { "eq": ["mode", "intro"] },
+      "steps": [
+        { "id": "board", "who": "table", "text": "Usa el tablero de vuelo marcado con una «L»." },
+        { "id": "deck", "who": "table", "text": "Toma las 8 cartas de aventura de nivel I marcadas para el primer vuelo y barájalas boca abajo: son el mazo de aventuras." }
+      ]
+    },
+    {
+      "id": "flight", "title": "Vuelo de nivel {levelName}", "when": { "not": { "eq": ["mode", "intro"] } },
+      "steps": [
+        { "id": "board", "who": "table", "text": "Usa el tablero de vuelo de nivel {levelName}." },
+        { "id": "piles", "who": "table", "text": "Baraja por separado los mazos de aventura y forma 4 pilas sin mirar, con la composición que indica el tablero de vuelo. Pon 3 pilas en la zona inferior (se pueden consultar al construir) y 1 en la superior (sorpresa).",
+          "tip": "Por ejemplo, en nivel III cada pila lleva 2 cartas de nivel III, 1 de nivel II y 1 de nivel I." },
+        { "id": "hourglass", "who": "table", "text": "Deja el reloj de arena junto al tablero de vuelo." },
+        { "id": "titles", "who": "table", "when": { "eq": ["mode", "trip"] },
+          "text": "Elige al azar tantas fichas de título como jugadores, déjalas por la cara de plata junto al tablero de vuelo y leed en voz alta qué premia cada una." }
+      ]
+    },
+    {
+      "id": "common", "title": "Componentes y naves",
+      "steps": [
+        { "id": "tiles", "who": "table", "text": "Pon todas las losetas de componente boca abajo en el centro de la mesa y mézclalas bien." },
+        { "id": "shipBoards", "who": "eachPlayer", "text": "Cada jugador coge un tablero de nave y lo usa por la cara del nivel {levelName}." },
+        { "id": "color", "who": "eachPlayer", "text": "Cada jugador elige color, coge sus cohetes y su cabina inicial, y coloca la cabina en el centro de su tablero de nave." },
+        { "id": "rockets", "who": "eachPlayer", "text": "Pon un cohete en tu tablero de nave y el otro en el aparcamiento del tablero de vuelo." },
+        { "id": "dice", "who": "table", "text": "Deja a mano los 2 dados." },
+        { "id": "go", "who": "table", "text": "Cuando estéis listos, el más valiente grita «¡Ya!» y empezáis a construir a la vez, cogiendo losetas con una sola mano." }
+      ]
+    }
+  ]
+}

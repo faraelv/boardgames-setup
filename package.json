@@ -1,0 +1,16 @@
+{
+  "name": "boardgames-setup",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mesa Lista: guía de preparación de juegos de mesa (PWA).",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/build.mjs",
+    "serve": "npm run build && npx --yes serve@14.2.4 dist -l 4173"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1"
+  }
+}

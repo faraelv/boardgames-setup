@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "id": "tmDados",
+  "name": "Terraforming Mars: Dados",
+  "publisher": "FryxGames",
+  "sources": [
+    {
+      "title": "Reglamento oficial Terraforming Mars: The Dice Game (FryxGames)",
+      "url": "https://fryxgames.se/wp-content/uploads/2023/10/TMDG_RULES_ENGi.pdf"
+    },
+    {
+      "title": "Resumen de reglas en español (JcK)",
+      "file": "Terraforming_Mars_Dados.pdf"
+    },
+    {
+      "title": "Reglamento de la expansión Misiones (foto del usuario)"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
+  "vars": {
+    "bonusCards": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 6
+      },
+      {
+        "value": 8
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero en el centro por la cara que prefiráis."
+        },
+        {
+          "id": "params",
+          "who": "table",
+          "text": "Pon un cubo transparente en 0 % de oxígeno y otro en −32 °C.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "paramsSolo",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "En solitario, el oxígeno empieza en 2 % y la temperatura en −28 °C."
+        },
+        {
+          "id": "oceans",
+          "who": "table",
+          "text": "Deja las 7 losetas de océano en una pila junto al tablero."
+        },
+        {
+          "id": "pools",
+          "who": "table",
+          "text": "Forma las reservas de dados, comodines y árboles."
+        },
+        {
+          "id": "milestones",
+          "who": "table",
+          "text": "Elige al azar 3 losetas de hito y ponlas en el tablero. El resto, a la caja."
+        },
+        {
+          "id": "awards",
+          "who": "table",
+          "text": "Coge un dado de cada color, elige 3 al azar, lánzalos y colócalos por la cara obtenida en la zona de recompensas."
+        },
+        {
+          "id": "projects",
+          "who": "table",
+          "text": "Baraja las cartas de proyecto y forma el mazo."
+        },
+        {
+          "id": "bonus",
+          "who": "table",
+          "text": "Baraja las cartas de bonificación y forma un mazo de {bonusCards}. El resto, a la caja.",
+          "tip": "Se gana una carta de bonificación al llegar a 5 y a 12 PV."
+        }
+      ]
+    },
+    {
+      "id": "missionsSetup",
+      "title": "Expansión Misiones",
+      "when": {
+        "is": "missions"
+      },
+      "steps": [
+        {
+          "id": "decks",
+          "who": "table",
+          "text": "Baraja los nuevos hitos, corporaciones, cartas de bonificación y cartas de proyecto de Misiones en sus mazos correspondientes."
+        },
+        {
+          "id": "vpTiles",
+          "who": "table",
+          "text": "Pon 2 losetas de dado en la pista de PV, en las casillas 8 y 16. Cada jugador gana (y lanza) un dado morado al llegar o pasar esas casillas."
+        },
+        {
+          "id": "mapTiles",
+          "who": "table",
+          "text": "Pon 4 losetas de dado en el mapa, tapando todas las bonificaciones de girar dado. Quien coloque una loseta en esa zona gana un dado morado y retira la loseta de dado."
+        },
+        {
+          "id": "market",
+          "who": "table",
+          "text": "Baraja las cartas de misión en un mazo aparte y revela 3 boca arriba como mercado. Deja al lado los cubos de jugador extra: 3 por jugador.",
+          "warning": "Hazlo antes de que los jugadores elijan corporación."
+        },
+        {
+          "id": "purple",
+          "who": "table",
+          "text": "Deja los dados morados de influencia en la reserva. Cada uno tiene 2 caras de PV, 2 de cartas y 2 de comodín.",
+          "tip": "Los dados morados no se pueden conseguir con otros iconos de dado blanco."
+        },
+        {
+          "id": "neutral",
+          "who": "rival",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Solitario: elige un color para el jugador neutral y pon su loseta de color junto a la primera misión del mercado. Tras cada uno de tus turnos, pone un cubo en esa misión y pasa a la siguiente; con 2 cubos se lleva la misión y se repone el mercado.",
+          "tip": "Al final pierdes 1 PV por cada misión que se haya llevado el jugador neutral."
+        },
+        {
+          "id": "reminder",
+          "who": "table",
+          "text": "Recordad: siempre hay 3 misiones en el mercado. La mayoría se cumplen en 2 pasos (la primera vez pones tu cubo; la segunda retiras los cubos y te llevas la carta). Cada misión cumplida vale 1 PV al final. Se repone al final de tu turno, descartando duplicados."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "vp",
+          "who": "eachPlayer",
+          "text": "Cada jugador pone su marcador de PV en la casilla 0 y recibe 5 cartas de proyecto."
+        },
+        {
+          "id": "corp",
+          "who": "eachPlayer",
+          "text": "Cada jugador recibe 2 corporaciones, elige 1 y devuelve la otra a la caja. Aplica la producción inicial del recuadro rojo y tápalo con la loseta de su color."
+        },
+        {
+          "id": "dice",
+          "who": "eachPlayer",
+          "text": "Lanza los dados que indique tu producción: son tus recursos iniciales."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "text": "Empieza quien haya ganado más recientemente una partida de Terraforming Mars, o sortéalo aquí. El jugador inicial da uno de sus recursos al último jugador.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "solo",
+          "who": "table",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Salta la penalización del jugador inicial: en solitario no se da ningún recurso."
+        }
+      ]
+    },
+    {
+      "id": "soloSetup",
+      "title": "Solitario",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "tiles",
+          "who": "table",
+          "text": "Coloca 1 ciudad en una de las 3 áreas que dan PV al colocar; 1 océano junto a esa ciudad; y 1 bosque en un área adyacente a ambos. No ganas bonificaciones ni PV por estas losetas."
+        },
+        {
+          "id": "time",
+          "who": "table",
+          "text": "Pon el cubo de tiempo en 0 y muévelo a 1 antes de tu primer turno. Avanza 1 tras cada turno: la partida dura exactamente 50 turnos."
+        },
+        {
+          "id": "bonusSolo",
+          "who": "eachPlayer",
+          "text": "Tras lanzar tu producción inicial, mira las 4 cartas de bonificación y juega 1 inmediatamente. Durante la partida tomarás otras 2; la última no se usa."
+        },
+        {
+          "id": "milestones",
+          "who": "table",
+          "text": "Los hitos no reclamados se retiran: el de arriba tras el turno 16, el del medio tras el 20 y el de abajo tras el 24 (marcados con puntos en la pista de PV)."
+        },
+        {
+          "id": "awards",
+          "who": "table",
+          "text": "Para ganar una recompensa al final necesitas al menos 6 símbolos si es raro, 8 si es poco común o 10 si es común: vale 5 PV. Con uno menos, 3 PV."
+        },
+        {
+          "id": "goal",
+          "who": "table",
+          "text": "Objetivo: completar los 3 parámetros globales (océanos, temperatura y oxígeno) en 50 turnos. Si no lo consigues, tu puntuación no cuenta.",
+          "tip": "Valoración: 100+ victoria suprema, 90–99 muy buena, 80–89 decente, 70–79 vas pillándolo, menos de 70 hay margen de mejora."
+        }
+      ]
+    }
+  ],
+  "options": [
+    {
+      "id": "missions",
+      "label": "¿Jugáis con la expansión Misiones?",
+      "type": "boolean",
+      "default": false
+    }
+  ]
+}

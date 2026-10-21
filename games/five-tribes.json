@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "fiveTribes",
+  "name": "Five Tribes",
+  "publisher": "Days of Wonder",
+  "sources": [ { "title": "Reglamento Five Tribes", "file": "Five_tribes.pdf" } ],
+  "players": { "min": 2, "max": 4, "default": 3 },
+  "options": [
+    { "id": "firstTime", "label": "¿Es la primera partida con este ejemplar?", "type": "boolean", "default": false }
+  ],
+  "sections": [
+    {
+      "id": "unboxing", "title": "Primera partida", "when": { "is": "firstTime" },
+      "steps": [
+        { "id": "punch", "who": "table", "text": "Destroquela todas las piezas. Guarda los marcos vacíos bajo la bandeja interior para que quede a ras de la caja." }
+      ]
+    },
+    {
+      "id": "players", "title": "Jugadores",
+      "steps": [
+        { "id": "pieces34", "who": "eachPlayer", "when": { "gte": ["players", 3] },
+          "text": "Cada jugador coge 8 camellos y 1 ficha de turno de su color. Los camellos extra y las fichas de turno azul y rosa no se usan." },
+        { "id": "pieces2", "who": "eachPlayer", "when": { "eq": ["players", 2] },
+          "text": "Un jugador coge los 11 camellos rosas y las 2 fichas de turno rosas; el otro, los 11 azules y sus 2 fichas de turno." },
+        { "id": "gold", "who": "eachPlayer", "text": "Cada jugador recibe 50 monedas (9 de valor 5 y 5 de valor 1) y las guarda boca abajo para que nadie sepa cuánto tiene." }
+      ]
+    },
+    {
+      "id": "board", "title": "Sultanato",
+      "steps": [
+        { "id": "tiles", "who": "table", "text": "Mezcla las 30 losetas y colócalas al azar boca arriba formando un rectángulo de 5 × 6: es el Sultanato." },
+        { "id": "meeples", "who": "table", "text": "Mete los 90 peones de madera en la bolsa, mézclalos y pon 3 al azar en cada loseta." },
+        { "id": "turnOrder", "who": "table", "text": "Pon el tablero de Orden de Turno junto al Sultanato. Coge las fichas de turno de todos y colócalas al azar en el tablero de Orden de Apuestas: ese es el orden de la primera puja.",
+          "randomizer": { "type": "firstPlayer" } },
+        { "id": "resources", "who": "table", "text": "Baraja las cartas de Recursos boca abajo y revela 9 en fila junto al mazo." },
+        { "id": "djinns", "who": "table", "text": "Baraja las cartas de Genio boca abajo y revela 3 junto a su mazo." },
+        { "id": "bank", "who": "table", "text": "Deja las palmeras, los palacios y el resto de monedas como banca al alcance de todos." }
+      ]
+    }
+  ]
+}

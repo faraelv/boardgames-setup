@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "carcassonne",
+  "name": "Carcassonne",
+  "publisher": "Devir / Hans im Glück",
+  "sources": [ { "title": "Reglamento Carcassonne", "file": "Carcassonne.pdf" } ],
+  "players": { "min": 2, "max": 5, "default": 3 },
+  "sections": [
+    {
+      "id": "setup", "title": "Preparación",
+      "steps": [
+        { "id": "start", "who": "table", "text": "Coloca boca arriba en el centro de la mesa la pieza de inicio (la de reverso negro)." },
+        { "id": "tiles", "who": "table", "text": "Mezcla boca abajo el resto de piezas de territorio y repártelas en varios montones al alcance de todos.",
+          "components": [ { "name": "Piezas de territorio", "qty": 72 } ] },
+        { "id": "scoreboard", "who": "table", "text": "Deja el marcador a un lado, de forma que quede espacio libre en el centro para ir colocando piezas." },
+        { "id": "followers", "who": "eachPlayer", "text": "Cada jugador coge los 8 seguidores de su color, pone 1 como contador en la casilla 0 del marcador y deja los otros 7 delante de sí como reserva." },
+        { "id": "firstPlayer", "who": "table", "text": "Según el reglamento, el jugador más joven decide quién empieza. También podéis sortearlo aquí.",
+          "randomizer": { "type": "firstPlayer" } }
+      ]
+    }
+  ]
+}

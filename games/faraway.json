@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "faraway",
+  "name": "Faraway",
+  "publisher": "Catch Up Games",
+  "sources": [ { "title": "Reglamento Faraway", "file": "Faraway.pdf" } ],
+  "players": { "min": 2, "max": 6, "default": 3 },
+  "options": [
+    { "id": "advanced", "label": "¿Variante avanzada?", "type": "boolean", "default": false,
+      "help": "Recomendada solo si ya habéis jugado al menos una partida." }
+  ],
+  "vars": {
+    "revealed": [
+      { "when": { "eq": ["players", 2] }, "value": 3 },
+      { "when": { "eq": ["players", 3] }, "value": 4 },
+      { "when": { "eq": ["players", 4] }, "value": 5 },
+      { "when": { "eq": ["players", 5] }, "value": 6 },
+      { "value": 7 }
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup", "title": "Preparación",
+      "steps": [
+        { "id": "deal", "who": "eachPlayer", "when": { "not": { "is": "advanced" } },
+          "text": "Baraja las cartas de Región y reparte 3 boca abajo a cada jugador. Cada uno las mira sin enseñarlas. Deja el mazo en el centro." },
+        { "id": "dealAdv", "who": "eachPlayer", "when": { "is": "advanced" },
+          "text": "Baraja las cartas de Región y reparte 5 a cada jugador. Cada uno se queda 3 y retira 2 sin enseñarlas. Baraja las retiradas de nuevo en el mazo y déjalo en el centro." },
+        { "id": "reveal", "who": "table", "text": "Revela {revealed} cartas del mazo de Región (una más que jugadores)." },
+        { "id": "sanctuaries", "who": "table", "text": "Baraja las cartas de Santuario y deja el mazo boca abajo junto al de Región." },
+        { "id": "pad", "who": "table", "text": "Ten a mano la libreta de puntuación. La partida dura 8 rondas." }
+      ]
+    }
+  ]
+}
