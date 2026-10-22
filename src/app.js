@@ -58,7 +58,24 @@ function render() {
   backBtn.hidden = state.view === 'list';
   prog.hidden = state.view !== 'guide';
   ({ list: renderList, questions: renderQuestions, guide: renderGuide })[state.view]();
+  syncWakeLock();
 }
+
+/* ---------- pantalla siempre encendida mientras se sigue la guía ---------- */
+let wakeLock = null;
+async function syncWakeLock() {
+  const want = state.view === 'guide' && document.visibilityState === 'visible';
+  try {
+    if (want && !wakeLock && 'wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } else if (!want && wakeLock) {
+      await wakeLock.release(); wakeLock = null;
+    }
+  } catch { wakeLock = null; } // batería baja o el sistema lo deniega: la app sigue igual
+}
+// Android libera el bloqueo al salir de la app; se recupera al volver.
+document.addEventListener('visibilitychange', syncWakeLock);
 
 function renderList() {
   app.append(
