@@ -3,80 +3,408 @@
   "id": "catanDuelo",
   "name": "Catan: El Duelo",
   "publisher": "Devir / Kosmos",
-  "sources": [ { "title": "Reglamento Catan: El Duelo", "file": "Catan_el_duelo.pdf" } ],
-  "players": { "min": 2, "max": 2, "default": 2 },
+  "sources": [
+    {
+      "title": "Reglamento Catan: El Duelo",
+      "file": "Catan_el_duelo.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 2,
+    "default": 2
+  },
   "options": [
-    { "id": "mode", "label": "Modo de juego", "type": "choice", "default": "intro",
+    {
+      "id": "mode",
+      "label": "Modo de juego",
+      "type": "choice",
+      "default": "intro",
       "choices": [
-        { "value": "intro", "label": "Los Primeros Catanos (introductorio, 7 PV)" },
-        { "value": "oro", "label": "Juego temático: La Edad del Oro (12 PV)" },
-        { "value": "caos", "label": "Juego temático: La Edad del Caos (12 PV)" },
-        { "value": "progreso", "label": "Juego temático: La Edad del Progreso (12 PV)" },
-        { "value": "duelo", "label": "El Duelo de los Príncipes (13 PV)" }
-      ] }
+        {
+          "value": "intro",
+          "label": "Los Primeros Catanos (introductorio, 7 PV)"
+        },
+        {
+          "value": "oro",
+          "label": "Juego temático: La Edad del Oro (12 PV)"
+        },
+        {
+          "value": "caos",
+          "label": "Juego temático: La Edad del Caos (12 PV)"
+        },
+        {
+          "value": "progreso",
+          "label": "Juego temático: La Edad del Progreso (12 PV)"
+        },
+        {
+          "value": "duelo",
+          "label": "El Duelo de los Príncipes (13 PV)"
+        }
+      ]
+    }
   ],
   "vars": {
-    "themed": [ { "when": { "in": ["mode", ["oro", "caos", "progreso"]] }, "value": true }, { "value": false } ],
-    "setName": [
-      { "when": { "eq": ["mode", "oro"] }, "value": "La Edad del Oro" },
-      { "when": { "eq": ["mode", "caos"] }, "value": "La Edad del Caos" },
-      { "when": { "eq": ["mode", "progreso"] }, "value": "La Edad del Progreso" },
-      { "value": "" }
+    "themed": [
+      {
+        "when": {
+          "in": [
+            "mode",
+            [
+              "oro",
+              "caos",
+              "progreso"
+            ]
+          ]
+        },
+        "value": true
+      },
+      {
+        "value": false
+      }
     ],
-    "setPileSize": [ { "when": { "eq": ["mode", "progreso"] }, "value": 12 }, { "value": 11 } ],
+    "setName": [
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "oro"
+          ]
+        },
+        "value": "La Edad del Oro"
+      },
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "caos"
+          ]
+        },
+        "value": "La Edad del Caos"
+      },
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "progreso"
+          ]
+        },
+        "value": "La Edad del Progreso"
+      },
+      {
+        "value": ""
+      }
+    ],
+    "setPileSize": [
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "progreso"
+          ]
+        },
+        "value": 12
+      },
+      {
+        "value": 11
+      }
+    ],
     "faceUpPile": [
-      { "when": { "eq": ["mode", "oro"] }, "value": "las 2 cartas Gremio de mercaderes" },
-      { "when": { "eq": ["mode", "caos"] }, "value": "las 2 cartas Taberna" },
-      { "when": { "eq": ["mode", "progreso"] }, "value": "las 2 cartas Universidad" },
-      { "value": "" }
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "oro"
+          ]
+        },
+        "value": "las 2 cartas Gremio de mercaderes"
+      },
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "caos"
+          ]
+        },
+        "value": "las 2 cartas Taberna"
+      },
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "progreso"
+          ]
+        },
+        "value": "las 2 cartas Universidad"
+      },
+      {
+        "value": ""
+      }
     ],
     "vpGoal": [
-      { "when": { "eq": ["mode", "intro"] }, "value": 7 },
-      { "when": { "eq": ["mode", "duelo"] }, "value": 13 },
-      { "value": 12 }
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "intro"
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "mode",
+            "duelo"
+          ]
+        },
+        "value": 13
+      },
+      {
+        "value": 12
+      }
     ]
   },
   "sections": [
     {
-      "id": "cards", "title": "Cartas comunes",
+      "id": "cards",
+      "title": "Cartas comunes",
       "steps": [
-        { "id": "seats", "who": "table", "text": "Sentaos uno frente al otro." },
-        { "id": "holders", "who": "table", "when": { "eq": ["mode", "intro"] }, "text": "Pon 3 soportes de cartas uno al lado del otro en el centro y devuelve el cuarto a la caja." },
-        { "id": "holders4", "who": "table", "when": { "not": { "eq": ["mode", "intro"] } }, "text": "Pon los 4 soportes de cartas en el centro de la mesa." },
-        { "id": "sort", "who": "table", "text": "Separa las cartas por su dorso." },
-        { "id": "introBox", "who": "table", "when": { "eq": ["mode", "intro"] }, "text": "Devuelve a la caja las cartas de los tres sets temáticos (Edad del Oro, del Caos y del Progreso)." },
-        { "id": "themedBox", "who": "table", "when": { "is": "themed" }, "text": "Usa solo el set básico y el set «{setName}». Devuelve los otros dos sets temáticos a la caja." },
-        { "id": "places", "who": "table", "text": "Pon en el soporte las pilas de carreteras, poblados y ciudades boca abajo. Entre poblados y ciudades, coloca la pila de regiones barajada." },
-
-        { "id": "eventsIntro", "who": "table", "when": { "eq": ["mode", "intro"] },
-          "text": "Pila de eventos: usa solo los eventos del set básico. Aparta el Solsticio de invierno, baraja el resto, cuenta 3 cartas, pon encima el Solsticio boca abajo y encima el resto." },
-        { "id": "eventsThemed", "who": "table", "when": { "is": "themed" },
-          "text": "Pila de eventos: mezcla los eventos del set básico con los de «{setName}». Aparta el Solsticio de invierno, baraja, cuenta 3 cartas, pon encima el Solsticio boca abajo y encima el resto." },
-        { "id": "eventsDuelo", "who": "table", "when": { "eq": ["mode", "duelo"] },
-          "text": "Pila de eventos: toma los 6 eventos sin media luna (Solsticio de invierno, Invención, Año productivo, Disturbios, Vendedor ambulante y Plaga) y añade 6 al azar de los 15 con media luna. Monta la pila con el Solsticio en la cuarta posición, como siempre." },
-
-        { "id": "drawIntro", "who": "table", "when": { "eq": ["mode", "intro"] },
-          "text": "Baraja las 36 cartas del set básico y forma 4 pilas de robo de 9 cartas junto a las ciudades." },
-        { "id": "drawThemed", "who": "table", "when": { "is": "themed" },
-          "text": "Baraja por separado el set básico y el temático. Forma 3 pilas de 12 con el básico y 2 pilas de {setPileSize} con el temático." },
-        { "id": "faceUp", "who": "table", "when": { "is": "themed" },
-          "text": "Forma la pila de ampliación boca arriba con {faceUpPile}. Se construyen directamente desde ahí y solo se puede tener 1 de cada en el principado." },
-        { "id": "drawDuelo", "who": "table", "when": { "eq": ["mode", "duelo"] },
-          "text": "Retira las cartas con media luna de los 3 sets temáticos. Forma 3 pilas con el set básico y, al lado, una pila con cada set temático. No hay pila de ampliación boca arriba." }
+        {
+          "id": "tableSets",
+          "who": "table",
+          "text": "Mesa y sets de cartas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "seats",
+              "text": "Sentaos uno frente al otro."
+            },
+            {
+              "id": "holders",
+              "text": "Pon 3 soportes de cartas uno al lado del otro en el centro y devuelve el cuarto a la caja.",
+              "when": {
+                "eq": [
+                  "mode",
+                  "intro"
+                ]
+              }
+            },
+            {
+              "id": "holders4",
+              "text": "Pon los 4 soportes de cartas en el centro de la mesa.",
+              "when": {
+                "not": {
+                  "eq": [
+                    "mode",
+                    "intro"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "sort",
+              "text": "Separa las cartas por su dorso."
+            },
+            {
+              "id": "introBox",
+              "text": "Devuelve a la caja las cartas de los tres sets temáticos (Edad del Oro, del Caos y del Progreso).",
+              "when": {
+                "eq": [
+                  "mode",
+                  "intro"
+                ]
+              }
+            },
+            {
+              "id": "themedBox",
+              "text": "Usa solo el set básico y el set «{setName}». Devuelve los otros dos sets temáticos a la caja.",
+              "when": {
+                "is": "themed"
+              }
+            }
+          ]
+        },
+        {
+          "id": "places",
+          "who": "table",
+          "text": "Pon en el soporte las pilas de carreteras, poblados y ciudades boca abajo. Entre poblados y ciudades, coloca la pila de regiones barajada."
+        },
+        {
+          "id": "eventsIntro",
+          "who": "table",
+          "when": {
+            "eq": [
+              "mode",
+              "intro"
+            ]
+          },
+          "text": "Pila de eventos: usa solo los eventos del set básico. Aparta el Solsticio de invierno, baraja el resto, cuenta 3 cartas, pon encima el Solsticio boca abajo y encima el resto."
+        },
+        {
+          "id": "eventsThemed",
+          "who": "table",
+          "when": {
+            "is": "themed"
+          },
+          "text": "Pila de eventos: mezcla los eventos del set básico con los de «{setName}». Aparta el Solsticio de invierno, baraja, cuenta 3 cartas, pon encima el Solsticio boca abajo y encima el resto."
+        },
+        {
+          "id": "eventsDuelo",
+          "who": "table",
+          "when": {
+            "eq": [
+              "mode",
+              "duelo"
+            ]
+          },
+          "text": "Pila de eventos: toma los 6 eventos sin media luna (Solsticio de invierno, Invención, Año productivo, Disturbios, Vendedor ambulante y Plaga) y añade 6 al azar de los 15 con media luna. Monta la pila con el Solsticio en la cuarta posición, como siempre."
+        },
+        {
+          "id": "drawIntro",
+          "who": "table",
+          "when": {
+            "eq": [
+              "mode",
+              "intro"
+            ]
+          },
+          "text": "Baraja las 36 cartas del set básico y forma 4 pilas de robo de 9 cartas junto a las ciudades."
+        },
+        {
+          "id": "drawThemed",
+          "who": "table",
+          "when": {
+            "is": "themed"
+          },
+          "text": "Baraja por separado el set básico y el temático. Forma 3 pilas de 12 con el básico y 2 pilas de {setPileSize} con el temático."
+        },
+        {
+          "id": "faceUp",
+          "who": "table",
+          "when": {
+            "is": "themed"
+          },
+          "text": "Forma la pila de ampliación boca arriba con {faceUpPile}. Se construyen directamente desde ahí y solo se puede tener 1 de cada en el principado."
+        },
+        {
+          "id": "drawDuelo",
+          "who": "table",
+          "when": {
+            "eq": [
+              "mode",
+              "duelo"
+            ]
+          },
+          "text": "Retira las cartas con media luna de los 3 sets temáticos. Forma 3 pilas con el set básico y, al lado, una pila con cada set temático. No hay pila de ampliación boca arriba."
+        }
       ]
     },
     {
-      "id": "players", "title": "Jugadores",
+      "id": "players",
+      "title": "Jugadores",
       "steps": [
-        { "id": "principality", "who": "eachPlayer", "text": "Cada jugador coloca sus cartas de inicio (rojas o azules) orientadas hacia sí: 2 poblados unidos por una carretera y 6 regiones distintas, con el nombre de cada región abajo a la izquierda." },
-        { "id": "resources", "who": "eachPlayer", "text": "Gira cada región para que mire hacia ti el lado con 1 materia prima, salvo el río aurífero, que empieza en 0 oro." },
-        { "id": "firstPlayer", "who": "table", "text": "Cada jugador tira un dado; empieza quien saque más. También podéis sortearlo aquí.",
-          "randomizer": { "type": "firstPlayer" } },
-        { "id": "handIntro", "who": "eachPlayer", "when": { "eq": ["mode", "intro"] },
-          "text": "El jugador inicial roba las 3 cartas superiores de una pila de robo; el otro, las 3 de otra pila. Esa es la mano inicial." },
-        { "id": "handThemed", "who": "eachPlayer", "when": { "not": { "eq": ["mode", "intro"] } },
-          "text": "Empezando por el jugador inicial, cada uno elige una pila de robo del set básico, la mira y se queda 3 cartas a su elección sin cambiar el orden del resto." },
-        { "id": "goal", "who": "table", "text": "Recordad: gana quien tenga {vpGoal} o más puntos de victoria al final de su turno." }
+        {
+          "id": "principality",
+          "who": "eachPlayer",
+          "text": "Cada jugador coloca sus cartas de inicio (rojas o azules) orientadas hacia sí: 2 poblados unidos por una carretera y 6 regiones distintas, con el nombre de cada región abajo a la izquierda."
+        },
+        {
+          "id": "resources",
+          "who": "eachPlayer",
+          "text": "Gira cada región para que mire hacia ti el lado con 1 materia prima, salvo el río aurífero, que empieza en 0 oro."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Cada jugador tira un dado; empieza quien saque más. También podéis sortearlo aquí.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "handIntro",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "mode",
+              "intro"
+            ]
+          },
+          "text": "El jugador inicial roba las 3 cartas superiores de una pila de robo; el otro, las 3 de otra pila. Esa es la mano inicial."
+        },
+        {
+          "id": "handThemed",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "eq": [
+                "mode",
+                "intro"
+              ]
+            }
+          },
+          "text": "Empezando por el jugador inicial, cada uno elige una pila de robo del set básico, la mira y se queda 3 cartas a su elección sin cambiar el orden del resto."
+        },
+        {
+          "id": "goal",
+          "who": "table",
+          "text": "Recordad: gana quien tenga {vpGoal} o más puntos de victoria al final de su turno."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "items": [
+        {
+          "id": "dice",
+          "text": "Tira los 2 dados. Si el de eventos es el ladrón (rojo), resuélvelo antes que la producción; si no, primero la producción y después el evento."
+        },
+        {
+          "id": "action",
+          "text": "Fase de acción, en cualquier orden: construir (rojas solo en ciudades, verdes en poblados y ciudades, marrones en regiones), comerciar 3:1 con la banca (más barato con barcos) y jugar cartas de acción. Comprobad ventaja de fuerza y comercial."
+        },
+        {
+          "id": "draw",
+          "text": "Robar: rellena hasta tu límite de mano (3 + 1 por cada punto de progreso). Si tienes de más, descarta bajo una pila."
+        },
+        {
+          "id": "swap",
+          "text": "Opcional: pon 1 carta bajo una pila y roba la primera de una pila (o elige una concreta pagando 2 materias primas)."
+        },
+        {
+          "id": "goal",
+          "text": "Gana quien tenga {vpGoal} o más puntos de victoria al final de su turno."
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "title": "Dado de eventos",
+      "items": [
+        {
+          "id": "robber",
+          "text": "Ladrón: quien tenga más de 7 materias primas pierde todo su oro y su lana."
+        },
+        {
+          "id": "trade",
+          "text": "Comercio: quien tenga ventaja comercial coge 1 materia prima a su elección del rival."
+        },
+        {
+          "id": "festival",
+          "text": "Fiesta: quien tenga más puntos de habilidad recibe 1 materia prima a su elección (si empatan, ambos)."
+        },
+        {
+          "id": "harvest",
+          "text": "Cosecha abundante: cada jugador recibe 1 materia prima a su elección."
+        },
+        {
+          "id": "card",
+          "text": "Interrogación: quien tiró roba la carta de evento superior y se resuelve."
+        }
       ]
     }
   ]

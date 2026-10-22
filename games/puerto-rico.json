@@ -263,144 +263,167 @@
       "title": "Tablero central",
       "steps": [
         {
-          "id": "central",
+          "id": "bankVp",
           "who": "table",
-          "text": "Coloca el tablero central con la banca en el centro y deja las 51 monedas en la banca."
+          "text": "Banca, puntos y canteras:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "central",
+              "text": "Coloca el tablero central con la banca en el centro y deja las 51 monedas en la banca."
+            },
+            {
+              "id": "vp",
+              "text": "Prepara {vp} puntos de victoria en 2 montones."
+            },
+            {
+              "id": "quarries",
+              "text": "Deja las 8 losetas de cantera boca arriba."
+            }
+          ]
         },
         {
-          "id": "buildings",
+          "id": "allBuildings",
           "who": "table",
-          "when": {
-            "all": [
-              {
-                "not": {
-                  "is": "expNewBuildings"
-                }
-              },
-              {
-                "gte": [
-                  "players",
-                  3
+          "text": "Edificios:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "buildings",
+              "text": "Pon todos los edificios del juego base en el tablero central, según indica el tablero.",
+              "when": {
+                "all": [
+                  {
+                    "not": {
+                      "is": "expNewBuildings"
+                    }
+                  },
+                  {
+                    "gte": [
+                      "players",
+                      3
+                    ]
+                  }
                 ]
               }
-            ]
-          },
-          "text": "Pon todos los edificios del juego base en el tablero central, según indica el tablero."
+            },
+            {
+              "id": "buildings2p",
+              "text": "Con 2 jugadores, pon en el tablero central 1 de cada edificio beis y 2 de cada uno de los 6 edificios productores.",
+              "when": {
+                "all": [
+                  {
+                    "not": {
+                      "is": "expNewBuildings"
+                    }
+                  },
+                  {
+                    "eq": [
+                      "players",
+                      2
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "newBuildings",
+              "text": "Pon los edificios productores en el tablero como siempre. Extiende al lado los 55 edificios beis (antiguos y nuevos). Empezando por el jugador inicial, cada uno elige uno y lo coloca en una casilla libre de su coste, hasta cubrir las 12 + 5 casillas beis. El resto, a la caja. En los costes 2, 5 y 8 se pueden elegir dos cualesquiera de los cuatro disponibles.",
+              "when": {
+                "is": "expNewBuildings"
+              }
+            },
+            {
+              "id": "burghersBuildings",
+              "text": "Añade los edificios de los burgueses al tablero central según su coste (filas 1 a 4) y deja el dinero junto a la banca.",
+              "when": {
+                "is": "expBurghers"
+              }
+            }
+          ]
         },
         {
-          "id": "buildings2p",
+          "id": "allPlantations",
           "who": "table",
-          "when": {
-            "all": [
-              {
-                "not": {
-                  "is": "expNewBuildings"
-                }
-              },
-              {
+          "text": "Plantaciones:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "plantations2p",
+              "text": "Con 2 jugadores, retira del juego 3 losetas de cada tipo (maíz, fruta, azúcar, tabaco, café y cantera).",
+              "when": {
                 "eq": [
                   "players",
                   2
                 ]
               }
-            ]
-          },
-          "text": "Con 2 jugadores, pon en el tablero central 1 de cada edificio beis y 2 de cada uno de los 6 edificios productores."
-        },
-        {
-          "id": "newBuildings",
-          "who": "table",
-          "when": {
-            "is": "expNewBuildings"
-          },
-          "text": "Pon los edificios productores en el tablero como siempre. Extiende al lado los 55 edificios beis (antiguos y nuevos). Empezando por el jugador inicial, cada uno elige uno y lo coloca en una casilla libre de su coste, hasta cubrir las 12 + 5 casillas beis. El resto, a la caja.",
-          "tip": "En los costes 2, 5 y 8 se pueden elegir dos cualesquiera de los cuatro disponibles."
-        },
-        {
-          "id": "burghersBuildings",
-          "who": "table",
-          "when": {
-            "is": "expBurghers"
-          },
-          "text": "Añade los edificios de los burgueses al tablero central según su coste (filas 1 a 4) y deja el dinero junto a la banca."
-        },
-        {
-          "id": "vp",
-          "who": "table",
-          "text": "Prepara {vp} puntos de victoria en 2 montones."
-        },
-        {
-          "id": "quarries",
-          "who": "table",
-          "text": "Deja las 8 losetas de cantera boca arriba."
-        },
-        {
-          "id": "plantations2p",
-          "who": "table",
-          "when": {
-            "eq": [
-              "players",
-              2
-            ]
-          },
-          "text": "Con 2 jugadores, retira del juego 3 losetas de cada tipo (maíz, fruta, azúcar, tabaco, café y cantera)."
-        },
-        {
-          "id": "plantations",
-          "who": "table",
-          "text": "Mezcla boca abajo las losetas de plantación restantes en pilas y revela {faceUpPlantations} junto a las canteras (una más que jugadores)."
-        },
-        {
-          "id": "roles",
-          "who": "table",
-          "text": "Tarjetas de rol: usa {roles}."
-        },
-        {
-          "id": "smugglerRole",
-          "who": "table",
-          "when": {
-            "is": "expSmuggler"
-          },
-          "text": "Añade la tarjeta de rol Contrabandista y deja a mano los carteles de contrabandista."
-        },
-        {
-          "id": "ships",
-          "who": "table",
-          "text": "Barcos cargueros: los de {ships} casillas."
-        },
-        {
-          "id": "barrels",
-          "who": "table",
-          "text": "Deja los barriles de mercancía en 5 montones y la Casa de Comercio junto al tablero."
-        },
-        {
-          "id": "barrels2p",
-          "who": "table",
-          "when": {
-            "eq": [
-              "players",
-              2
-            ]
-          },
-          "text": "Con 2 jugadores, retira 2 barriles de cada tipo."
-        },
-        {
-          "id": "workers",
-          "who": "table",
-          "when": {
-            "not": {
-              "is": "expBurghers"
+            },
+            {
+              "id": "plantations",
+              "text": "Mezcla boca abajo las losetas de plantación restantes en pilas y revela {faceUpPlantations} junto a las canteras (una más que jugadores)."
             }
-          },
-          "text": "Pon {players} trabajadores en el Registro de Empleo y deja {workers} como reserva."
+          ]
         },
         {
-          "id": "workersBurghers",
+          "id": "rolesShips",
           "who": "table",
-          "when": {
-            "is": "expBurghers"
-          },
-          "text": "Deja los trabajadores y los 20 burgueses como reserva (no hace falta contarlos). Pon un burgués en el Registro de Empleo en lugar de un trabajador."
+          "text": "Roles y barcos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "roles",
+              "text": "Tarjetas de rol: usa {roles}."
+            },
+            {
+              "id": "smugglerRole",
+              "text": "Añade la tarjeta de rol Contrabandista y deja a mano los carteles de contrabandista.",
+              "when": {
+                "is": "expSmuggler"
+              }
+            },
+            {
+              "id": "ships",
+              "text": "Barcos cargueros: los de {ships} casillas."
+            }
+          ]
+        },
+        {
+          "id": "barrelsWorkers",
+          "who": "table",
+          "text": "Barriles y trabajadores:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "barrels",
+              "text": "Deja los barriles de mercancía en 5 montones y la Casa de Comercio junto al tablero."
+            },
+            {
+              "id": "barrels2p",
+              "text": "Con 2 jugadores, retira 2 barriles de cada tipo.",
+              "when": {
+                "eq": [
+                  "players",
+                  2
+                ]
+              }
+            },
+            {
+              "id": "workers",
+              "text": "Pon {players} trabajadores en el Registro de Empleo y deja {workers} como reserva.",
+              "when": {
+                "not": {
+                  "is": "expBurghers"
+                }
+              }
+            },
+            {
+              "id": "workersBurghers",
+              "text": "Deja los trabajadores y los 20 burgueses como reserva (no hace falta contarlos). Pon un burgués en el Registro de Empleo en lugar de un trabajador.",
+              "when": {
+                "is": "expBurghers"
+              }
+            }
+          ]
         },
         {
           "id": "festival",
@@ -461,5 +484,62 @@
         }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "pick",
+          "text": "Empezando por el Gobernador, cada jugador elige 1 rol: él tiene el privilegio y todos (en orden, desde él) hacen la acción."
+        },
+        {
+          "id": "roles",
+          "text": "Plantador (+cantera) · Reclutador (+1 trabajador) · Constructor (−1 al coste) · Productor (+1 barril) · Mercader (+1 moneda) · Capitán (+1 PV) · Aventurero (1 moneda, solo él)."
+        },
+        {
+          "id": "coins",
+          "text": "Fin de ronda: los roles no elegidos reciben 1 moneda y el Gobernador pasa a la izquierda."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "end",
+          "text": "Al final de la ronda en que no se pueden reponer los trabajadores del Registro, alguien construye su 12ª casilla o se agotan las fichas de PV."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "chips",
+        "label": "Fichas de puntos de victoria"
+      },
+      {
+        "id": "buildings",
+        "label": "Edificios",
+        "help": "Número blanco de cada edificio, ocupado o no."
+      },
+      {
+        "id": "large",
+        "label": "Extra de edificios grandes",
+        "help": "Solo si están ocupados."
+      },
+      {
+        "id": "burghers",
+        "label": "Burgueses",
+        "help": "1 por burgués.",
+        "when": {
+          "is": "expBurghers"
+        }
+      }
+    ],
+    "tiebreak": "Gana quien tenga más monedas y barriles (1 barril = 1 moneda)."
+  }
 }

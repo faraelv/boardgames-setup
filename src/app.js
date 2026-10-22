@@ -13,9 +13,8 @@ const store = {
 
 /* ---------- interfaz ---------- */
 const app = document.getElementById('app');
-const backBtn = document.getElementById('back');
 const prog = document.getElementById('prog');
-let state = { view: 'list', game: null, answers: {} };
+let state = { view: 'list', game: null, answers: {}, pick: false, tab: 'setup' };
 
 const el = (tag, attrs = {}, ...kids) => {
   const n = document.createElement(tag);
@@ -38,6 +37,7 @@ function showView(view, gameId) {
     if (g) { state.game = g; state.answers = store.get('answers:' + g.id, {}); }
   }
   if (view !== 'list' && !state.game) view = 'list';
+  if (view === 'guide' && state.view !== 'guide') state.tab = 'setup';
   state.view = view; render(); window.scrollTo(0, 0);
 }
 function go(view) {
@@ -49,14 +49,14 @@ window.addEventListener('popstate', e => {
   const st = e.state || { view: 'list' };
   if (!sheet.hidden && !st.sheet) hideSheet();
   if (st.sheet) return;
+  const pick = !!st.pick;
+  if (pick !== state.pick) { state.pick = pick; if (st.view === 'list' && state.view === 'list') { render(); return; } }
   if (st.view !== state.view || st.gameId !== state.game?.id) showView(st.view, st.gameId);
 });
-backBtn.addEventListener('click', () => history.back());
 
 function render() {
   app.replaceChildren();
-  backBtn.hidden = state.view === 'list';
-  prog.hidden = state.view !== 'guide';
+  prog.hidden = !(state.view === 'guide' && state.tab === 'setup');
   ({ list: renderList, questions: renderQuestions, guide: renderGuide })[state.view]();
   syncWakeLock();
 }
@@ -77,13 +77,71 @@ async function syncWakeLock() {
 // Android libera el bloqueo al salir de la app; se recupera al volver.
 document.addEventListener('visibilitychange', syncWakeLock);
 
+function openGame(g) { state.game = g; state.answers = store.get('answers:' + g.id, {}); state.pick = false; go('questions'); }
+
 function renderList() {
+  if (state.pick) return renderPick();
   app.append(
-    el('p', { class: 'intro' }, 'Elige el juego, responde a cuatro preguntas y sigue la preparación paso a paso.'),
-    el('div', { class: 'games' }, GAMES.map(g => el('button', { class: 'game', onclick: () => {
-      state.game = g; state.answers = store.get('answers:' + g.id, {}); go('questions');
-    } }, el('h2', {}, g.name), el('span', { class: 'meta' }, g.publisher || ''), el('span', { class: 'players' }, playersLabel(g)))))
+    el('div', { class: 'listHead' },
+      el('p', { class: 'intro' }, 'Elige el juego, responde a cuatro preguntas y sigue la preparación paso a paso.'),
+      el('button', { class: 'pickBtn', onclick: () => { history.pushState({ view: 'list', pick: true }, ''); state.pick = true; render(); } },
+        diceIcon(), 'Sortear juego')),
+    el('div', { class: 'games' }, GAMES.map(g => el('button', { class: 'game', onclick: () => openGame(g) },
+      el('h2', {}, g.name), el('span', { class: 'meta' }, g.publisher || ''), el('span', { class: 'players' }, playersLabel(g)))))
   );
+}
+
+function diceIcon() {
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('width', '18'); svg.setAttribute('height', '18'); svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = '<rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/><circle cx="12" cy="12" r="1.6"/></g>';
+  return svg;
+}
+
+function renderPick() {
+  const ids = GAMES.map(g => g.id);
+  let sel = new Set(store.get('pickSel', ids).filter(id => ids.includes(id)));
+  const save = () => store.set('pickSel', [...sel]);
+  const result = el('div', { class: 'pickResult', hidden: true, 'aria-live': 'polite' });
+  const countEl = el('span', {});
+  const cards = new Map();
+  const refresh = () => {
+    countEl.textContent = sel.size === 1 ? '1 juego seleccionado' : `${sel.size} juegos seleccionados`;
+    drawBtn.disabled = sel.size < 2;
+    for (const [id, c] of cards) c.setAttribute('aria-pressed', String(sel.has(id)));
+  };
+  const fits = n => GAMES.filter(g => g.players.min <= n && g.players.max >= n).map(g => g.id);
+  const drawBtn = el('button', { class: 'go drawBtn', onclick: () => {
+    const pool = GAMES.filter(g => sel.has(g.id));
+    const g = pool[Math.floor(Math.random() * pool.length)];
+    result.hidden = false;
+    result.replaceChildren(el('div', { class: 'eyebrow' }, 'Hoy toca'), el('h2', {}, g.name),
+      el('div', { class: 'row' },
+        el('button', { class: 'go', onclick: () => { history.replaceState({ view: 'list' }, ''); openGame(g); } }, 'Preparar'),
+        el('button', { class: 'ghost', onclick: () => drawBtn.click() }, 'Otra vez')));
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } }, 'Sortear');
+
+  const nums = []; for (let n = 1; n <= Math.max(...GAMES.map(g => g.players.max)); n++) nums.push(n);
+  app.append(
+    el('div', { class: 'title-block' }, el('div', { class: 'eyebrow' }, 'Sortear juego'), el('h1', {}, '¿A qué jugamos?')),
+    el('p', { class: 'help' }, 'Marca los juegos entre los que quieres sortear. Puedes elegir rápido los que admiten cuántos sois.'),
+    el('div', { class: 'quick' },
+      el('div', { class: 'quickRow' }, el('span', { class: 'qlabel' }, 'Somos'),
+        el('div', { class: 'seg nums' }, nums.map(n => el('button', { 'aria-label': n === 1 ? 'Solo' : `${n} jugadores`, onclick: () => { sel = new Set(fits(n)); save(); refresh(); } }, String(n))))),
+      el('div', { class: 'seg' },
+        el('button', { onclick: () => { sel = new Set(ids); save(); refresh(); } }, 'Todos'),
+        el('button', { onclick: () => { sel = new Set(); save(); refresh(); } }, 'Ninguno'))),
+    result,
+    el('div', { class: 'games picking' }, GAMES.map(g => {
+      const c = el('button', { class: 'game', 'aria-pressed': String(sel.has(g.id)), onclick: () => {
+        sel.has(g.id) ? sel.delete(g.id) : sel.add(g.id); save(); refresh(); } },
+        el('span', { class: 'tick', 'aria-hidden': 'true' }),
+        el('h2', {}, g.name), el('span', { class: 'players' }, playersLabel(g)));
+      cards.set(g.id, c); return c;
+    })),
+    el('div', { class: 'pickBar' }, countEl, drawBtn));
+  refresh();
 }
 
 const getRoster = () => store.get('roster', []);
@@ -187,7 +245,41 @@ function guideKey() { const { ctx } = buildContext(state.game, state.answers); r
 
 function renderGuide() {
   const g = state.game;
-  const { visible, ctx, sections, events } = generateGuide(g, state.answers);
+  const guide = generateGuide(g, state.answers);
+  const { visible, ctx, sections, reference, scoring } = guide;
+  const tabs = [['setup', 'Preparación'], reference.length && ['turn', 'Turno'], scoring && ['score', 'Puntos']].filter(Boolean);
+  if (!tabs.some(([id]) => id === state.tab)) state.tab = 'setup';
+
+  const chips = [g.players.min !== g.players.max ? (ctx.players === 1 ? 'Solitario' : `${ctx.players} jugadores`) : null,
+    ...whoPlaying(ctx),
+    ...visible.map(o => o.type === 'boolean' ? (o.value ? o.label.replace(/^¿|\?$/g, '') : null) : `${o.label}: ${o.choices.find(c => c.value === o.value)?.label.split(' —')[0]}`)].filter(Boolean);
+
+  app.append(el('div', { class: 'title-block' }, el('h1', {}, g.name),
+    el('ul', { class: 'summary' }, chips.map(c => el('li', {}, c)))));
+  if (tabs.length > 1) {
+    app.append(el('div', { class: 'tabs', role: 'tablist' }, tabs.map(([id, label]) =>
+      el('button', { role: 'tab', 'aria-selected': String(state.tab === id), onclick: () => { state.tab = id; render(); window.scrollTo(0, 0); } }, label))));
+  }
+  ({ setup: renderSetupTab, turn: renderTurnTab, score: renderScoreTab })[state.tab](guide, tabs);
+}
+
+const pasos = n => n === 1 ? "1 paso" : `${n} pasos`;
+
+function itemBody(st, ctx) {
+  return [
+    st.who && el('span', { class: 'who' + (st.who === 'rival' ? ' rival' : '') }, WHO[st.who]),
+    el('p', { class: 'text' }, st.text),
+    st.substeps?.length && el('ul', { class: 'subs' }, st.substeps.map(x => el('li', {}, x.text))),
+    st.components?.length && el('div', { class: 'comps' }, st.components.map(c => el('span', {}, `${c.qty ?? ''} × ${c.name}`))),
+    st.warning && el('p', { class: 'note warn' }, el('b', {}, 'Ojo: '), st.warning),
+    st.tip && el('p', { class: 'note tip' }, st.tip),
+    st.link && el('a', { class: 'link', href: st.link, target: '_blank', rel: 'noopener' }, 'Abrir ayuda externa ↗'),
+    st.randomizer && randomizer(st.randomizer, ctx),
+  ];
+}
+
+function renderSetupTab({ ctx, sections, events }, tabs) {
+  const g = state.game;
   const key = guideKey();
   const done = new Set(store.get(key, []));
   const total = sections.reduce((n, s) => n + s.steps.length, 0);
@@ -196,13 +288,6 @@ function renderGuide() {
     document.getElementById('progCount').textContent = `${done.size} de ${total} pasos`;
     finish.hidden = done.size < total;
   };
-
-  const chips = [g.players.min !== g.players.max ? (ctx.players === 1 ? 'Solitario' : `${ctx.players} jugadores`) : null,
-    ...whoPlaying(ctx),
-    ...visible.map(o => o.type === 'boolean' ? (o.value ? o.label.replace(/^¿|\?$/g, '') : null) : `${o.label}: ${o.choices.find(c => c.value === o.value)?.label.split(' —')[0]}`)].filter(Boolean);
-
-  app.append(el('div', { class: 'title-block' }, el('div', { class: 'eyebrow' }, 'Preparación'), el('h1', {}, g.name),
-    el('ul', { class: 'summary' }, chips.map(c => el('li', {}, c)))));
 
   const stepList = (prefix, steps, doneSet, storeKey, onChange) => {
     const list = el('ol', { class: 'steps' });
@@ -215,27 +300,21 @@ function renderGuide() {
         li.classList.toggle('is-done', cb.checked);
         store.set(storeKey, [...doneSet]); onChange && onChange();
       });
-      const body = el('div', { class: 'body' },
-        st.who && el('span', { class: 'who' + (st.who === 'rival' ? ' rival' : '') }, WHO[st.who]),
-        el('label', { for: 'c-' + id }, el('p', { class: 'text' }, st.text)),
-        st.substeps?.length && el('ul', { class: 'subs' }, st.substeps.map(x => el('li', {}, x.text))),
-        st.components?.length && el('div', { class: 'comps' }, st.components.map(c => el('span', {}, `${c.qty ?? ''} × ${c.name}`))),
-        st.warning && el('p', { class: 'note warn' }, el('b', {}, 'Ojo: '), st.warning),
-        st.tip && el('p', { class: 'note tip' }, st.tip),
-        st.link && el('a', { class: 'link', href: st.link, target: '_blank', rel: 'noopener' }, 'Abrir ayuda externa ↗'),
-        st.randomizer && randomizer(st.randomizer, ctx));
-      li.append(cb, body);
+      const [who, text, ...rest] = itemBody(st, ctx);
+      li.append(cb, el('div', { class: 'body' }, who, el('label', { for: 'c-' + id }, text), ...rest));
       list.append(li);
     }
     return list;
   };
 
   sections.forEach(s => {
-    app.append(el('section', { class: 'sec' }, el('h2', {}, s.title, el('span', { class: 'n' }, `${s.steps.length} pasos`)),
+    app.append(el('section', { class: 'sec' }, el('h2', {}, s.title, el('span', { class: 'n' }, pasos(s.steps.length))),
       stepList(s.id, s.steps, done, key, updateProgress)));
   });
 
-  const finish = el('div', { class: 'finish', hidden: true }, el('h2', {}, 'Todo listo'), el('p', {}, '¡A jugar!'));
+  const next = tabs.find(([id]) => id === 'turn');
+  const finish = el('div', { class: 'finish', hidden: true }, el('h2', {}, 'Todo listo'), el('p', {}, '¡A jugar!'),
+    next && el('button', { class: 'go', onclick: () => { state.tab = 'turn'; render(); window.scrollTo(0, 0); } }, 'Ver resumen del turno'));
   app.append(finish);
 
   if (events.length) {
@@ -246,9 +325,8 @@ function renderGuide() {
     for (const grp of groups) {
       wrap.append(el('h2', {}, grp));
       for (const ev of events.filter(e => (e.group || 'Otros') === grp)) {
-        const det = el('details', { class: 'event' }, el('summary', {}, el('span', {}, ev.title), el('span', { class: 'n' }, `${ev.steps.length} pasos`)),
-          stepList('ev-' + ev.id, ev.steps, evDone, evKey));
-        wrap.append(det);
+        wrap.append(el('details', { class: 'event' }, el('summary', {}, el('span', {}, ev.title), el('span', { class: 'n' }, pasos(ev.steps.length))),
+          stepList('ev-' + ev.id, ev.steps, evDone, evKey)));
       }
     }
     app.append(wrap);
@@ -258,6 +336,55 @@ function renderGuide() {
     el('div', { class: 'tools' }, el('button', { onclick: () => { store.del(key); store.del(key.replace('done:', 'events:')); render(); } }, 'Desmarcar todo')),
     g.sources?.length && el('p', { class: 'sources' }, 'Basado en: ' + g.sources.map(s => s.title).join(' · ')));
   updateProgress();
+}
+
+function renderTurnTab({ ctx, reference }) {
+  for (const r of reference) {
+    app.append(el('section', { class: 'sec ref' }, el('h2', {}, r.title),
+      el('ul', { class: 'refList' }, r.items.map(it => el('li', { class: 'refItem' + (it.who === 'rival' ? ' rival' : '') }, ...itemBody(it, ctx))))));
+  }
+}
+
+function renderScoreTab({ ctx, scoring }) {
+  const g = state.game;
+  const names = whoPlaying(ctx);
+  const players = names.length ? [...names] : Array.from({ length: ctx.players }, (_, i) => ctx.players === 1 ? 'Tú' : `Jugador ${i + 1}`);
+  if (scoring.rival) players.push(scoring.rival);
+  const key = 'score:' + g.id + ':' + JSON.stringify(players);
+  const data = store.get(key, {});
+  const val = (c, p) => Number(data[c]?.[p]) || 0;
+  const totals = () => players.map((p, i) => ({ name: p, total: scoring.categories.reduce((t, c) => t + (c.negative ? -1 : 1) * val(c.id, i), 0) }));
+  const board = el('div', { class: 'scoreBoard' });
+  const drawBoard = () => {
+    const t = totals(), best = Math.max(...t.map(x => x.total));
+    const ranked = [...t].sort((a, b) => b.total - a.total);
+    const anyScore = t.some(x => x.total !== 0);
+    board.replaceChildren(el('div', { class: 'eyebrow' }, 'Total'),
+      el('ol', { class: 'ranking' }, ranked.map(x => el('li', { class: anyScore && x.total === best ? 'win' : '' },
+        el('span', {}, x.name), el('b', {}, String(x.total))))),
+      anyScore && t.filter(x => x.total === best).length > 1 && scoring.tiebreak && el('p', { class: 'note warn' }, el('b', {}, 'Empate: '), scoring.tiebreak) || '');
+  };
+
+  if (scoring.notes) app.append(el('p', { class: 'note tip scoreNotes' }, scoring.notes));
+  const cols = `repeat(${players.length}, minmax(0, 1fr))`;
+  app.append(el('div', { class: 'scoreHead', style: `grid-template-columns:${cols}` }, players.map(p => el('span', { title: p }, p))));
+  for (const c of scoring.categories) {
+    app.append(el('div', { class: 'cat' },
+      el('div', { class: 'catLabel' }, el('span', {}, (c.negative ? '− ' : '') + c.label), c.help && el('small', {}, c.help)),
+      el('div', { class: 'cells', style: `grid-template-columns:${cols}` }, players.map((p, i) => {
+        const inp = el('input', { type: 'number', 'aria-label': `${c.label} · ${p}`, id: `s-${c.id}-${i}`,
+          value: data[c.id]?.[i] ?? '', placeholder: '0' });
+        inp.addEventListener('input', () => {
+          (data[c.id] ||= {})[i] = inp.value === '' ? '' : Number(inp.value);
+          store.set(key, data); drawBoard();
+        });
+        inp.addEventListener('focus', () => inp.select());
+        return inp;
+      }))));
+  }
+  app.append(board,
+    el('div', { class: 'tools' }, el('button', { onclick: () => { store.del(key); render(); } }, 'Borrar puntos')));
+  drawBoard();
 }
 
 function randomizer(r, ctx) {

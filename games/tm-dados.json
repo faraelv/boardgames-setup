@@ -52,41 +52,44 @@
       "title": "Tablero",
       "steps": [
         {
-          "id": "board",
+          "id": "boardPools",
           "who": "table",
-          "text": "Coloca el tablero en el centro por la cara que prefiráis."
-        },
-        {
-          "id": "params",
-          "who": "table",
-          "text": "Pon un cubo transparente en 0 % de oxígeno y otro en −32 °C.",
-          "when": {
-            "gte": [
-              "players",
-              2
-            ]
-          }
-        },
-        {
-          "id": "paramsSolo",
-          "who": "table",
-          "when": {
-            "eq": [
-              "players",
-              1
-            ]
-          },
-          "text": "En solitario, el oxígeno empieza en 2 % y la temperatura en −28 °C."
-        },
-        {
-          "id": "oceans",
-          "who": "table",
-          "text": "Deja las 7 losetas de océano en una pila junto al tablero."
-        },
-        {
-          "id": "pools",
-          "who": "table",
-          "text": "Forma las reservas de dados, comodines y árboles."
+          "text": "Tablero y reservas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "board",
+              "text": "Coloca el tablero en el centro por la cara que prefiráis."
+            },
+            {
+              "id": "params",
+              "text": "Pon un cubo transparente en 0 % de oxígeno y otro en −32 °C.",
+              "when": {
+                "gte": [
+                  "players",
+                  2
+                ]
+              }
+            },
+            {
+              "id": "paramsSolo",
+              "text": "En solitario, el oxígeno empieza en 2 % y la temperatura en −28 °C.",
+              "when": {
+                "eq": [
+                  "players",
+                  1
+                ]
+              }
+            },
+            {
+              "id": "oceans",
+              "text": "Deja las 7 losetas de océano en una pila junto al tablero."
+            },
+            {
+              "id": "pools",
+              "text": "Forma las reservas de dados, comodines y árboles."
+            }
+          ]
         },
         {
           "id": "milestones",
@@ -99,15 +102,20 @@
           "text": "Coge un dado de cada color, elige 3 al azar, lánzalos y colócalos por la cara obtenida en la zona de recompensas."
         },
         {
-          "id": "projects",
+          "id": "decks",
           "who": "table",
-          "text": "Baraja las cartas de proyecto y forma el mazo."
-        },
-        {
-          "id": "bonus",
-          "who": "table",
-          "text": "Baraja las cartas de bonificación y forma un mazo de {bonusCards}. El resto, a la caja.",
-          "tip": "Se gana una carta de bonificación al llegar a 5 y a 12 PV."
+          "text": "Mazos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "projects",
+              "text": "Baraja las cartas de proyecto y forma el mazo."
+            },
+            {
+              "id": "bonus",
+              "text": "Baraja las cartas de bonificación y forma un mazo de {bonusCards}. El resto, a la caja. Se gana una carta de bonificación al llegar a 5 y a 12 PV."
+            }
+          ]
         }
       ]
     },
@@ -236,20 +244,24 @@
           "text": "Tras lanzar tu producción inicial, mira las 4 cartas de bonificación y juega 1 inmediatamente. Durante la partida tomarás otras 2; la última no se usa."
         },
         {
-          "id": "milestones",
+          "id": "soloRules",
           "who": "table",
-          "text": "Los hitos no reclamados se retiran: el de arriba tras el turno 16, el del medio tras el 20 y el de abajo tras el 24 (marcados con puntos en la pista de PV)."
-        },
-        {
-          "id": "awards",
-          "who": "table",
-          "text": "Para ganar una recompensa al final necesitas al menos 6 símbolos si es raro, 8 si es poco común o 10 si es común: vale 5 PV. Con uno menos, 3 PV."
-        },
-        {
-          "id": "goal",
-          "who": "table",
-          "text": "Objetivo: completar los 3 parámetros globales (océanos, temperatura y oxígeno) en 50 turnos. Si no lo consigues, tu puntuación no cuenta.",
-          "tip": "Valoración: 100+ victoria suprema, 90–99 muy buena, 80–89 decente, 70–79 vas pillándolo, menos de 70 hay margen de mejora."
+          "text": "Reglas del solitario:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "milestones",
+              "text": "Los hitos no reclamados se retiran: el de arriba tras el turno 16, el del medio tras el 20 y el de abajo tras el 24 (marcados con puntos en la pista de PV)."
+            },
+            {
+              "id": "awards",
+              "text": "Para ganar una recompensa al final necesitas al menos 6 símbolos si es raro, 8 si es poco común o 10 si es común: vale 5 PV. Con uno menos, 3 PV."
+            },
+            {
+              "id": "goal",
+              "text": "Objetivo: completar los 3 parámetros globales (océanos, temperatura y oxígeno) en 50 turnos. Si no lo consigues, tu puntuación no cuenta. Valoración: 100+ victoria suprema, 90–99 muy buena, 80–89 decente, 70–79 vas pillándolo, menos de 70 hay margen de mejora."
+            }
+          ]
         }
       ]
     }
@@ -261,5 +273,72 @@
       "type": "boolean",
       "default": false
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: elige",
+      "items": [
+        {
+          "id": "produce",
+          "text": "Producir: guarda hasta 3 dados (y todos los comodines), descarta las cartas que quieras, rellena hasta 5, lanza los dados de tu producción y endereza tus cartas azules."
+        },
+        {
+          "id": "act",
+          "text": "Acciones: 1 acción de apoyo y después 1 acción principal."
+        },
+        {
+          "id": "support",
+          "text": "Apoyo: coger y lanzar 1 dado · pagar 1 recurso para poner otro dado en la cara que quieras · pagar 1 recurso para robar 2 cartas · usar el apoyo de una carta azul."
+        },
+        {
+          "id": "main",
+          "text": "Principal: jugar una carta · otra acción de apoyo · 3 calor: +1 temperatura · 3 agua: océano · 4 plantas: vegetación · 3 ciudad: ciudad · 3 M€: 2 PV · acción principal de una carta azul."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "end",
+          "text": "Cuando se completan 2 de los 3 parámetros globales, cada jugador (incluido quien lo provocó) juega un último turno."
+        },
+        {
+          "id": "solo",
+          "text": "En solitario: completa los 3 parámetros en 50 turnos.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Marcador de PV"
+      },
+      {
+        "id": "milestones",
+        "label": "Hitos",
+        "help": "4 PV cada uno."
+      },
+      {
+        "id": "awards",
+        "label": "Recompensas",
+        "help": "5 PV la 1ª mayoría y 3 la 2ª (con 2 jugadores no hay 2ª)."
+      },
+      {
+        "id": "cards",
+        "label": "PV de fin de partida en cartas"
+      }
+    ],
+    "tiebreak": "Gana quien tenga más producción de dados."
+  }
 }

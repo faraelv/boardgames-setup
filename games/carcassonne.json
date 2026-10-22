@@ -3,20 +3,122 @@
   "id": "carcassonne",
   "name": "Carcassonne",
   "publisher": "Devir / Hans im Glück",
-  "sources": [ { "title": "Reglamento Carcassonne", "file": "Carcassonne.pdf" } ],
-  "players": { "min": 2, "max": 5, "default": 3 },
+  "sources": [
+    {
+      "title": "Reglamento Carcassonne",
+      "file": "Carcassonne.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 5,
+    "default": 3
+  },
   "sections": [
     {
-      "id": "setup", "title": "Preparación",
+      "id": "setup",
+      "title": "Preparación",
       "steps": [
-        { "id": "start", "who": "table", "text": "Coloca boca arriba en el centro de la mesa la pieza de inicio (la de reverso negro)." },
-        { "id": "tiles", "who": "table", "text": "Mezcla boca abajo el resto de piezas de territorio y repártelas en varios montones al alcance de todos.",
-          "components": [ { "name": "Piezas de territorio", "qty": 72 } ] },
-        { "id": "scoreboard", "who": "table", "text": "Deja el marcador a un lado, de forma que quede espacio libre en el centro para ir colocando piezas." },
-        { "id": "followers", "who": "eachPlayer", "text": "Cada jugador coge los 8 seguidores de su color, pone 1 como contador en la casilla 0 del marcador y deja los otros 7 delante de sí como reserva." },
-        { "id": "firstPlayer", "who": "table", "text": "Según el reglamento, el jugador más joven decide quién empieza. También podéis sortearlo aquí.",
-          "randomizer": { "type": "firstPlayer" } }
+        {
+          "id": "start",
+          "who": "table",
+          "text": "Coloca boca arriba en el centro de la mesa la pieza de inicio (la de reverso negro)."
+        },
+        {
+          "id": "tiles",
+          "who": "table",
+          "text": "Mezcla boca abajo el resto de piezas de territorio y repártelas en varios montones al alcance de todos.",
+          "components": [
+            {
+              "name": "Piezas de territorio",
+              "qty": 72
+            }
+          ]
+        },
+        {
+          "id": "scoreFollowers",
+          "who": "table",
+          "text": "Marcador y seguidores:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "scoreboard",
+              "text": "Deja el marcador a un lado, de forma que quede espacio libre en el centro para ir colocando piezas."
+            },
+            {
+              "id": "followers",
+              "text": "Cada jugador coge los 8 seguidores de su color, pone 1 como contador en la casilla 0 del marcador y deja los otros 7 delante de sí como reserva."
+            }
+          ]
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Según el reglamento, el jugador más joven decide quién empieza. También podéis sortearlo aquí.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "items": [
+        {
+          "id": "tile",
+          "text": "Roba 1 pieza y colócala junto a otra ya puesta, encajando caminos, ciudades y campos."
+        },
+        {
+          "id": "follower",
+          "text": "Puedes poner 1 seguidor de tu reserva en esa pieza: ladrón (camino), caballero (ciudad), monje (monasterio) o granjero (campo). No en un elemento que ya tenga seguidores."
+        },
+        {
+          "id": "score",
+          "text": "Puntúa lo que se haya completado: camino 1 por pieza · ciudad 2 por pieza y 2 por escudo · monasterio 9. Quien tenga más seguidores se lleva los puntos (empate: todos). Los seguidores vuelven a la reserva."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "trigger",
+          "text": "Cuando se coloca la última pieza. Se puntúa lo incompleto: camino 1 por pieza, ciudad 1 por pieza y 1 por escudo, monasterio 1 por pieza (él y alrededor) y granjas 3 por cada ciudad completada que abastezcan."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Marcador durante la partida"
+      },
+      {
+        "id": "roads",
+        "label": "Caminos incompletos",
+        "help": "1 por pieza."
+      },
+      {
+        "id": "cities",
+        "label": "Ciudades incompletas",
+        "help": "1 por pieza y 1 por escudo."
+      },
+      {
+        "id": "cloisters",
+        "label": "Monasterios incompletos",
+        "help": "1 por el monasterio y cada pieza alrededor."
+      },
+      {
+        "id": "farms",
+        "label": "Granjas",
+        "help": "3 por cada ciudad completada que abastezca."
+      }
+    ],
+    "tiebreak": "Victoria compartida."
+  }
 }

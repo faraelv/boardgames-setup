@@ -414,9 +414,28 @@
       },
       "steps": [
         {
-          "id": "mat",
+          "id": "champTable",
           "who": "table",
-          "text": "Pon el tablero de Campeonato junto a la mesa y ten a mano una hoja de puntuación para la temporada."
+          "text": "Tablero de campeonato y reservas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "mat",
+              "text": "Pon el tablero de Campeonato junto a la mesa y ten a mano una hoja de puntuación para la temporada."
+            },
+            {
+              "id": "sponsors",
+              "text": "Baraja las cartas de Patrocinio y déjalas boca abajo en el tablero de Campeonato."
+            },
+            {
+              "id": "tokens",
+              "text": "Baraja las fichas de Clima y las de estado de la pista en dos pilas boca abajo en el tablero."
+            },
+            {
+              "id": "reserve",
+              "text": "Deja las cartas de Motor forzado y de Estrés boca arriba como reserva."
+            }
+          ]
         },
         {
           "id": "customSeason",
@@ -430,24 +449,9 @@
           "text": "Baraja las cartas de Evento y forma una temporada de 4 carreras; usa las cartas de Circuito para sortear el orden."
         },
         {
-          "id": "sponsors",
-          "who": "table",
-          "text": "Baraja las cartas de Patrocinio y déjalas boca abajo en el tablero de Campeonato."
-        },
-        {
           "id": "upgrades",
           "who": "table",
           "text": "Elige las mejoras de la temporada (básicas, avanzadas o ambas), devuelve el resto a la caja y baraja las elegidas boca abajo en el tablero."
-        },
-        {
-          "id": "tokens",
-          "who": "table",
-          "text": "Baraja las fichas de Clima y las de estado de la pista en dos pilas boca abajo en el tablero."
-        },
-        {
-          "id": "reserve",
-          "who": "table",
-          "text": "Deja las cartas de Motor forzado y de Estrés boca arriba como reserva."
         }
       ]
     },
@@ -512,70 +516,78 @@
       },
       "steps": [
         {
-          "id": "pieces",
+          "id": "kit",
           "who": "eachPlayer",
-          "text": "Cada piloto coge un coche de su color, su tablero de Piloto, su peón de Caja de cambio y sus 12 cartas Básicas."
-        },
-        {
-          "id": "startUpgrades",
-          "who": "eachPlayer",
-          "when": {
-            "all": [
-              {
-                "eq": [
-                  "mode",
-                  "race"
-                ]
-              },
-              {
-                "eq": [
-                  "garage",
-                  "off"
+          "text": "Material de cada piloto:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "pieces",
+              "text": "Cada piloto coge un coche de su color, su tablero de Piloto, su peón de Caja de cambio y sus 12 cartas Básicas."
+            },
+            {
+              "id": "startUpgrades",
+              "text": "Cada piloto coge también sus 3 cartas de Mejora inicial.",
+              "when": {
+                "all": [
+                  {
+                    "eq": [
+                      "mode",
+                      "race"
+                    ]
+                  },
+                  {
+                    "eq": [
+                      "garage",
+                      "off"
+                    ]
+                  }
                 ]
               }
-            ]
-          },
-          "text": "Cada piloto coge también sus 3 cartas de Mejora inicial."
-        },
-        {
-          "id": "noStartUpgrades",
-          "who": "table",
-          "when": {
-            "any": [
-              {
-                "eq": [
-                  "mode",
-                  "championship"
+            },
+            {
+              "id": "noStartUpgrades",
+              "text": "Devuelve las cartas de Mejora inicial a la caja.",
+              "when": {
+                "any": [
+                  {
+                    "eq": [
+                      "mode",
+                      "championship"
+                    ]
+                  },
+                  {
+                    "not": {
+                      "eq": [
+                        "garage",
+                        "off"
+                      ]
+                    }
+                  }
                 ]
-              },
-              {
-                "not": {
-                  "eq": [
-                    "garage",
-                    "off"
-                  ]
-                }
               }
-            ]
-          },
-          "text": "Devuelve las cartas de Mejora inicial a la caja."
+            }
+          ]
         },
         {
-          "id": "deck",
+          "id": "deckEngine",
           "who": "eachPlayer",
-          "text": "Baraja tus 12 cartas Básicas con tus mejoras y las cartas de Estrés que toquen, y deja el mazo boca abajo en el espacio izquierdo de tu tablero de Piloto.",
-          "tip": "Con Garaje, las mejoras se añaden al mazo después del draft y antes de robar la mano."
-        },
-        {
-          "id": "engine",
-          "who": "eachPlayer",
-          "text": "Pon tus cartas de Motor forzado boca arriba en el Motor (centro de tu tablero) y el peón de Caja de cambio en primera marcha.",
-          "tip": "Si un piloto con experiencia juega contra principiantes, puede quitarse 1 o 2 cartas de Motor forzado para igualar."
-        },
-        {
-          "id": "stress",
-          "who": "table",
-          "text": "Deja las cartas de Estrés restantes boca arriba junto al tablero como reserva."
+          "text": "Mazo y Motor:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "deck",
+              "text": "Baraja tus 12 cartas Básicas con tus mejoras y las cartas de Estrés que toquen, y deja el mazo boca abajo en el espacio izquierdo de tu tablero de Piloto. Con Garaje, las mejoras se añaden al mazo después del draft y antes de robar la mano."
+            },
+            {
+              "id": "engine",
+              "text": "Pon tus cartas de Motor forzado boca arriba en el Motor (centro de tu tablero) y el peón de Caja de cambio en primera marcha. Si un piloto con experiencia juega contra principiantes, puede quitarse 1 o 2 cartas de Motor forzado para igualar."
+            },
+            {
+              "id": "stress",
+              "text": "Deja las cartas de Estrés restantes boca arriba junto al tablero como reserva."
+            }
+          ]
         },
         {
           "id": "grid",
@@ -701,22 +713,82 @@
           "text": "Usa {legends} coche(s) de colores libres como Leyendas y colócalos en la parrilla junto a los de los jugadores, al azar."
         },
         {
-          "id": "deckL",
+          "id": "legendDeck",
           "who": "rival",
-          "text": "Baraja las 10 cartas de Leyenda y déjalas boca abajo en el tablero de Leyendas."
-        },
-        {
-          "id": "pro",
-          "who": "rival",
-          "when": {
-            "is": "proLegends"
-          },
-          "text": "Leyendas Pro: suma +2 (o lo que acordéis) a la velocidad máxima de todas las Leyendas."
+          "text": "Mazo de Leyendas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "deckL",
+              "text": "Baraja las 10 cartas de Leyenda y déjalas boca abajo en el tablero de Leyendas."
+            },
+            {
+              "id": "pro",
+              "text": "Leyendas Pro: suma +2 (o lo que acordéis) a la velocidad máxima de todas las Leyendas.",
+              "when": {
+                "is": "proLegends"
+              }
+            }
+          ]
         },
         {
           "id": "howto",
           "who": "rival",
           "text": "Recordad: en cada ronda, cuando le toque mover a la primera Leyenda, revela una carta de Leyenda; todas la usan esa ronda. Si se acaba el mazo, baraja las 10 de nuevo."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "s1",
+          "text": "1. Cambiar marcha: mantén o sube/baja 1; subir o bajar 2 cuesta 1 carta de Motor forzado."
+        },
+        {
+          "id": "s2",
+          "text": "2. Jugar tantas cartas como tu marcha, boca abajo (todos a la vez)."
+        },
+        {
+          "id": "s3",
+          "text": "Desde el líder hacia atrás, cada piloto: 3. Revelar y mover la suma (el Estrés roba hasta sacar una carta con velocidad)."
+        },
+        {
+          "id": "s4",
+          "text": "4. Adrenalina: el último (o los 2 últimos con 5+ coches) gana +1 de movimiento y/o +1 de enfriamiento."
+        },
+        {
+          "id": "s5",
+          "text": "5. Reacción: Enfriamiento (devuelve Motor forzado de la mano al Motor) e Impulso (paga 1 Motor forzado y roba hasta sacar velocidad)."
+        },
+        {
+          "id": "s6",
+          "text": "6. Rebufo: si acabas al lado o justo detrás de otro coche, puedes avanzar 2."
+        },
+        {
+          "id": "s7",
+          "text": "7. Curva: si la cruzaste a más velocidad que su máximo, paga la diferencia en Motor forzado; si no puedes, trompo."
+        },
+        {
+          "id": "s8",
+          "text": "8. Descartar las cartas que quieras de la mano (no Motor forzado ni Estrés)."
+        },
+        {
+          "id": "s9",
+          "text": "9. Robar hasta tener 7 cartas."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la carrera",
+      "items": [
+        {
+          "id": "win",
+          "text": "Gana quien cruce primero la meta tras dar todas las vueltas; si llegan a la vez, el que más avance. En la última vuelta no se puede usar el rebufo."
         }
       ]
     }

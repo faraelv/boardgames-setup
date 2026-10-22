@@ -119,9 +119,24 @@
       "title": "Mesa",
       "steps": [
         {
-          "id": "map",
+          "id": "mapMarkers",
           "who": "table",
-          "text": "Coloca el mapa y deja a mano los 18 dados de batalla y las 25 fichas de recurso."
+          "text": "Mapa y marcadores:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "map",
+              "text": "Coloca el mapa y deja a mano los 18 dados de batalla y las 25 fichas de recurso."
+            },
+            {
+              "id": "ambitions",
+              "text": "Pon los 3 marcadores de ambición por su cara azul, con el número más bajo, en la sección de Marcadores Disponibles del mapa."
+            },
+            {
+              "id": "chapter",
+              "text": "Coloca el marcador de capítulo en la casilla 1 y el marcador cero en el espacio de Ambición Declarada."
+            }
+          ]
         },
         {
           "id": "initiative",
@@ -132,46 +147,40 @@
           }
         },
         {
-          "id": "actionDeck",
+          "id": "decks",
           "who": "table",
-          "text": "Baraja las 20 cartas de acción marcadas del 2 al 6: son el mazo de acción."
-        },
-        {
-          "id": "actionDeck4p",
-          "who": "table",
-          "when": {
-            "eq": [
-              "players",
-              4
-            ]
-          },
-          "text": "Con 4 jugadores, añade también las 8 cartas de acción marcadas con 1 y 7."
-        },
-        {
-          "id": "actionDeckBox",
-          "who": "table",
-          "when": {
-            "lte": [
-              "players",
-              3
-            ]
-          },
-          "text": "Devuelve a la caja las cartas de acción marcadas con 1 y 7."
-        },
-        {
-          "id": "ambitions",
-          "who": "table",
-          "text": "Pon los 3 marcadores de ambición por su cara azul, con el número más bajo, en la sección de Marcadores Disponibles del mapa."
-        },
-        {
-          "id": "chapter",
-          "who": "table",
-          "text": "Coloca el marcador de capítulo en la casilla 1 y el marcador cero en el espacio de Ambición Declarada."
-        },
-        {
-          "id": "court",
-          "who": "table",
-          "text": "Baraja las 6 cartas Vox con las 25 de Gremio para formar el mazo de la Corte y revela {courtCards} para la fila de la Corte."
+          "text": "Mazos de acción y de la Corte:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "actionDeck",
+              "text": "Baraja las 20 cartas de acción marcadas del 2 al 6: son el mazo de acción."
+            },
+            {
+              "id": "actionDeck4p",
+              "text": "Con 4 jugadores, añade también las 8 cartas de acción marcadas con 1 y 7.",
+              "when": {
+                "eq": [
+                  "players",
+                  4
+                ]
+              }
+            },
+            {
+              "id": "actionDeckBox",
+              "text": "Devuelve a la caja las cartas de acción marcadas con 1 y 7.",
+              "when": {
+                "lte": [
+                  "players",
+                  3
+                ]
+              }
+            },
+            {
+              "id": "court",
+              "text": "Baraja las 6 cartas Vox con las 25 de Gremio para formar el mazo de la Corte y revela {courtCards} para la fila de la Corte."
+            }
+          ]
         },
         {
           "id": "setupCard",
@@ -201,14 +210,20 @@
       "title": "Jugadores",
       "steps": [
         {
-          "id": "pieces",
+          "id": "kit",
           "who": "eachPlayer",
-          "text": "Cada jugador elige color y coge su tablero, 5 ciudades, 5 puertos estelares, 15 naves y 10 agentes. Coloca ciudades y puertos en los espacios triangulares de la parte superior de su tablero."
-        },
-        {
-          "id": "power",
-          "who": "eachPlayer",
-          "text": "Cada jugador pone su marcador de Poder en la casilla 0. Recordad: la partida termina cuando alguien llega a {powerGoal} de Poder."
+          "text": "Material de cada jugador:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "pieces",
+              "text": "Cada jugador elige color y coge su tablero, 5 ciudades, 5 puertos estelares, 15 naves y 10 agentes. Coloca ciudades y puertos en los espacios triangulares de la parte superior de su tablero."
+            },
+            {
+              "id": "power",
+              "text": "Cada jugador pone su marcador de Poder en la casilla 0. Recordad: la partida termina cuando alguien llega a {powerGoal} de Poder."
+            }
+          ]
         },
         {
           "id": "startPieces",
@@ -270,25 +285,84 @@
           "text": "Cada jugador coloca sus piezas iniciales en sus sistemas de la carta de preparación según los recuadros A, B y C de su carta de líder, y gana las 2 fichas de recurso que muestra, en sus 2 espacios de más a la izquierda."
         },
         {
-          "id": "hand",
+          "id": "hands",
           "who": "eachPlayer",
-          "text": "Cada jugador roba 6 cartas de acción."
+          "text": "Mano inicial:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "hand",
+              "text": "Cada jugador roba 6 cartas de acción."
+            },
+            {
+              "id": "mulligan",
+              "text": "Con 2 jugadores, el que no tiene la iniciativa puede descartar sus 6 cartas y robar otras 6.",
+              "when": {
+                "eq": [
+                  "players",
+                  2
+                ]
+              }
+            },
+            {
+              "id": "discard",
+              "text": "Las cartas de acción que no estén en ninguna mano van boca abajo a la pila de descartes de acción del mapa."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "lead",
+          "text": "Quien tiene la iniciativa juega 1 carta de acción boca arriba (carta conductora) y hace tantas acciones de su palo como puntos tenga la carta. Si no tiene cartas o no quiere jugar, pasa la iniciativa y la ronda acaba."
         },
         {
-          "id": "mulligan",
-          "who": "eachPlayer",
-          "when": {
-            "eq": [
-              "players",
-              2
-            ]
-          },
-          "text": "Con 2 jugadores, el que no tiene la iniciativa puede descartar sus 6 cartas y robar otras 6."
+          "id": "suits",
+          "text": "Administración: impuestos, reparar o influencia · Agresión: batallar, mover o asegurar · Construcción: construir o reparar · Movilización: mover o influencia."
         },
         {
-          "id": "discard",
-          "who": "table",
-          "text": "Las cartas de acción que no estén en ninguna mano van boca abajo a la pila de descartes de acción del mapa."
+          "id": "ambition",
+          "text": "Antes de actuar, el líder puede declarar la ambición del número de su carta (2-6; el 7 cualquiera; el 1 ninguna): coge el marcador de ambición de más valor, ponlo en su recuadro y tapa el número de la carta con el marcador cero."
+        },
+        {
+          "id": "follow",
+          "text": "Los demás, en sentido horario, juegan 1 carta: Superar (mismo palo y número mayor: todas sus acciones), Copiar (boca abajo: 1 acción del palo conductor) o Pivotar (otro palo boca arriba: 1 acción de su palo)."
+        },
+        {
+          "id": "seize",
+          "text": "Confiscar la iniciativa: antes de actuar, juega una carta extra boca abajo (o supera con un 7). Solo una vez por ronda y nunca a quien la tiene."
+        },
+        {
+          "id": "check",
+          "text": "Fin de ronda: si alguien confiscó, se queda la iniciativa; si no, pasa a quien superó con el número más alto. Se descartan las cartas jugadas."
+        }
+      ]
+    },
+    {
+      "id": "chapter",
+      "title": "Fin de capítulo",
+      "items": [
+        {
+          "id": "end",
+          "text": "Acaba cuando nadie tiene cartas o todos los que tienen pasan la iniciativa."
+        },
+        {
+          "id": "score",
+          "text": "Se puntúa cada ambición declarada: 1º el marcador de más valor, 2º el de menos. Empate en 1º: todos cobran como 2º. Hace falta tener al menos 1 elemento. Bono de ciudades libres: +2 / +5 al ganar una ambición."
+        },
+        {
+          "id": "cleanup",
+          "text": "Devolved trofeos (si puntuó Señor de la Guerra) y cautivos (si puntuó Tirano), los marcadores de ambición, y girad el de menos Poder."
+        },
+        {
+          "id": "gameEnd",
+          "text": "Fin de partida si alguien tiene {powerGoal} de Poder o era el capítulo 5. Si no, avanzad el capítulo, barajad y robad 6 cartas cada uno."
         }
       ]
     }

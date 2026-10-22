@@ -98,14 +98,20 @@
           ]
         },
         {
-          "id": "devCards",
+          "id": "devSpecials",
           "who": "table",
-          "text": "Baraja las 25 cartas de desarrollo y déjalas boca abajo junto a los portacartas."
-        },
-        {
-          "id": "specials",
-          "who": "table",
-          "text": "Deja a mano las tarjetas de «Mayor ruta comercial» y «Mayor ejército» y los 2 dados."
+          "text": "Cartas de desarrollo y especiales:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "devCards",
+              "text": "Baraja las 25 cartas de desarrollo y déjalas boca abajo junto a los portacartas."
+            },
+            {
+              "id": "specials",
+              "text": "Deja a mano las tarjetas de «Mayor ruta comercial» y «Mayor ejército» y los 2 dados."
+            }
+          ]
         }
       ]
     },
@@ -150,19 +156,93 @@
           "text": "Al colocar el segundo poblado, cada jugador coge 1 carta de materia prima por cada terreno que toque ese poblado."
         },
         {
-          "id": "begin",
-          "who": "firstPlayer",
-          "text": "Empieza el jugador inicial tirando los dados para la primera producción."
-        },
-        {
-          "id": "variantReminder",
+          "id": "start",
           "who": "table",
-          "when": {
-            "is": "tradeAnyOrder"
-          },
-          "text": "Recordad: tras tirar los dados se puede comerciar y construir en cualquier orden."
+          "text": "Empieza la partida:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "begin",
+              "text": "Empieza el jugador inicial tirando los dados para la primera producción."
+            },
+            {
+              "id": "variantReminder",
+              "text": "Recordad: tras tirar los dados se puede comerciar y construir en cualquier orden.",
+              "when": {
+                "is": "tradeAnyOrder"
+              }
+            }
+          ]
         }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "items": [
+        {
+          "id": "roll",
+          "text": "Tira los dados: los terrenos con ese número producen para los poblados (1) y ciudades (2) que los tocan."
+        },
+        {
+          "id": "seven",
+          "text": "Con un 7: quien tenga más de 7 cartas descarta la mitad (redondeando hacia abajo); mueve el ladrón y roba 1 carta a un jugador con poblado o ciudad junto a ese hexágono."
+        },
+        {
+          "id": "trade",
+          "text": "Comercia con los demás jugadores o con la banca: 4:1, 3:1 en puerto genérico o 2:1 en puerto especial."
+        },
+        {
+          "id": "build",
+          "text": "Construye: carretera (madera + arcilla) · poblado (madera + arcilla + trigo + lana) · ciudad (2 trigo + 3 mineral) · carta de desarrollo (lana + trigo + mineral)."
+        },
+        {
+          "id": "dev",
+          "text": "Puedes jugar 1 carta de desarrollo por turno (no la comprada este turno, salvo puntos de victoria)."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "win",
+          "text": "Gana quien llegue a 10 puntos de victoria en su turno: poblado 1, ciudad 2, Gran Ruta Comercial 2 (5+ carreteras), Mayor Ejército 2 (3+ caballeros), cartas de PV 1."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "settlements",
+        "label": "Poblados",
+        "help": "1 por poblado."
+      },
+      {
+        "id": "cities",
+        "label": "Ciudades",
+        "help": "2 por ciudad."
+      },
+      {
+        "id": "road",
+        "label": "Gran Ruta Comercial",
+        "help": "2 puntos."
+      },
+      {
+        "id": "army",
+        "label": "Mayor Ejército",
+        "help": "2 puntos."
+      },
+      {
+        "id": "devVp",
+        "label": "Cartas de puntos de victoria",
+        "help": "1 por carta."
+      }
+    ],
+    "notes": "Gana quien llegue a 10 puntos durante su turno."
+  }
 }

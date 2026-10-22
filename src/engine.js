@@ -62,7 +62,14 @@ function resolveSteps(steps, ctx) {
       warning: fill(s.warning, ctx),
       components: s.components?.map(c => ({ ...c, qty: typeof c.qty === 'string' ? fill(c.qty, ctx) : c.qty })),
       substeps: s.substeps ? resolveSteps(s.substeps, ctx) : undefined,
-    }));
+    }))
+    // Un grupo de tareas sencillas: sin subpasos visibles desaparece; con uno, se muestra como paso normal.
+    .flatMap(s => {
+      if (!s.group) return [s];
+      if (!s.substeps.length) return [];
+      if (s.substeps.length === 1) return [{ ...s.substeps[0], id: s.id, who: s.substeps[0].who ?? s.who }];
+      return [s];
+    });
 }
 
 export function generateGuide(game, answers = {}) {
@@ -77,5 +84,21 @@ export function generateGuide(game, answers = {}) {
     .filter(ev => evalCondition(ev.when, ctx))
     .map(ev => ({ id: ev.id, group: ev.group, title: fill(ev.title, ctx), steps: resolveSteps(ev.steps, ctx) }))
     .filter(ev => ev.steps.length > 0);
-  return { ctx, visible, sections, events };
+  const reference = (game.reference ?? [])
+    .filter(r => evalCondition(r.when, ctx))
+    .map(r => ({ id: r.id, title: fill(r.title, ctx), items: resolveSteps(r.items, ctx) }))
+    .filter(r => r.items.length > 0);
+  let scoring = null;
+  if (game.scoring) {
+    const sc = game.scoring;
+    scoring = {
+      categories: sc.categories.filter(c => evalCondition(c.when, ctx))
+        .map(c => ({ ...c, label: fill(c.label, ctx), help: fill(c.help, ctx) })),
+      tiebreak: fill(sc.tiebreak, ctx),
+      notes: fill(sc.notes, ctx),
+      rival: sc.rival && evalCondition(sc.rival.when, ctx) ? fill(sc.rival.label, ctx) : null,
+    };
+    if (!scoring.categories.length) scoring = null;
+  }
+  return { ctx, visible, sections, events, reference, scoring };
 }

@@ -149,6 +149,99 @@
           }
         }
       }
+    },
+    "reference": {
+      "description": "Resumen para consultar durante la partida (turno, fin de ronda, fin de partida). Se muestra sin casillas en la pestaña «Turno».",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "items"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "when": {
+            "$ref": "#/$defs/condition"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/step"
+            }
+          }
+        }
+      }
+    },
+    "scoring": {
+      "description": "Hoja de puntuación final: la app pide los puntos de cada categoría a cada jugador y suma.",
+      "type": "object",
+      "required": [
+        "categories"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "label": {
+                "type": "string"
+              },
+              "help": {
+                "type": "string"
+              },
+              "when": {
+                "$ref": "#/$defs/condition"
+              },
+              "negative": {
+                "type": "boolean",
+                "description": "Se resta: el jugador anota el valor en positivo."
+              }
+            }
+          }
+        },
+        "tiebreak": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "rival": {
+          "type": "object",
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "when": {
+              "$ref": "#/$defs/condition"
+            }
+          },
+          "description": "Añade una columna para el rival automático cuando se cumple la condición."
+        }
+      }
     }
   },
   "$defs": {
@@ -335,6 +428,10 @@
           "items": {
             "$ref": "#/$defs/step"
           }
+        },
+        "group": {
+          "type": "boolean",
+          "description": "Paso que agrupa tareas sencillas en sus subpasos. Si solo queda 1 subpaso visible, se muestra como paso normal; si no queda ninguno, se oculta."
         }
       }
     },

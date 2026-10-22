@@ -126,45 +126,52 @@
       "title": "Tablero y mazos",
       "steps": [
         {
-          "id": "mainBoard",
+          "id": "boardSupply",
           "who": "table",
-          "text": "Coloca el tablero principal en el centro de la mesa."
+          "text": "Tablero y suministro:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "mainBoard",
+              "text": "Coloca el tablero principal en el centro de la mesa."
+            },
+            {
+              "id": "supply",
+              "text": "Forma el suministro con la arcilla, madera, piedra, oro, mármol y plata. Los recursos y las deudas son ilimitados: si se acaban, usa las cartas Multiplicadoras."
+            },
+            {
+              "id": "taxHouse",
+              "text": "Pon 4 de plata del suministro en la Casa de Impuestos."
+            }
+          ]
         },
         {
-          "id": "blackMarket",
+          "id": "boardDecks",
           "who": "table",
-          "text": "Baraja las cartas de Mercado Negro y apílalas a la izquierda del Mercado Negro, con la cara «Mercado Pequeño» hacia arriba."
-        },
-        {
-          "id": "rewards",
-          "who": "table",
-          "text": "Baraja las cartas de Recompensa y deja {rewardCards} boca abajo a la derecha de la Catedral (2 por jugador más 1). Devuelve el resto a la caja."
-        },
-        {
-          "id": "debts",
-          "who": "table",
-          "text": "Pon las cartas de Deuda en un montón junto a la Prisión, con la cara «no pagado» hacia arriba, y las cartas Multiplicadoras cerca del tablero."
-        },
-        {
-          "id": "apprentices",
-          "who": "table",
-          "text": "Baraja las cartas de Aprendiz, déjalas boca abajo a la derecha del tablero y revela 1 en cada uno de los 8 espacios a la derecha del Taller."
-        },
-        {
-          "id": "buildings",
-          "who": "table",
-          "text": "Baraja las cartas de Edificio y déjalas boca abajo a la izquierda del Taller."
-        },
-        {
-          "id": "supply",
-          "who": "table",
-          "text": "Forma el suministro con la arcilla, madera, piedra, oro, mármol y plata.",
-          "tip": "Los recursos y las deudas son ilimitados: si se acaban, usa las cartas Multiplicadoras."
-        },
-        {
-          "id": "taxHouse",
-          "who": "table",
-          "text": "Pon 4 de plata del suministro en la Casa de Impuestos."
+          "text": "Mazos del tablero:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "blackMarket",
+              "text": "Baraja las cartas de Mercado Negro y apílalas a la izquierda del Mercado Negro, con la cara «Mercado Pequeño» hacia arriba."
+            },
+            {
+              "id": "rewards",
+              "text": "Baraja las cartas de Recompensa y deja {rewardCards} boca abajo a la derecha de la Catedral (2 por jugador más 1). Devuelve el resto a la caja."
+            },
+            {
+              "id": "debts",
+              "text": "Pon las cartas de Deuda en un montón junto a la Prisión, con la cara «no pagado» hacia arriba, y las cartas Multiplicadoras cerca del tablero."
+            },
+            {
+              "id": "apprentices",
+              "text": "Baraja las cartas de Aprendiz, déjalas boca abajo a la derecha del tablero y revela 1 en cada uno de los 8 espacios a la derecha del Taller."
+            },
+            {
+              "id": "buildings",
+              "text": "Baraja las cartas de Edificio y déjalas boca abajo a la izquierda del Taller."
+            }
+          ]
         }
       ]
     },
@@ -292,14 +299,20 @@
       },
       "steps": [
         {
-          "id": "base",
+          "id": "soloBase",
           "who": "table",
-          "text": "Prepara la mesa como en una partida de 2 jugadores, con 5 cartas de Recompensa."
-        },
-        {
-          "id": "removeMarket",
-          "who": "table",
-          "text": "Retira del mazo de Edificios las 4 cartas de «Mercado de Recursos»."
+          "text": "Ajustes del solitario:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "base",
+              "text": "Prepara la mesa como en una partida de 2 jugadores, con 5 cartas de Recompensa."
+            },
+            {
+              "id": "removeMarket",
+              "text": "Retira del mazo de Edificios las 4 cartas de «Mercado de Recursos»."
+            }
+          ]
         },
         {
           "id": "you",
@@ -329,5 +342,107 @@
         }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "items": [
+        {
+          "id": "place",
+          "text": "Coloca 1 trabajador de tu tablero en una ubicación del tablero principal y resuélvela. En las ubicaciones de recursos ganas tantos como trabajadores tuyos haya allí (contando el nuevo)."
+        },
+        {
+          "id": "capture",
+          "text": "Centro Urbano: captura todos los trabajadores de un color en una ubicación. Más adelante puedes llevarlos a Prisión y ganar 1 de plata por cada uno."
+        },
+        {
+          "id": "noWorkers",
+          "text": "Si empiezas el turno sin trabajadores, gastas el turno en recuperar 1 del tablero (no del Ayuntamiento, Mercado Negro, Prisión ni de otro jugador)."
+        },
+        {
+          "id": "blackMarket",
+          "text": "Cuando se ocupan los 3 espacios del Mercado Negro hay reinicio: esos trabajadores van a Prisión; quien tenga 3+ en Prisión pierde 1 de Virtud y quien tenga más roba una Deuda."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "trigger",
+          "text": "Al colocar el último trabajador en el Ayuntamiento, se termina el turno y cada jugador (incluido ese) juega 1 último turno."
+        }
+      ]
+    },
+    {
+      "id": "soloBot",
+      "title": "El bot ({botName})",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "items": [
+        {
+          "id": "botTurn",
+          "text": "Tras cada turno tuyo juega el bot según su carta de Plan. Al final, cada trabajador suyo en el Ayuntamiento vale {guildVp} PV.",
+          "who": "rival"
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "buildings",
+        "label": "Edificios",
+        "help": "PV de tus edificios, con sus efectos de fin de partida."
+      },
+      {
+        "id": "cathedral",
+        "label": "Catedral",
+        "help": "Según el nivel alcanzado."
+      },
+      {
+        "id": "virtue",
+        "label": "Virtud",
+        "help": "Lo que marque el medidor (puede ser negativo: escribe el signo)."
+      },
+      {
+        "id": "debts",
+        "label": "Deudas no pagadas",
+        "help": "2 PV por cada una.",
+        "negative": true
+      },
+      {
+        "id": "goldMarble",
+        "label": "Oro y mármol",
+        "help": "1 PV por cada uno."
+      },
+      {
+        "id": "silver",
+        "label": "Plata",
+        "help": "1 PV por cada 10."
+      },
+      {
+        "id": "prison",
+        "label": "Prisión",
+        "help": "1 PV por cada 2 trabajadores tuyos en Prisión.",
+        "negative": true
+      }
+    ],
+    "tiebreak": "Gana quien tenga más Virtud; si persiste, quien tenga más plata. Si sigue, victoria compartida.",
+    "rival": {
+      "label": "{botName}",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      }
+    }
+  }
 }

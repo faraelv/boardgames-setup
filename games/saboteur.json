@@ -3,31 +3,227 @@
   "id": "saboteur",
   "name": "Saboteur",
   "publisher": "Amigo",
-  "sources": [ { "title": "Reglamento Saboteur", "file": "Saboteur.pdf" } ],
-  "players": { "min": 3, "max": 10, "default": 5 },
+  "sources": [
+    {
+      "title": "Reglamento Saboteur",
+      "file": "Saboteur.pdf"
+    }
+  ],
+  "players": {
+    "min": 3,
+    "max": 10,
+    "default": 5
+  },
   "vars": {
-    "saboteurs": [ { "when": { "lte": ["players", 4] }, "value": 1 }, { "when": { "lte": ["players", 6] }, "value": 2 }, { "when": { "lte": ["players", 9] }, "value": 3 }, { "value": 4 } ],
-    "miners": [
-      { "when": { "eq": ["players", 3] }, "value": 3 }, { "when": { "eq": ["players", 4] }, "value": 4 },
-      { "when": { "eq": ["players", 5] }, "value": 4 }, { "when": { "eq": ["players", 6] }, "value": 5 },
-      { "when": { "eq": ["players", 7] }, "value": 5 }, { "when": { "eq": ["players", 8] }, "value": 6 },
-      { "value": 7 }
+    "saboteurs": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            4
+          ]
+        },
+        "value": 1
+      },
+      {
+        "when": {
+          "lte": [
+            "players",
+            6
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "lte": [
+            "players",
+            9
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
     ],
-    "handSize": [ { "when": { "lte": ["players", 5] }, "value": 6 }, { "when": { "lte": ["players", 7] }, "value": 5 }, { "value": 4 } ]
+    "miners": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            6
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            7
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            8
+          ]
+        },
+        "value": 6
+      },
+      {
+        "value": 7
+      }
+    ],
+    "handSize": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            5
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "lte": [
+            "players",
+            7
+          ]
+        },
+        "value": 5
+      },
+      {
+        "value": 4
+      }
+    ]
   },
   "sections": [
     {
-      "id": "setup", "title": "Preparación de cada ronda",
+      "id": "setup",
+      "title": "Preparación de cada ronda",
       "steps": [
-        { "id": "sort", "who": "table", "text": "Separa las cartas de túnel, de acción, de pepitas y de enano." },
-        { "id": "roles", "who": "eachPlayer", "text": "Toma {saboteurs} saboteador(es) y {miners} buscadores de oro, barájalos y reparte 1 boca abajo a cada jugador. Cada uno mira la suya. La sobrante queda boca abajo a un lado.",
-          "tip": "Con 10 jugadores se usan todas las cartas de enano. Las identidades se revelan al final de la ronda." },
-        { "id": "maze", "who": "table", "text": "Coloca la carta de comienzo (la de la escalera). Baraja las 3 cartas de destino y ponlas boca abajo a 7 cartas de distancia, en columna con una carta de hueco entre ellas." },
-        { "id": "deal", "who": "eachPlayer", "text": "Baraja las 40 cartas de túnel restantes con las de acción y reparte {handSize} a cada jugador. El resto forma la pila de robo." },
-        { "id": "nuggets", "who": "table", "text": "Baraja las cartas de pepitas y déjalas boca abajo junto a la carta de enano sobrante." },
-        { "id": "firstPlayer", "who": "table", "text": "Empieza el jugador más joven, o sortéalo aquí. Se juegan 3 rondas.",
-          "randomizer": { "type": "firstPlayer" } }
+        {
+          "id": "sort",
+          "who": "table",
+          "text": "Separa las cartas de túnel, de acción, de pepitas y de enano."
+        },
+        {
+          "id": "roles",
+          "who": "eachPlayer",
+          "text": "Toma {saboteurs} saboteador(es) y {miners} buscadores de oro, barájalos y reparte 1 boca abajo a cada jugador. Cada uno mira la suya. La sobrante queda boca abajo a un lado.",
+          "tip": "Con 10 jugadores se usan todas las cartas de enano. Las identidades se revelan al final de la ronda."
+        },
+        {
+          "id": "maze",
+          "who": "table",
+          "text": "Coloca la carta de comienzo (la de la escalera). Baraja las 3 cartas de destino y ponlas boca abajo a 7 cartas de distancia, en columna con una carta de hueco entre ellas."
+        },
+        {
+          "id": "deal",
+          "who": "eachPlayer",
+          "text": "Baraja las 40 cartas de túnel restantes con las de acción y reparte {handSize} a cada jugador. El resto forma la pila de robo."
+        },
+        {
+          "id": "nuggets",
+          "who": "table",
+          "text": "Baraja las cartas de pepitas y déjalas boca abajo junto a la carta de enano sobrante."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Empieza el jugador más joven, o sortéalo aquí. Se juegan 3 rondas.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "items": [
+        {
+          "id": "play",
+          "text": "Juega 1 carta: un túnel en el laberinto (conectado a la entrada), una carta de acción, o pasa descartando 1 boca abajo."
+        },
+        {
+          "id": "draw",
+          "text": "Roba 1 carta (mientras quede mazo)."
+        },
+        {
+          "id": "actions",
+          "text": "Herramientas rotas: no puedes poner túneles hasta repararlas. Mapa: mira en secreto una carta de destino. Derrumbe: quita un túnel (no el inicio ni los destinos)."
+        }
+      ]
+    },
+    {
+      "id": "roundEnd",
+      "title": "Fin de ronda",
+      "items": [
+        {
+          "id": "gold",
+          "text": "Si se llega al oro: se roban tantas cartas de pepitas como jugadores; quien llegó elige primero y se reparten en sentido antihorario entre los buscadores."
+        },
+        {
+          "id": "sabo",
+          "text": "Si no se llega (sin cartas para jugar): ganan los saboteadores (1: 4 pepitas · 2-3: 3 cada uno · 4: 2 cada uno)."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "round1",
+        "label": "Ronda 1",
+        "help": "Pepitas de oro conseguidas."
+      },
+      {
+        "id": "round2",
+        "label": "Ronda 2",
+        "help": "Pepitas de oro conseguidas."
+      },
+      {
+        "id": "round3",
+        "label": "Ronda 3",
+        "help": "Pepitas de oro conseguidas."
+      }
+    ],
+    "tiebreak": "Victoria compartida."
+  }
 }

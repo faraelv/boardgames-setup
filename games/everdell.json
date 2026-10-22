@@ -3,57 +3,316 @@
   "id": "everdell",
   "name": "Everdell",
   "publisher": "Starling Games",
-  "sources": [ { "title": "Reglamento Everdell", "file": "Everdell.pdf" } ],
-  "players": { "min": 1, "max": 4, "default": 2 },
+  "sources": [
+    {
+      "title": "Reglamento Everdell",
+      "file": "Everdell.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
   "options": [
-    { "id": "rugwort", "label": "Dificultad de Rugwort", "type": "choice", "default": 1, "when": { "eq": ["players", 1] },
+    {
+      "id": "rugwort",
+      "label": "Dificultad de Rugwort",
+      "type": "choice",
+      "default": 1,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
       "choices": [
-        { "value": 1, "label": "Año 1: Rugwort el Bribón" },
-        { "value": 2, "label": "Año 2: Rugwort el Podrido" },
-        { "value": 3, "label": "Año 3: Rugwort el Travieso" }
-      ] }
+        {
+          "value": 1,
+          "label": "Año 1: Rugwort el Bribón"
+        },
+        {
+          "value": 2,
+          "label": "Año 2: Rugwort el Podrido"
+        },
+        {
+          "value": 3,
+          "label": "Año 3: Rugwort el Travieso"
+        }
+      ]
+    }
   ],
   "vars": {
-    "forestCards": [ { "when": { "lte": ["players", 2] }, "value": 3 }, { "value": 4 } ],
+    "forestCards": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
     "journeySpace": [
-      { "when": { "eq": ["rugwort", 2] }, "value": 4 },
-      { "when": { "eq": ["rugwort", 3] }, "value": 5 },
-      { "value": 3 }
+      {
+        "when": {
+          "eq": [
+            "rugwort",
+            2
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "rugwort",
+            3
+          ]
+        },
+        "value": 5
+      },
+      {
+        "value": 3
+      }
     ]
   },
   "sections": [
     {
-      "id": "table", "title": "Mesa",
+      "id": "table",
+      "title": "Mesa",
       "steps": [
-        { "id": "board", "who": "table", "text": "Coloca el tablero y pon el Ever Tree sobre el tocón de la parte superior." },
-        { "id": "resources", "who": "table", "text": "Deja las ramitas, resina, bayas y piedras en montones a lo largo del río, y las fichas de punto y de ocupado junto al tablero.",
-          "tip": "Los recursos son ilimitados; si se acaba alguno, usa un sustituto." },
-        { "id": "forest", "who": "table", "text": "Baraja las cartas de Bosque y pon {forestCards} en los claros. Devuelve el resto a la caja.",
-          "tip": "En solitario se prepara como una partida de 2." },
-        { "id": "events", "who": "table", "text": "Pon las 4 losetas de evento básico a lo largo del río. Baraja los eventos especiales y pon 4 en las ramas inferiores del Ever Tree; el resto, a la caja." },
-        { "id": "meadow", "who": "table", "text": "Baraja el mazo principal, reparte 8 cartas boca arriba en el Prado y coloca el mazo dentro del Ever Tree." }
+        {
+          "id": "boardRes",
+          "who": "table",
+          "text": "Tablero y recursos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "board",
+              "text": "Coloca el tablero y pon el Ever Tree sobre el tocón de la parte superior."
+            },
+            {
+              "id": "resources",
+              "text": "Deja las ramitas, resina, bayas y piedras en montones a lo largo del río, y las fichas de punto y de ocupado junto al tablero. Los recursos son ilimitados; si se acaba alguno, usa un sustituto."
+            }
+          ]
+        },
+        {
+          "id": "forest",
+          "who": "table",
+          "text": "Baraja las cartas de Bosque y pon {forestCards} en los claros. Devuelve el resto a la caja.",
+          "tip": "En solitario se prepara como una partida de 2."
+        },
+        {
+          "id": "events",
+          "who": "table",
+          "text": "Pon las 4 losetas de evento básico a lo largo del río. Baraja los eventos especiales y pon 4 en las ramas inferiores del Ever Tree; el resto, a la caja."
+        },
+        {
+          "id": "meadow",
+          "who": "table",
+          "text": "Baraja el mazo principal, reparte 8 cartas boca arriba en el Prado y coloca el mazo dentro del Ever Tree."
+        }
       ]
     },
     {
-      "id": "players", "title": "Jugadores",
+      "id": "players",
+      "title": "Jugadores",
       "steps": [
-        { "id": "workers", "who": "eachPlayer", "text": "Cada jugador elige color y empieza con 2 trabajadores. Los otros 4 van a las ramas superiores del Ever Tree: 1 en primavera, 1 en verano y 2 en otoño." },
-        { "id": "firstPlayer", "who": "table", "when": { "gte": ["players", 2] }, "text": "Empieza el jugador más humilde, o sortéalo aquí.",
-          "randomizer": { "type": "firstPlayer" } },
-        { "id": "hands", "who": "eachPlayer", "when": { "gte": ["players", 2] }, "text": "Por orden de turno, cada jugador roba del mazo: 5 cartas el primero, 6 el segundo, 7 el tercero y 8 el cuarto." },
-        { "id": "soloHand", "who": "eachPlayer", "when": { "eq": ["players", 1] }, "text": "Robas 5 cartas. Rugwort no tiene mano." }
+        {
+          "id": "workers",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y empieza con 2 trabajadores. Los otros 4 van a las ramas superiores del Ever Tree: 1 en primavera, 1 en verano y 2 en otoño."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "text": "Empieza el jugador más humilde, o sortéalo aquí.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "hands",
+          "who": "eachPlayer",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "text": "Por orden de turno, cada jugador roba del mazo: 5 cartas el primero, 6 el segundo, 7 el tercero y 8 el cuarto."
+        },
+        {
+          "id": "soloHand",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "text": "Robas 5 cartas. Rugwort no tiene mano."
+        }
       ]
     },
     {
-      "id": "rugwortSetup", "title": "Rugwort (solitario)", "when": { "eq": ["players", 1] },
+      "id": "rugwortSetup",
+      "title": "Rugwort (solitario)",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
       "steps": [
-        { "id": "color", "who": "rival", "text": "Elige un color para Rugwort (prefiere el negro)." },
-        { "id": "block", "who": "rival", "text": "Pon un trabajador de Rugwort en la carta de Bosque superior izquierda y otro en el espacio de 3 ramitas, bloqueándolos." },
-        { "id": "die", "who": "rival", "text": "Ten a mano el dado de 8 caras: cada vez que juegues una carta, Rugwort juega la del Prado que indique el dado (1 arriba a la izquierda, 8 abajo a la derecha)." },
-        { "id": "journey", "who": "rival", "text": "En otoño, su trabajador irá al espacio de Viaje de {journeySpace} puntos." },
-        { "id": "year2", "who": "rival", "when": { "gte": ["rugwort", 2] }, "text": "Rugwort gana 6 puntos (en vez de 3) por cada evento especial que no consigas." },
-        { "id": "year3", "who": "rival", "when": { "eq": ["rugwort", 3] }, "text": "Al prepararse para el otoño, Rugwort te secuestra un trabajador: jugarás la última estación con uno menos." }
+        {
+          "id": "rugBase",
+          "who": "rival",
+          "text": "Color y bloqueos de Rugwort:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "color",
+              "text": "Elige un color para Rugwort (prefiere el negro)."
+            },
+            {
+              "id": "block",
+              "text": "Pon un trabajador de Rugwort en la carta de Bosque superior izquierda y otro en el espacio de 3 ramitas, bloqueándolos."
+            }
+          ]
+        },
+        {
+          "id": "rugRules",
+          "who": "rival",
+          "text": "Cómo juega Rugwort:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "die",
+              "text": "Ten a mano el dado de 8 caras: cada vez que juegues una carta, Rugwort juega la del Prado que indique el dado (1 arriba a la izquierda, 8 abajo a la derecha)."
+            },
+            {
+              "id": "journey",
+              "text": "En otoño, su trabajador irá al espacio de Viaje de {journeySpace} puntos."
+            },
+            {
+              "id": "year2",
+              "text": "Rugwort gana 6 puntos (en vez de 3) por cada evento especial que no consigas.",
+              "when": {
+                "gte": [
+                  "rugwort",
+                  2
+                ]
+              }
+            },
+            {
+              "id": "year3",
+              "text": "Al prepararse para el otoño, Rugwort te secuestra un trabajador: jugarás la última estación con uno menos.",
+              "when": {
+                "eq": [
+                  "rugwort",
+                  3
+                ]
+              }
+            }
+          ]
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: elige 1 acción",
+      "items": [
+        {
+          "id": "worker",
+          "text": "Colocar un trabajador en un espacio libre (o compartido) y obtener su beneficio, o para conseguir un evento si cumples su requisito."
+        },
+        {
+          "id": "card",
+          "text": "Jugar una carta de tu mano o del Prado pagando su coste en recursos; un bicho es gratis si tienes su construcción asociada sin ocupar. Máximo 15 cartas en tu ciudad."
+        },
+        {
+          "id": "season",
+          "text": "Prepararte para la estación (cuando todos tus trabajadores están colocados): los recuperas y ganas los de la siguiente. Primavera y otoño: producción verde. Verano: coge hasta 2 cartas del Prado."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "done",
+          "text": "Cuando no puedes hacer nada más en otoño, terminas; los demás siguen hasta acabar."
+        }
+      ]
+    },
+    {
+      "id": "rugwort",
+      "title": "Turno de Rugwort",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "items": [
+        {
+          "id": "rug",
+          "text": "Cada vez que juegues una carta, tira el dado de 8 caras: Rugwort se queda la carta del Prado de esa posición. Al prepararte para una estación, mueve su trabajador según su carta.",
+          "who": "rival"
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "cards",
+        "label": "Cartas",
+        "help": "Puntos base de las cartas de tu ciudad."
+      },
+      {
+        "id": "tokens",
+        "label": "Fichas de punto"
+      },
+      {
+        "id": "prosperity",
+        "label": "Prosperidad (cartas moradas)"
+      },
+      {
+        "id": "journey",
+        "label": "Viaje"
+      },
+      {
+        "id": "events",
+        "label": "Eventos"
+      }
+    ],
+    "tiebreak": "Gana quien tenga más eventos; si persiste, quien tenga más recursos sobrantes.",
+    "notes": "Rugwort: 2 por carta de su ciudad (3 las moradas), 3 por evento básico, 3 o 6 por cada evento especial que no consiguieras, y su viaje.",
+    "rival": {
+      "label": "Rugwort",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      }
+    }
+  }
 }

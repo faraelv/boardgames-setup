@@ -4,74 +4,320 @@
   "name": "¡Aventureros al Tren! Europa",
   "publisher": "Days of Wonder",
   "sources": [
-    { "title": "Reglamento ¡Aventureros al Tren! Europa", "file": "Ticket_to_ride_europe.pdf" },
-    { "title": "Expansión Europa 1912", "file": "Ticket_to_ride_europe_expansion_1912.pdf" }
+    {
+      "title": "Reglamento ¡Aventureros al Tren! Europa",
+      "file": "Ticket_to_ride_europe.pdf"
+    },
+    {
+      "title": "Expansión Europa 1912",
+      "file": "Ticket_to_ride_europe_expansion_1912.pdf"
+    }
   ],
-  "players": { "min": 2, "max": 5, "default": 4 },
+  "players": {
+    "min": 2,
+    "max": 5,
+    "default": 4
+  },
   "options": [
-    { "id": "tickets", "label": "Billetes de destino", "type": "choice", "default": "clasico",
+    {
+      "id": "tickets",
+      "label": "Billetes de destino",
+      "type": "choice",
+      "default": "clasico",
       "choices": [
-        { "value": "clasico", "label": "Clásico (Europa)" },
-        { "value": "e1912", "label": "Europa 1912" },
-        { "value": "mega", "label": "Mega Europa" },
-        { "value": "bigCities", "label": "Grandes Ciudades de Europa" }
-      ] },
-    { "id": "extraTickets", "label": "¿Añadir los 7 billetes de Orient-Express y Max?", "type": "boolean", "default": false },
-    { "id": "warehouses", "label": "¿Jugar con Almacenes y Cocheras (1912)?", "type": "boolean", "default": false }
+        {
+          "value": "clasico",
+          "label": "Clásico (Europa)"
+        },
+        {
+          "value": "e1912",
+          "label": "Europa 1912"
+        },
+        {
+          "value": "mega",
+          "label": "Mega Europa"
+        },
+        {
+          "value": "bigCities",
+          "label": "Grandes Ciudades de Europa"
+        }
+      ]
+    },
+    {
+      "id": "extraTickets",
+      "label": "¿Añadir los 7 billetes de Orient-Express y Max?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "warehouses",
+      "label": "¿Jugar con Almacenes y Cocheras (1912)?",
+      "type": "boolean",
+      "default": false
+    }
   ],
   "vars": {
-    "drawTickets": [ { "when": { "eq": ["tickets", "bigCities"] }, "value": "4 billetes y conserva al menos 1" }, { "value": "3 billetes y conserva al menos 1" } ]
+    "drawTickets": [
+      {
+        "when": {
+          "eq": [
+            "tickets",
+            "bigCities"
+          ]
+        },
+        "value": "4 billetes y conserva al menos 1"
+      },
+      {
+        "value": "3 billetes y conserva al menos 1"
+      }
+    ]
   },
   "sections": [
     {
-      "id": "board", "title": "Tablero y cartas",
+      "id": "board",
+      "title": "Tablero y cartas",
       "steps": [
-        { "id": "board", "who": "table", "text": "Pon el tablero en el centro y la carta de Premio European Express boca arriba al lado." },
-        { "id": "wagons", "who": "table", "text": "Baraja las cartas de Vagón, reparte 4 a cada jugador y revela 5 boca arriba junto al mazo.",
-          "warning": "Si entre las 5 hay 3 Locomotoras, descártalas todas y revela 5 nuevas." },
-        { "id": "bigCitiesCard", "who": "table", "when": { "eq": ["tickets", "bigCities"] }, "text": "Deja a la vista la carta de referencia de Grandes Ciudades de Europa." },
-        { "id": "doubles", "who": "table", "when": { "lte": ["players", 3] }, "text": "Recordad: con 2 o 3 jugadores solo se puede usar uno de los dos recorridos de cada recorrido doble." }
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Pon el tablero en el centro y la carta de Premio European Express boca arriba al lado."
+        },
+        {
+          "id": "wagons",
+          "who": "table",
+          "text": "Baraja las cartas de Vagón, reparte 4 a cada jugador y revela 5 boca arriba junto al mazo.",
+          "warning": "Si entre las 5 hay 3 Locomotoras, descártalas todas y revela 5 nuevas."
+        },
+        {
+          "id": "notes",
+          "who": "table",
+          "text": "Referencias:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "bigCitiesCard",
+              "text": "Deja a la vista la carta de referencia de Grandes Ciudades de Europa.",
+              "when": {
+                "eq": [
+                  "tickets",
+                  "bigCities"
+                ]
+              }
+            },
+            {
+              "id": "doubles",
+              "text": "Recordad: con 2 o 3 jugadores solo se puede usar uno de los dos recorridos de cada recorrido doble.",
+              "when": {
+                "lte": [
+                  "players",
+                  3
+                ]
+              }
+            }
+          ]
+        }
       ]
     },
     {
-      "id": "players", "title": "Jugadores",
+      "id": "players",
+      "title": "Jugadores",
       "steps": [
-        { "id": "pieces", "who": "eachPlayer", "text": "Cada jugador coge los 45 vagones, las 3 estaciones y el marcador de puntuación de su color, y pone el marcador en la casilla de inicio." }
+        {
+          "id": "pieces",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge los 45 vagones, las 3 estaciones y el marcador de puntuación de su color, y pone el marcador en la casilla de inicio."
+        }
       ]
     },
     {
-      "id": "ticketsSetup", "title": "Billetes de destino",
+      "id": "ticketsSetup",
+      "title": "Billetes de destino",
       "steps": [
-        { "id": "extra", "who": "table", "when": { "is": "extraTickets" }, "text": "Añade los 7 billetes de Orient-Express y Max a los del tipo que corresponda según sus logotipos." },
-        { "id": "clasico", "who": "eachPlayer", "when": { "eq": ["tickets", "clasico"] },
-          "text": "Usa los billetes con el distintivo de Europa. Reparte 1 recorrido largo al azar y 3 normales a cada jugador. Los largos sobrantes, a la caja sin mirar." },
-        { "id": "e1912", "who": "eachPlayer", "when": { "eq": ["tickets", "e1912"] },
-          "text": "Usa solo los billetes con el distintivo de 1912. Reparte 1 recorrido largo al azar y 3 normales a cada jugador. Los largos sobrantes, a la caja sin mirar." },
-        { "id": "mega", "who": "eachPlayer", "when": { "eq": ["tickets", "mega"] },
-          "text": "Usa todos los billetes de Europa y de 1912. Reparte 2 recorridos largos a cada jugador: puede conservar uno o ninguno. Después reparte 5 normales: quien tenga un largo conserva al menos 2; el resto, al menos 3." },
-        { "id": "bigCities", "who": "eachPlayer", "when": { "eq": ["tickets", "bigCities"] },
-          "text": "Usa solo los 45 billetes de Grandes Ciudades (Europa y 1912); los largos no se usan. Reparte 5 a cada jugador y cada uno conserva al menos 2." },
-        { "id": "keep", "who": "eachPlayer", "when": { "in": ["tickets", ["clasico", "e1912"]] },
-          "text": "Cada jugador conserva al menos 2 billetes (de cualquier tipo). Los descartados van a la caja boca abajo." },
-        { "id": "bottom", "who": "table", "when": { "in": ["tickets", ["mega", "bigCities"]] },
-          "text": "Baraja los billetes no elegidos y ponlos debajo del mazo de billetes." },
-        { "id": "during", "who": "table", "text": "Durante la partida, al robar billetes se roban {drawTickets}." }
+        {
+          "id": "extra",
+          "who": "table",
+          "when": {
+            "is": "extraTickets"
+          },
+          "text": "Añade los 7 billetes de Orient-Express y Max a los del tipo que corresponda según sus logotipos."
+        },
+        {
+          "id": "clasico",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "tickets",
+              "clasico"
+            ]
+          },
+          "text": "Usa los billetes con el distintivo de Europa. Reparte 1 recorrido largo al azar y 3 normales a cada jugador. Los largos sobrantes, a la caja sin mirar."
+        },
+        {
+          "id": "e1912",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "tickets",
+              "e1912"
+            ]
+          },
+          "text": "Usa solo los billetes con el distintivo de 1912. Reparte 1 recorrido largo al azar y 3 normales a cada jugador. Los largos sobrantes, a la caja sin mirar."
+        },
+        {
+          "id": "mega",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "tickets",
+              "mega"
+            ]
+          },
+          "text": "Usa todos los billetes de Europa y de 1912. Reparte 2 recorridos largos a cada jugador: puede conservar uno o ninguno. Después reparte 5 normales: quien tenga un largo conserva al menos 2; el resto, al menos 3."
+        },
+        {
+          "id": "bigCities",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "tickets",
+              "bigCities"
+            ]
+          },
+          "text": "Usa solo los 45 billetes de Grandes Ciudades (Europa y 1912); los largos no se usan. Reparte 5 a cada jugador y cada uno conserva al menos 2."
+        },
+        {
+          "id": "keep",
+          "who": "eachPlayer",
+          "when": {
+            "in": [
+              "tickets",
+              [
+                "clasico",
+                "e1912"
+              ]
+            ]
+          },
+          "text": "Cada jugador conserva al menos 2 billetes (de cualquier tipo). Los descartados van a la caja boca abajo."
+        },
+        {
+          "id": "bottom",
+          "who": "table",
+          "when": {
+            "in": [
+              "tickets",
+              [
+                "mega",
+                "bigCities"
+              ]
+            ]
+          },
+          "text": "Baraja los billetes no elegidos y ponlos debajo del mazo de billetes."
+        }
       ]
     },
     {
-      "id": "warehousesSetup", "title": "Almacenes y Cocheras", "when": { "is": "warehouses" },
+      "id": "warehousesSetup",
+      "title": "Almacenes y Cocheras",
+      "when": {
+        "is": "warehouses"
+      },
       "steps": [
-        { "id": "take", "who": "eachPlayer", "text": "Tras elegir billetes, cada jugador coge un Almacén y las 5 Cocheras de su color, y deja el Almacén con 4 Cocheras delante." },
-        { "id": "place", "who": "eachPlayer", "text": "Empezando por el último jugador y en sentido antihorario, cada uno coloca su quinta Cochera en cualquier ciudad (nunca dos en la misma)." },
-        { "id": "rule", "who": "table", "text": "Recordad: al robar cartas de Vagón, primero se pone la carta superior del mazo, sin mirarla, en un Almacén cualquiera. Al final, quien tenga más Cocheras sin usar gana 10 puntos." }
+        {
+          "id": "take",
+          "who": "eachPlayer",
+          "text": "Tras elegir billetes, cada jugador coge un Almacén y las 5 Cocheras de su color, y deja el Almacén con 4 Cocheras delante."
+        },
+        {
+          "id": "place",
+          "who": "eachPlayer",
+          "text": "Empezando por el último jugador y en sentido antihorario, cada uno coloca su quinta Cochera en cualquier ciudad (nunca dos en la misma)."
+        },
+        {
+          "id": "rule",
+          "who": "table",
+          "text": "Recordad: al robar cartas de Vagón, primero se pone la carta superior del mazo, sin mirarla, en un Almacén cualquiera. Al final, quien tenga más Cocheras sin usar gana 10 puntos."
+        }
       ]
     },
     {
-      "id": "start", "title": "Empezar",
+      "id": "start",
+      "title": "Empezar",
       "steps": [
-        { "id": "firstPlayer", "who": "table", "text": "Empieza quien haya visitado más países de Europa, o sortéalo aquí.",
-          "randomizer": { "type": "firstPlayer" } }
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Empieza quien haya visitado más países de Europa, o sortéalo aquí.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: elige 1",
+      "items": [
+        {
+          "id": "draw",
+          "text": "Robar 2 cartas de Vagón (de la fila o del mazo). Una locomotora de la fila cuenta como las 2."
+        },
+        {
+          "id": "claim",
+          "text": "Reclamar un recorrido pagando cartas de su color. Túneles: revela 3 del mazo y paga 1 más por cada una que coincida. Ferris: incluye una locomotora por cada símbolo."
+        },
+        {
+          "id": "tickets",
+          "text": "Robar billetes de destino: se roban {drawTickets}."
+        },
+        {
+          "id": "station",
+          "text": "Construir una estación en una ciudad libre: 1, 2 o 3 cartas del mismo color (la 1ª, 2ª y 3ª)."
+        },
+        {
+          "id": "routes",
+          "text": "Puntos por recorrido: 1 vagón 1 · 2 vagones 2 · 3 vagones 4 · 4 vagones 7 · 6 vagones 15 · 8 vagones 21."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "end",
+          "text": "Cuando alguien acaba su turno con 2 vagones o menos, cada jugador (incluido él) juega 1 último turno."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Recorridos (marcador)"
+      },
+      {
+        "id": "done",
+        "label": "Billetes completados"
+      },
+      {
+        "id": "failed",
+        "label": "Billetes no completados",
+        "negative": true
+      },
+      {
+        "id": "stations",
+        "label": "Estaciones sin usar",
+        "help": "4 PV por cada una."
+      },
+      {
+        "id": "express",
+        "label": "European Express",
+        "help": "10 PV para la ruta continua más larga."
+      }
+    ],
+    "tiebreak": "Gana quien haya completado más billetes; luego, quien haya usado menos estaciones; luego, quien tenga el European Express."
+  }
 }

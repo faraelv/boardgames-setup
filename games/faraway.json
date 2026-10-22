@@ -3,33 +3,185 @@
   "id": "faraway",
   "name": "Faraway",
   "publisher": "Catch Up Games",
-  "sources": [ { "title": "Reglamento Faraway", "file": "Faraway.pdf" } ],
-  "players": { "min": 2, "max": 6, "default": 3 },
+  "sources": [
+    {
+      "title": "Reglamento Faraway",
+      "file": "Faraway.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 6,
+    "default": 3
+  },
   "options": [
-    { "id": "advanced", "label": "¿Variante avanzada?", "type": "boolean", "default": false,
-      "help": "Recomendada solo si ya habéis jugado al menos una partida." }
+    {
+      "id": "advanced",
+      "label": "¿Variante avanzada?",
+      "type": "boolean",
+      "default": false,
+      "help": "Recomendada solo si ya habéis jugado al menos una partida."
+    }
   ],
   "vars": {
     "revealed": [
-      { "when": { "eq": ["players", 2] }, "value": 3 },
-      { "when": { "eq": ["players", 3] }, "value": 4 },
-      { "when": { "eq": ["players", 4] }, "value": 5 },
-      { "when": { "eq": ["players", 5] }, "value": 6 },
-      { "value": 7 }
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": 6
+      },
+      {
+        "value": 7
+      }
     ]
   },
   "sections": [
     {
-      "id": "setup", "title": "Preparación",
+      "id": "setup",
+      "title": "Preparación",
       "steps": [
-        { "id": "deal", "who": "eachPlayer", "when": { "not": { "is": "advanced" } },
-          "text": "Baraja las cartas de Región y reparte 3 boca abajo a cada jugador. Cada uno las mira sin enseñarlas. Deja el mazo en el centro." },
-        { "id": "dealAdv", "who": "eachPlayer", "when": { "is": "advanced" },
-          "text": "Baraja las cartas de Región y reparte 5 a cada jugador. Cada uno se queda 3 y retira 2 sin enseñarlas. Baraja las retiradas de nuevo en el mazo y déjalo en el centro." },
-        { "id": "reveal", "who": "table", "text": "Revela {revealed} cartas del mazo de Región (una más que jugadores)." },
-        { "id": "sanctuaries", "who": "table", "text": "Baraja las cartas de Santuario y deja el mazo boca abajo junto al de Región." },
-        { "id": "pad", "who": "table", "text": "Ten a mano la libreta de puntuación. La partida dura 8 rondas." }
+        {
+          "id": "deal",
+          "who": "eachPlayer",
+          "when": {
+            "not": {
+              "is": "advanced"
+            }
+          },
+          "text": "Baraja las cartas de Región y reparte 3 boca abajo a cada jugador. Cada uno las mira sin enseñarlas. Deja el mazo en el centro."
+        },
+        {
+          "id": "dealAdv",
+          "who": "eachPlayer",
+          "when": {
+            "is": "advanced"
+          },
+          "text": "Baraja las cartas de Región y reparte 5 a cada jugador. Cada uno se queda 3 y retira 2 sin enseñarlas. Baraja las retiradas de nuevo en el mazo y déjalo en el centro."
+        },
+        {
+          "id": "reveal",
+          "who": "table",
+          "text": "Revela {revealed} cartas del mazo de Región (una más que jugadores)."
+        },
+        {
+          "id": "sanctPad",
+          "who": "table",
+          "text": "Santuarios y hoja de puntuación:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "sanctuaries",
+              "text": "Baraja las cartas de Santuario y deja el mazo boca abajo junto al de Región."
+            },
+            {
+              "id": "pad",
+              "text": "Ten a mano la libreta de puntuación. La partida dura 8 rondas."
+            }
+          ]
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda (8 en total)",
+      "items": [
+        {
+          "id": "play",
+          "text": "Todos a la vez juegan 1 carta de Región de su mano boca abajo, a la derecha de las anteriores, y se revelan."
+        },
+        {
+          "id": "sanctuary",
+          "text": "Si el número de tu nueva carta es mayor que el de la anterior, robas 2 Santuarios (+1 por cada pista que tengas) y te quedas 1."
+        },
+        {
+          "id": "pick",
+          "text": "En orden de la carta jugada (de menor a mayor duración), cada uno coge 1 Región de las reveladas. Descartad la sobrante y revelad {revealed} nuevas."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin y puntuación",
+      "items": [
+        {
+          "id": "score",
+          "text": "Tras la 8ª ronda, gira tus regiones de la 8ª a la 1ª: cada una puntúa con lo visible en ese momento (la región y las que ya están giradas, más tus santuarios). Al final, puntúan los santuarios."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "r8",
+        "label": "Región 8ª carta"
+      },
+      {
+        "id": "r7",
+        "label": "Región 7ª carta"
+      },
+      {
+        "id": "r6",
+        "label": "Región 6ª carta"
+      },
+      {
+        "id": "r5",
+        "label": "Región 5ª carta"
+      },
+      {
+        "id": "r4",
+        "label": "Región 4ª carta"
+      },
+      {
+        "id": "r3",
+        "label": "Región 3ª carta"
+      },
+      {
+        "id": "r2",
+        "label": "Región 2ª carta"
+      },
+      {
+        "id": "r1",
+        "label": "Región 1ª carta"
+      },
+      {
+        "id": "sanct",
+        "label": "Santuarios"
+      }
+    ],
+    "tiebreak": "Gana quien tenga la menor suma de duración de sus cartas de Región."
+  }
 }

@@ -385,22 +385,27 @@
           "text": "Baraja el mazo principal y reparte 3 cartas boca arriba: es la fila de cartas."
         },
         {
-          "id": "supply",
+          "id": "supplyData",
           "who": "table",
-          "text": "Deja las fichas de crédito y de energía al alcance de todos."
-        },
-        {
-          "id": "signalTokens",
-          "who": "table",
-          "when": {
-            "is": "spaceAgencies"
-          },
-          "text": "Deja también a mano las fichas de señal."
-        },
-        {
-          "id": "data",
-          "who": "table",
-          "text": "Llena con fichas de dato el hueco de datos de cada estrella cercana (no todas tienen el mismo tamaño). El resto, a la reserva."
+          "text": "Reservas y datos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "supply",
+              "text": "Deja las fichas de crédito y de energía al alcance de todos."
+            },
+            {
+              "id": "signalTokens",
+              "text": "Deja también a mano las fichas de señal.",
+              "when": {
+                "is": "spaceAgencies"
+              }
+            },
+            {
+              "id": "data",
+              "text": "Llena con fichas de dato el hueco de datos de cada estrella cercana (no todas tienen el mismo tamaño). El resto, a la reserva."
+            }
+          ]
         },
         {
           "id": "techs",
@@ -418,31 +423,34 @@
           ]
         },
         {
-          "id": "goldTiles",
+          "id": "tracks",
           "who": "table",
-          "text": "Coloca las 4 losetas doradas de puntuación junto al tablero, cada una con una cara al azar."
-        },
-        {
-          "id": "neutralMilestones",
-          "who": "table",
-          "when": {
-            "lte": [
-              "players",
-              3
-            ]
-          },
-          "text": "Pon {neutralPerMilestone} marcador(es) de un color no usado sobre la casilla 20 y otros {neutralPerMilestone} sobre la 30 de la pista de puntuación (hitos neutrales)."
-        },
-        {
-          "id": "endRound",
-          "who": "table",
-          "text": "Prepara {endRoundStacks} de cartas de fin de ronda, con {cardsPerStack} cartas cada uno.",
-          "tip": "Cada montón lleva una carta más que el número de jugadores; en solitario se prepara como en una partida de 2."
-        },
-        {
-          "id": "rotationTokens",
-          "who": "table",
-          "text": "Pon una ficha de rotación en su casilla del tablero de tecnologías y la otra encima del primer montón de fin de ronda, como recordatorio."
+          "text": "Losetas doradas, hitos y rondas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "goldTiles",
+              "text": "Coloca las 4 losetas doradas de puntuación junto al tablero, cada una con una cara al azar."
+            },
+            {
+              "id": "neutralMilestones",
+              "text": "Pon {neutralPerMilestone} marcador(es) de un color no usado sobre la casilla 20 y otros {neutralPerMilestone} sobre la 30 de la pista de puntuación (hitos neutrales).",
+              "when": {
+                "lte": [
+                  "players",
+                  3
+                ]
+              }
+            },
+            {
+              "id": "endRound",
+              "text": "Prepara {endRoundStacks} de cartas de fin de ronda, con {cardsPerStack} cartas cada uno. Cada montón lleva una carta más que el número de jugadores; en solitario se prepara como en una partida de 2."
+            },
+            {
+              "id": "rotationTokens",
+              "text": "Pon una ficha de rotación en su casilla del tablero de tecnologías y la otra encima del primer montón de fin de ronda, como recordatorio."
+            }
+          ]
         }
       ]
     },
@@ -523,21 +531,26 @@
           ]
         },
         {
-          "id": "orgDeal",
+          "id": "orgs",
           "who": "eachPlayer",
-          "when": {
-            "is": "useOrgs"
-          },
-          "text": "Reparte a cada jugador {orgsDealt}, {quickStartDealt} cartas de inicio rápido y 4 cartas del mazo principal.",
-          "tip": "Mirar primero las 4 cartas del mazo ayuda a elegir organización."
-        },
-        {
-          "id": "orgChoose",
-          "who": "eachPlayer",
-          "when": {
-            "is": "useOrgs"
-          },
-          "text": "Cada jugador se queda 1 organización y 2 cartas de inicio rápido, y conserva las 4 cartas del mazo."
+          "text": "Organizaciones y cartas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "orgDeal",
+              "text": "Reparte a cada jugador {orgsDealt}, {quickStartDealt} cartas de inicio rápido y 4 cartas del mazo principal. Mirar primero las 4 cartas del mazo ayuda a elegir organización.",
+              "when": {
+                "is": "useOrgs"
+              }
+            },
+            {
+              "id": "orgChoose",
+              "text": "Cada jugador se queda 1 organización y 2 cartas de inicio rápido, y conserva las 4 cartas del mazo.",
+              "when": {
+                "is": "useOrgs"
+              }
+            }
+          ]
         },
         {
           "id": "quickStartResolve",
@@ -588,14 +601,20 @@
       },
       "steps": [
         {
-          "id": "rivalBoard",
+          "id": "rivalStart",
           "who": "rival",
-          "text": "Da al Rival el tablero de jugador por la cara de dificultad {difficulty} (las dificultades 1 y 2 comparten tablero) y todas las piezas de un color."
-        },
-        {
-          "id": "rivalProgress",
-          "who": "rival",
-          "text": "Pon un marcador del Rival en la casilla inicial de su pista de progreso y su publicidad en 4."
+          "text": "Tablero y marcadores del Rival:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "rivalBoard",
+              "text": "Da al Rival el tablero de jugador por la cara de dificultad {difficulty} (las dificultades 1 y 2 comparten tablero) y todas las piezas de un color."
+            },
+            {
+              "id": "rivalProgress",
+              "text": "Pon un marcador del Rival en la casilla inicial de su pista de progreso y su publicidad en 4."
+            }
+          ]
         },
         {
           "id": "rivalDeck",
@@ -1083,5 +1102,107 @@
         }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: 1 acción principal",
+      "items": [
+        {
+          "id": "launch",
+          "text": "Lanzar sonda (2 créditos) · Orbitar (1 crédito + 1 energía) · Aterrizar (3 energía; 2 si ya hay orbitador)."
+        },
+        {
+          "id": "scan",
+          "text": "Rastrear (1 crédito + 2 energía): marca la señal del sector de la Tierra y una de la fila de cartas."
+        },
+        {
+          "id": "other",
+          "text": "Analizar datos (1 energía, con la fila superior de la computadora llena) · Jugar una carta · Investigar tecnología (6 de publicidad; rota el sistema solar) · Pasar."
+        },
+        {
+          "id": "free",
+          "text": "Sin coste, en cualquier momento del turno: mover sondas (1 energía por espacio), colocar datos, descartar cartas por su acción de la esquina, cambiar 2 recursos iguales por 1, comprar carta por 3 de publicidad, completar misiones."
+        },
+        {
+          "id": "milestones",
+          "text": "Al acabar tu turno se resuelven hitos (25, 50 y 70 puntos: losetas doradas; neutrales si los hay) y especies descubiertas."
+        }
+      ]
+    },
+    {
+      "id": "round",
+      "title": "Fin de ronda",
+      "items": [
+        {
+          "id": "pass",
+          "text": "Al pasar, el primero en pasar rota el sistema solar y cada jugador coge 1 carta de fin de ronda."
+        },
+        {
+          "id": "income",
+          "text": "Cuando todos han pasado: cada uno cobra ingresos y la ficha de jugador inicial pasa a la izquierda. La partida dura 5 rondas."
+        }
+      ]
+    },
+    {
+      "id": "rival",
+      "title": "Turno del Rival",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "items": [
+        {
+          "id": "rivalTurn",
+          "text": "Revela la carta superior de su mazo y hace la primera acción posible, de arriba abajo. Gasta 6 de publicidad en tecnología si puede.",
+          "who": "rival"
+        },
+        {
+          "id": "rivalObj",
+          "text": "Tus objetivos: si al final de la ronda no has cumplido suficientes, el Rival avanza en su marcador de progreso.",
+          "who": "rival",
+          "when": {
+            "gte": [
+              "difficulty",
+              2
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Marcador al acabar la ronda 5"
+      },
+      {
+        "id": "endCards",
+        "label": "Cartas de final de partida",
+        "help": "Las de recuadros dorados."
+      },
+      {
+        "id": "gold",
+        "label": "Losetas doradas"
+      },
+      {
+        "id": "aliens",
+        "label": "Especies alienígenas",
+        "help": "Si alguna añade puntuación final."
+      }
+    ],
+    "tiebreak": "El empate se comparte.",
+    "rival": {
+      "label": "Rival",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      }
+    }
+  }
 }

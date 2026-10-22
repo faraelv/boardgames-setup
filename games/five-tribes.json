@@ -3,39 +3,205 @@
   "id": "fiveTribes",
   "name": "Five Tribes",
   "publisher": "Days of Wonder",
-  "sources": [ { "title": "Reglamento Five Tribes", "file": "Five_tribes.pdf" } ],
-  "players": { "min": 2, "max": 4, "default": 3 },
+  "sources": [
+    {
+      "title": "Reglamento Five Tribes",
+      "file": "Five_tribes.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 4,
+    "default": 3
+  },
   "options": [
-    { "id": "firstTime", "label": "¿Es la primera partida con este ejemplar?", "type": "boolean", "default": false }
+    {
+      "id": "firstTime",
+      "label": "¿Es la primera partida con este ejemplar?",
+      "type": "boolean",
+      "default": false
+    }
   ],
   "sections": [
     {
-      "id": "unboxing", "title": "Primera partida", "when": { "is": "firstTime" },
+      "id": "unboxing",
+      "title": "Primera partida",
+      "when": {
+        "is": "firstTime"
+      },
       "steps": [
-        { "id": "punch", "who": "table", "text": "Destroquela todas las piezas. Guarda los marcos vacíos bajo la bandeja interior para que quede a ras de la caja." }
+        {
+          "id": "punch",
+          "who": "table",
+          "text": "Destroquela todas las piezas. Guarda los marcos vacíos bajo la bandeja interior para que quede a ras de la caja."
+        }
       ]
     },
     {
-      "id": "players", "title": "Jugadores",
+      "id": "players",
+      "title": "Jugadores",
       "steps": [
-        { "id": "pieces34", "who": "eachPlayer", "when": { "gte": ["players", 3] },
-          "text": "Cada jugador coge 8 camellos y 1 ficha de turno de su color. Los camellos extra y las fichas de turno azul y rosa no se usan." },
-        { "id": "pieces2", "who": "eachPlayer", "when": { "eq": ["players", 2] },
-          "text": "Un jugador coge los 11 camellos rosas y las 2 fichas de turno rosas; el otro, los 11 azules y sus 2 fichas de turno." },
-        { "id": "gold", "who": "eachPlayer", "text": "Cada jugador recibe 50 monedas (9 de valor 5 y 5 de valor 1) y las guarda boca abajo para que nadie sepa cuánto tiene." }
+        {
+          "id": "pieces34",
+          "who": "eachPlayer",
+          "when": {
+            "gte": [
+              "players",
+              3
+            ]
+          },
+          "text": "Cada jugador coge 8 camellos y 1 ficha de turno de su color. Los camellos extra y las fichas de turno azul y rosa no se usan."
+        },
+        {
+          "id": "pieces2",
+          "who": "eachPlayer",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          "text": "Un jugador coge los 11 camellos rosas y las 2 fichas de turno rosas; el otro, los 11 azules y sus 2 fichas de turno."
+        },
+        {
+          "id": "gold",
+          "who": "eachPlayer",
+          "text": "Cada jugador recibe 50 monedas (9 de valor 5 y 5 de valor 1) y las guarda boca abajo para que nadie sepa cuánto tiene."
+        }
       ]
     },
     {
-      "id": "board", "title": "Sultanato",
+      "id": "board",
+      "title": "Sultanato",
       "steps": [
-        { "id": "tiles", "who": "table", "text": "Mezcla las 30 losetas y colócalas al azar boca arriba formando un rectángulo de 5 × 6: es el Sultanato." },
-        { "id": "meeples", "who": "table", "text": "Mete los 90 peones de madera en la bolsa, mézclalos y pon 3 al azar en cada loseta." },
-        { "id": "turnOrder", "who": "table", "text": "Pon el tablero de Orden de Turno junto al Sultanato. Coge las fichas de turno de todos y colócalas al azar en el tablero de Orden de Apuestas: ese es el orden de la primera puja.",
-          "randomizer": { "type": "firstPlayer" } },
-        { "id": "resources", "who": "table", "text": "Baraja las cartas de Recursos boca abajo y revela 9 en fila junto al mazo." },
-        { "id": "djinns", "who": "table", "text": "Baraja las cartas de Genio boca abajo y revela 3 junto a su mazo." },
-        { "id": "bank", "who": "table", "text": "Deja las palmeras, los palacios y el resto de monedas como banca al alcance de todos." }
+        {
+          "id": "tiles",
+          "who": "table",
+          "text": "Mezcla las 30 losetas y colócalas al azar boca arriba formando un rectángulo de 5 × 6: es el Sultanato."
+        },
+        {
+          "id": "meeples",
+          "who": "table",
+          "text": "Mete los 90 peones de madera en la bolsa, mézclalos y pon 3 al azar en cada loseta."
+        },
+        {
+          "id": "turnOrder",
+          "who": "table",
+          "text": "Pon el tablero de Orden de Turno junto al Sultanato. Coge las fichas de turno de todos y colócalas al azar en el tablero de Orden de Apuestas: ese es el orden de la primera puja.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "cardsBank",
+          "who": "table",
+          "text": "Cartas y banca:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "resources",
+              "text": "Baraja las cartas de Recursos boca abajo y revela 9 en fila junto al mazo."
+            },
+            {
+              "id": "djinns",
+              "text": "Baraja las cartas de Genio boca abajo y revela 3 junto a su mazo."
+            },
+            {
+              "id": "bank",
+              "text": "Deja las palmeras, los palacios y el resto de monedas como banca al alcance de todos."
+            }
+          ]
+        }
       ]
     }
-  ]
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "bid",
+          "text": "Puja por el orden de turno: empezando por la ficha más alta del orden de pujas, cada uno paga oro y coloca su ficha en una casilla libre (las de 0 se apilan; el último en apostar 0 va delante de los otros ceros)."
+        },
+        {
+          "id": "move",
+          "text": "En orden, cada jugador mueve su ficha a la primera casilla vacía del orden de pujas y coge todos los peones de una loseta: los suelta uno a uno en losetas adyacentes (no en diagonal, sin retroceder) y el último debe caer en una loseta con un peón del mismo color."
+        },
+        {
+          "id": "control",
+          "text": "Coge todos los peones de ese color de la última loseta. Si queda vacía, pon un camello: es tuya."
+        },
+        {
+          "id": "tribe",
+          "text": "Acción de tribu: Visires y Ancianos los guardas · Mercaderes: cartas de recurso de la fila · Constructores: oro según losetas azules alrededor × peones · Asesinos: matan un peón a su alcance."
+        },
+        {
+          "id": "tile",
+          "text": "Acción de loseta: oasis (palmera), pueblo (palacio), mercado pequeño (3 oros, 1 carta), mercado grande (6 oros, 2 cartas), lugar sagrado (2 ancianos, o 1 + esclavo, para un genio)."
+        },
+        {
+          "id": "sell",
+          "text": "Opcional: vende series de mercancías distintas (1-3-7-13-18-24-30-40-50-60 oros)."
+        },
+        {
+          "id": "cleanup",
+          "text": "Fin de ronda: rellenad la fila de recursos hasta 9 y la de genios hasta 3."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "end",
+          "text": "Al final del turno en que alguien coloca su último camello o no quedan movimientos posibles."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "gold",
+        "label": "Oro",
+        "help": "1 por moneda."
+      },
+      {
+        "id": "viziers",
+        "label": "Visires",
+        "help": "1 por visir y 10 por cada jugador que tenga menos que tú."
+      },
+      {
+        "id": "elders",
+        "label": "Ancianos",
+        "help": "2 por anciano."
+      },
+      {
+        "id": "djinns",
+        "label": "Genios"
+      },
+      {
+        "id": "tiles",
+        "label": "Losetas con tu camello"
+      },
+      {
+        "id": "palms",
+        "label": "Palmeras",
+        "help": "3 por palmera en tus losetas."
+      },
+      {
+        "id": "palaces",
+        "label": "Palacios",
+        "help": "5 por palacio en tus losetas."
+      },
+      {
+        "id": "goods",
+        "label": "Mercancías",
+        "help": "Por cada serie de mercancías distintas (sin esclavos)."
+      }
+    ],
+    "tiebreak": "Victoria compartida."
+  }
 }
