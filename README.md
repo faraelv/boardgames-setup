@@ -7,6 +7,9 @@ PWA que guía la preparación de nuestros juegos de mesa según el número de ju
 - Funciona sin conexión una vez instalada.
 - Grupo de jugadores guardado en el móvil, con selector de «¿Quién juega?» y sorteo del orden.
 - Lista de pasos con casillas, progreso, sorteos y preparaciones a mitad de partida (por ejemplo, al descubrir una especie en SETI).
+- **Sortear juego** entre los que marques (con filtro rápido por número de jugadores).
+- En cada guía, pestañas **Turno** (resumen de turno, ronda y fin de partida) y **Puntos** (hoja de puntuación por categorías con recuento y desempate).
+- La pantalla no se apaga mientras sigues una guía. Para volver atrás se usa el botón atrás del móvil.
 
 ## Instalar en el móvil
 
@@ -41,6 +44,9 @@ Para ocultar un juego sin borrarlo, añádelo a `EXCLUDE` en `scripts/build.mjs`
 - `options`: preguntas previas (`boolean` o `choice`). Con `when` solo aparecen si aplican.
 - `vars`: valores derivados por casos; el primero cuyo `when` se cumple gana. Se usan en textos como `{nombre}`.
 - `sections` → `steps`: `text`, `who` (`table`, `eachPlayer`, `rival`, `firstPlayer`), `when`, `components`, `tip`, `warning`, `link`, `randomizer` (`firstPlayer`, `pick`, `dice`) y `substeps`.
+- `group: true` en un paso: agrupa tareas sencillas en sus `substeps` (cada una con su `when`). Con un solo subpaso visible se muestra como paso normal; sin ninguno, desaparece. Úsalo para no inflar la lista con pasos triviales.
+- `reference`: bloques `{ id, title, when?, items: [pasos] }` para la pestaña Turno.
+- `scoring`: `{ categories: [{ id, label, help?, when?, negative? }], tiebreak?, notes?, rival?: { label, when? } }` para la pestaña Puntos. `negative` resta lo anotado; `rival` añade una columna para el bot en solitario.
 - `events`: preparaciones durante la partida (se muestran aparte, en «Durante la partida»).
 - Condiciones: `is`, `eq`, `in`, `gte`, `lte`, combinadas con `all`, `any` y `not`.
 - Textos en español, **redactados con palabras propias** (no copiados del manual). Indica de dónde sale cada juego en `sources`.
@@ -59,3 +65,5 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Arquitectos**: valores de la cara 2 y solitario tomados de un resumen de reglas; confirmar con la caja.
 - **Saboteur**: la guía es del Saboteur original (3–10 jugadores).
 - **Faraway**: rango 2–6 jugadores asumido.
+- **Heat**: sin hoja de puntos (los puntos de campeonato están en el reglamento avanzado, que no tenemos).
+- **Puerto Rico (Festival)**: sus recompensas no se puntúan aparte (las 3 PV del edificio van en fichas de PV).
