@@ -14,7 +14,7 @@ const store = {
 /* ---------- interfaz ---------- */
 const app = document.getElementById('app');
 const prog = document.getElementById('prog');
-let state = { view: 'list', game: null, answers: {}, pick: false, tab: 'setup' };
+let state = { view: 'list', game: null, answers: {}, tool: null, tab: 'setup' }; // tool: 'pick' (sortear juego) o 'draw' (orden y equipos)
 
 const el = (tag, attrs = {}, ...kids) => {
   const n = document.createElement(tag);
@@ -49,8 +49,8 @@ window.addEventListener('popstate', e => {
   const st = e.state || { view: 'list' };
   if (!sheet.hidden && !st.sheet) hideSheet();
   if (st.sheet) return;
-  const pick = !!st.pick;
-  if (pick !== state.pick) { state.pick = pick; if (st.view === 'list' && state.view === 'list') { render(); return; } }
+  const tool = st.tool || null;
+  if (tool !== state.tool) { state.tool = tool; if (st.view === 'list' && state.view === 'list') { render(); window.scrollTo(0, 0); return; } }
   if (st.view !== state.view || st.gameId !== state.game?.id) showView(st.view, st.gameId);
 });
 
@@ -77,15 +77,18 @@ async function syncWakeLock() {
 // Android libera el bloqueo al salir de la app; se recupera al volver.
 document.addEventListener('visibilitychange', syncWakeLock);
 
-function openGame(g) { state.game = g; state.answers = store.get('answers:' + g.id, {}); state.pick = false; go('questions'); }
+function openGame(g) { state.game = g; state.answers = store.get('answers:' + g.id, {}); state.tool = null; go('questions'); }
 
 function renderList() {
-  if (state.pick) return renderPick();
+  if (state.tool === 'pick') return renderPick();
+  if (state.tool === 'draw') return renderDraw();
+  const openTool = tool => { history.pushState({ view: 'list', tool }, ''); state.tool = tool; render(); window.scrollTo(0, 0); };
   app.append(
     el('div', { class: 'listHead' },
       el('p', { class: 'intro' }, 'Elige el juego, responde a cuatro preguntas y sigue la preparación paso a paso.'),
-      el('button', { class: 'pickBtn', onclick: () => { history.pushState({ view: 'list', pick: true }, ''); state.pick = true; render(); } },
-        diceIcon(), 'Sortear juego')),
+      el('div', { class: 'toolRow' },
+        el('button', { class: 'pickBtn', onclick: () => openTool('pick') }, diceIcon(), 'Sortear juego'),
+        el('button', { class: 'pickBtn', onclick: () => openTool('draw') }, peopleIcon(), 'Orden y equipos'))),
     el('div', { class: 'games' }, GAMES.map(g => el('button', { class: 'game', onclick: () => openGame(g) },
       el('h2', {}, g.name), el('span', { class: 'meta' }, g.publisher || ''), el('span', { class: 'players' }, playersLabel(g)))))
   );
@@ -144,6 +147,85 @@ function renderPick() {
   refresh();
 }
 
+function peopleIcon() {
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('width', '18'); svg.setAttribute('height', '18'); svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M17 14.5c2.4 0 4 1.5 4.6 4.5"/></g>';
+  return svg;
+}
+
+const shuffle = arr => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* Sorteo de orden de turno o de equipos, sin elegir juego. */
+function renderDraw() {
+  const roster = getRoster();
+  const saved = store.get('drawState', {});
+  const ds = { mode: saved.mode === 'teams' ? 'teams' : 'order', teams: saved.teams || 2, guests: saved.guests || [], sel: saved.sel };
+  const names = [...roster, ...ds.guests.filter(g => !roster.includes(g))];
+  let sel = new Set((ds.sel ?? roster).filter(n => names.includes(n)));
+  const save = () => store.set('drawState', { mode: ds.mode, teams: ds.teams, guests: ds.guests, sel: [...sel] });
+  const result = el('div', { class: 'drawResult', hidden: true, 'aria-live': 'polite' });
+  const body = el('div', { class: 'questions' });
+
+  const draw = () => {
+    const who = names.filter(n => sel.has(n));
+    result.hidden = false;
+    if (ds.mode === 'order') {
+      result.replaceChildren(el('div', { class: 'eyebrow' }, 'Orden de turno'),
+        el('ol', { class: 'order big' }, shuffle(who).map(n => el('li', {}, n))));
+    } else {
+      const teams = Array.from({ length: ds.teams }, () => []);
+      shuffle(who).forEach((n, i) => teams[i % ds.teams].push(n));
+      const order = shuffle(teams.map((_, i) => i));
+      result.replaceChildren(el('div', { class: 'eyebrow' }, `${ds.teams} equipos`),
+        el('div', { class: 'teams' }, teams.map((t, i) => el('div', { class: 'team' },
+          el('h3', {}, `Equipo ${i + 1}`, i === order[0] && el('span', { class: 'starts' }, 'empieza')),
+          el('ul', {}, t.map(n => el('li', {}, n)))))));
+    }
+    result.append(el('button', { class: 'ghost', onclick: draw }, 'Otra vez'));
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  const paint = () => {
+    const n = sel.size, maxTeams = Math.floor(n / 2);
+    if (ds.mode === 'teams' && maxTeams >= 2) ds.teams = Math.min(Math.max(ds.teams, 2), maxTeams);
+    const toggle = name => { sel.has(name) ? sel.delete(name) : sel.add(name); save(); result.hidden = true; paint(); };
+    const input = el('input', { type: 'text', placeholder: 'Otro nombre (invitado)', maxlength: '24', autocomplete: 'off', 'aria-label': 'Añadir invitado' });
+    const addGuest = e => {
+      e.preventDefault();
+      const v = input.value.trim();
+      if (!v || names.some(x => x.toLowerCase() === v.toLowerCase())) { input.select(); return; }
+      ds.guests.push(v); names.push(v); sel.add(v); save(); paint();
+    };
+    const removeGuest = g => { ds.guests = ds.guests.filter(x => x !== g); names.splice(names.indexOf(g), 1); sel.delete(g); save(); result.hidden = true; paint(); };
+    let problem = '';
+    if (n < 2) problem = 'Elige al menos 2 jugadores.';
+    else if (ds.mode === 'teams' && maxTeams < 2) problem = 'Para hacer equipos hacen falta al menos 4 jugadores.';
+    const teamItems = []; for (let t = 2; t <= Math.max(2, maxTeams); t++) teamItems.push({ value: t, label: String(t) });
+    const sizes = ds.mode === 'teams' && !problem
+      ? (n % ds.teams === 0 ? `${ds.teams} equipos de ${n / ds.teams}.` : `${ds.teams} equipos de ${Math.floor(n / ds.teams)} o ${Math.ceil(n / ds.teams)}.`) : '';
+    body.replaceChildren(...[
+      el('div', { class: 'q' }, el('span', { class: 'label' }, '¿Qué sorteamos?'),
+        seg([{ value: 'order', label: 'Orden de turno' }, { value: 'teams', label: 'Equipos' }], ds.mode, v => { ds.mode = v; save(); result.hidden = true; paint(); })),
+      el('div', { class: 'q' }, el('span', { class: 'label' }, '¿Quién juega?'),
+        names.length ? el('div', { class: 'seg' }, names.map(p => ds.guests.includes(p) && !roster.includes(p)
+          ? el('span', { class: 'guest' }, el('button', { 'aria-pressed': String(sel.has(p)), onclick: () => toggle(p) }, p),
+              el('button', { class: 'x', 'aria-label': 'Quitar a ' + p, onclick: () => removeGuest(p) }, '×'))
+          : el('button', { 'aria-pressed': String(sel.has(p)), onclick: () => toggle(p) }, p)))
+          : el('p', { class: 'help' }, 'Añade nombres aquí o guarda a vuestro grupo con el botón de personas de arriba.'),
+        el('form', { class: 'addp', onsubmit: addGuest }, input, el('button', { type: 'submit' }, 'Añadir'))),
+      ds.mode === 'teams' && maxTeams >= 2 && el('div', { class: 'q' }, el('span', { class: 'label' }, 'Número de equipos'),
+        seg(teamItems, ds.teams, v => { ds.teams = v; save(); result.hidden = true; paint(); }), el('p', { class: 'help' }, sizes)),
+      problem && el('p', { class: 'help bad' }, problem),
+      el('button', { class: 'go', disabled: !!problem, onclick: draw }, ds.mode === 'order' ? 'Sortear orden' : 'Hacer equipos')].filter(Boolean));
+  };
+
+  app.append(
+    el('div', { class: 'title-block' }, el('div', { class: 'eyebrow' }, 'Sorteo'), el('h1', {}, 'Orden y equipos')),
+    body, result);
+  paint();
+}
+
 const getRoster = () => store.get('roster', []);
 const sheet = document.getElementById('sheet');
 const backdrop = document.getElementById('backdrop');
@@ -172,7 +254,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hid
 
 function renderSheet() {
   const roster = getRoster();
-  const save = r => { store.set('roster', r); updateBadge(); renderSheet(); if (state.view !== 'list') render(); };
+  const save = r => { store.set('roster', r); updateBadge(); renderSheet(); if (state.view !== 'list' || state.tool === 'draw') render(); };
   const input = el('input', { id: 'newPlayer', type: 'text', placeholder: 'Nombre', maxlength: '24', autocomplete: 'off', 'aria-label': 'Nombre del jugador' });
   const add = e => {
     e.preventDefault();

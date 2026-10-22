@@ -8,6 +8,7 @@ PWA que guía la preparación de nuestros juegos de mesa según el número de ju
 - Grupo de jugadores guardado en el móvil, con selector de «¿Quién juega?» y sorteo del orden.
 - Lista de pasos con casillas, progreso, sorteos y preparaciones a mitad de partida (por ejemplo, al descubrir una especie en SETI).
 - **Sortear juego** entre los que marques (con filtro rápido por número de jugadores).
+- **Orden y equipos** desde la pantalla de inicio: sorteo del orden de turno o reparto aleatorio en N equipos equilibrados, con el grupo guardado e invitados puntuales.
 - En cada guía, pestañas **Turno** (resumen de turno, ronda y fin de partida) y **Puntos** (hoja de puntuación por categorías con recuento y desempate).
 - La pantalla no se apaga mientras sigues una guía. Para volver atrás se usa el botón atrás del móvil.
 

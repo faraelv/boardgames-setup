@@ -91,6 +91,7 @@ header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; b
 .title-block h1 { font-size: clamp(22px, 6vw, 30px); font-weight: 700; margin-top: 4px; }
 .questions { display: grid; gap: 14px; }
 .q { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 10px; }
+.q > * { min-width: 0; }
 .q .label { font-weight: 700; }
 .q .help { color: var(--muted); font-size: 15px; margin: 0; }
 .seg { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -137,7 +138,7 @@ section.sec h2 .n { font-size: 13px; color: var(--muted); font-family: var(--bod
 .finish h2 { font-size: 20px; color: var(--done); }
 .sources { margin-top: 28px; font-size: 13px; color: var(--muted); }
 .sheet .help, .q .help { color: var(--muted); font-size: 15px; margin: 0; }
-.q .help.bad { color: var(--accent); font-weight: 700; }
+.help.bad { color: var(--accent); font-weight: 700; }
 .people { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .people li { display: flex; align-items: center; gap: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 4px 4px 4px 12px; }
 .people button { border: 0; background: none; width: 28px; height: 28px; border-radius: 50%; color: var(--muted); font-size: 18px; line-height: 1; }
@@ -164,6 +165,8 @@ section.sec h2 .n { font-size: 13px; color: var(--muted); font-family: var(--bod
 .sheet .version { margin: 0; font-size: 12px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 .listHead { display: grid; gap: 12px; margin-bottom: 18px; }
 .listHead .intro { margin: 0; }
+.toolRow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.toolRow .pickBtn { justify-content: center; padding: 9px 8px; font-size: 15px; white-space: nowrap; }
 .pickBtn { justify-self: start; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent); color: var(--accent); background: none; border-radius: 999px; padding: 8px 16px; font-weight: 700; }
 .quick { display: grid; gap: 10px; margin: 14px 0; }
 .quickRow { display: flex; align-items: center; gap: 10px; }
@@ -187,6 +190,17 @@ section.sec h2 .n { font-size: 13px; color: var(--muted); font-family: var(--bod
 .pickResult h2 { font-size: 22px; }
 .pickResult .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .pickResult .go { width: auto; margin: 0; padding: 12px 24px; }
+.drawResult { background: var(--accent-soft); border-radius: 14px; padding: 18px; margin-top: 18px; display: grid; gap: 12px; }
+.drawResult .ghost { justify-self: center; }
+.order.big { font-size: 20px; line-height: 1.7; }
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.team { background: var(--surface); border-radius: 12px; padding: 12px 14px; }
+.team h3 { margin: 0 0 6px; font-size: 15px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.team .starts { font-size: 12px; font-weight: 600; color: var(--muted); }
+.team ul { margin: 0; padding-left: 18px; font-weight: 700; line-height: 1.6; }
+.guest { display: inline-flex; align-items: center; gap: 2px; }
+.guest .x { min-width: 0; width: 30px; padding: 9px 0; border-style: dashed; }
+.go:disabled { opacity: .45; }
 .ghost { border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 12px 20px; font-weight: 700; }
 .tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 62px); z-index: 4; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; background: var(--bg); padding: 4px; border: 1px solid var(--line); border-radius: 12px; margin: 4px 0 8px; }
 .tabs button { border: 0; background: none; border-radius: 9px; padding: 9px 6px; font-weight: 700; color: var(--muted); }
