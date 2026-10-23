@@ -229,7 +229,29 @@
         },
         {
           "id": "check",
-          "text": "Revisión: conectores que no encajan, motores sin nada detrás y cañones sin nada delante se quitan."
+          "text": "Revisión: cada uno comprueba las naves de los demás. Se quitan los componentes que incumplan alguna regla (lo mínimo para corregirla); van a la pila de descartes y cuentan como perdidos (−1 crédito cada uno al final).",
+          "substeps": [
+            {
+              "id": "chkConn",
+              "text": "Conectores: una tubería solo encaja con una tubería y dos con dos; el universal (3 tuberías) encaja con todo. Ningún conector puede tocar un costado liso (dos costados lisos juntos sí valen)."
+            },
+            {
+              "id": "chkEngine",
+              "text": "Motores: el tubo de escape apunta hacia atrás (hacia ti) y la casilla de detrás queda vacía o es el borde de la zona de construcción."
+            },
+            {
+              "id": "chkCannon",
+              "text": "Cañones: pueden apuntar a cualquier lado, pero la casilla hacia la que apuntan tiene que estar vacía."
+            },
+            {
+              "id": "chkZone",
+              "text": "Todo dentro de la zona de construcción y la nave de una sola pieza: lo que quede separado se desprende."
+            },
+            {
+              "id": "chkLate",
+              "text": "Si un error se descubre ya en vuelo, se corrige igual y además se paga 1 crédito al banco."
+            }
+          ]
         }
       ]
     },
@@ -259,6 +281,11 @@
             "trip"
           ]
         }
+      },
+      {
+        "id": "flight",
+        "label": "Créditos ganados en el vuelo",
+        "help": "Los conseguidos con las cartas de aventura (planetas, naves abandonadas, piratas, contrabandistas…)."
       },
       {
         "id": "arrival",
