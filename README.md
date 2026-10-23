@@ -9,6 +9,7 @@ PWA que guía la preparación de nuestros juegos de mesa según el número de ju
 - Lista de pasos con casillas, progreso, sorteos y preparaciones a mitad de partida (por ejemplo, al descubrir una especie en SETI).
 - **Sortear juego** entre los que marques (con filtro rápido por número de jugadores).
 - **Orden y equipos** desde la pantalla de inicio: sorteo del orden de turno o reparto aleatorio en N equipos equilibrados, con el grupo guardado e invitados puntuales.
+- Cada juego de la lista lleva su portada en miniatura y un fondo suave del color de la portada (sin portada: inicial del juego).
 - En cada guía, pestañas **Turno** (resumen de turno, ronda y fin de partida) y **Puntos** (hoja de puntuación por categorías con recuento y desempate).
 - La pantalla no se apaga mientras sigues una guía. Las casillas marcadas y los puntos se guardan 4 h desde el último cambio (aguantan que Android cierre la app) y después la partida empieza de cero. Para volver atrás se usa el botón atrás del móvil.
 
@@ -36,6 +37,8 @@ PWA que guía la preparación de nuestros juegos de mesa según el número de ju
 3. Haz commit y push a `main`. GitHub valida y publica solo; los móviles reciben el juego la próxima vez que abren la app con conexión.
 
 Si la validación falla, GitHub no publica nada y la app sigue como estaba.
+
+Portada (opcional): `src/covers/<id>.webp` (cuadrada, ~192 px) y su tono en `src/covers/tints.json` (color apagado; la app lo mezcla al 15 % con el fondo).
 
 Para ocultar un juego sin borrarlo, añádelo a `EXCLUDE` en `scripts/build.mjs`.
 
@@ -71,3 +74,4 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Wingspan**: sin modo solitario (el cuadernillo del Automubon no está en el proyecto).
 - **Arnak**: la campaña de La expedición perdida no está incluida; solo partidas normales.
 - **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
+- **Portadas**: faltan las de Arquitectos, Aventureros al Tren, Carcassonne, Catan, Catan: El Duelo, Everdell, Faraway, Five Tribes, Galaxy Trucker, Heat, Saboteur, SETI y Terraforming Mars: Dados (de momento, inicial + tono elegido a mano).

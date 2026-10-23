@@ -17,6 +17,13 @@ const files = fs.readdirSync('games').filter(f => f.endsWith('.json') && !EXCLUD
 const strip = name => name.replace(/^[¡¿]/, '');
 const games = files.map(f => JSON.parse(fs.readFileSync(path.join('games', f), 'utf8')))
   .sort((a, b) => strip(a.name).localeCompare(strip(b.name), 'es'));
+// Portadas: src/covers/<id>.webp (miniatura) y src/covers/tints.json (tono suave del fondo).
+const tints = JSON.parse(fs.readFileSync(path.join(SRC, 'covers', 'tints.json'), 'utf8'));
+for (const g of games) {
+  if (fs.existsSync(path.join(SRC, 'covers', `${g.id}.webp`))) g.cover = `covers/${g.id}.webp`;
+  if (tints[g.id]) g.tint = tints[g.id];
+}
+fs.rmSync(path.join(OUT, 'covers', 'tints.json'));
 fs.writeFileSync(path.join(OUT, 'games.json'), JSON.stringify(games));
 
 // Ficheros de la app que se guardan para funcionar sin conexión.

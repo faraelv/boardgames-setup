@@ -82,6 +82,12 @@ header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; b
 .games { display: grid; gap: 12px; }
 .game { text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
 .game:hover { border-color: var(--accent); }
+.games:not(.picking) .game { grid-template-columns: auto 1fr auto; padding: 12px 14px 12px 12px; gap: 2px 14px; }
+.games:not(.picking) .game h2, .games:not(.picking) .game .meta { grid-column: 2; }
+.games:not(.picking) .game .players { grid-column: 3; }
+.game[style*="--tint"] { background: color-mix(in srgb, var(--tint) 15%, var(--surface)); border-color: color-mix(in srgb, var(--tint) 22%, var(--line)); }
+.game .cover { grid-row: 1 / span 2; grid-column: 1; width: 56px; height: 56px; border-radius: 10px; object-fit: cover; box-shadow: 0 1px 3px rgba(10, 14, 24, .18); }
+.game .cover.mono { display: grid; place-items: center; font-family: var(--display); font-size: 24px; font-weight: 700; color: color-mix(in srgb, var(--tint, var(--muted)) 70%, var(--ink)); background: color-mix(in srgb, var(--tint, var(--muted)) 28%, var(--surface)); box-shadow: none; }
 .game h2 { font-size: 19px; font-weight: 500; }
 .game .meta { color: var(--muted); font-size: 15px; grid-column: 1; }
 .game .players { grid-row: 1 / span 2; grid-column: 2; font-family: var(--display); font-size: 14px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 6px 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }

@@ -41,6 +41,11 @@ const el = (tag, attrs = {}, ...kids) => {
   return n;
 };
 const WHO = { table: 'Mesa', eachPlayer: 'Cada jugador', rival: 'Rival', firstPlayer: 'Jugador inicial' };
+// Portada en miniatura (o inicial si no hay) y tono suave de fondo sacado de la portada.
+const tintStyle = g => g.tint ? `--tint:${g.tint}` : null;
+const coverThumb = g => g.cover
+  ? el('img', { class: 'cover', src: g.cover, alt: '', loading: 'lazy', decoding: 'async', width: 56, height: 56 })
+  : el('span', { class: 'cover mono', 'aria-hidden': 'true' }, g.name.replace(/^[¡¿]/, '').charAt(0));
 const playersLabel = g => g.players.min === g.players.max ? `${g.players.min} jug.` : `${g.players.min}–${g.players.max} jug.`;
 
 /* ---------- navegación con el historial (botón atrás del móvil) ---------- */
@@ -104,8 +109,8 @@ function renderList() {
       el('div', { class: 'toolRow' },
         el('button', { class: 'pickBtn', onclick: () => openTool('pick') }, diceIcon(), 'Sortear juego'),
         el('button', { class: 'pickBtn', onclick: () => openTool('draw') }, peopleIcon(), 'Orden y equipos'))),
-    el('div', { class: 'games' }, GAMES.map(g => el('button', { class: 'game', onclick: () => openGame(g) },
-      el('h2', {}, g.name), el('span', { class: 'meta' }, g.publisher || ''), el('span', { class: 'players' }, playersLabel(g)))))
+    el('div', { class: 'games' }, GAMES.map(g => el('button', { class: 'game', style: tintStyle(g), onclick: () => openGame(g) },
+      coverThumb(g), el('h2', {}, g.name), el('span', { class: 'meta' }, g.publisher || ''), el('span', { class: 'players' }, playersLabel(g)))))
   );
 }
 
