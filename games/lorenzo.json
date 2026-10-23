@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "id": "lorenzo",
+  "name": "Lorenzo il Magnifico",
+  "publisher": "Cranio Creations",
+  "sources": [
+    {
+      "title": "Reglamento Lorenzo il Magnifico",
+      "file": "Lorenzo_il_magnifico.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 4,
+    "default": 3
+  },
+  "options": [
+    {
+      "id": "advanced",
+      "label": "¿Reglas avanzadas (líderes y losetas de bonos a elegir)?",
+      "type": "boolean",
+      "default": false,
+      "help": "Para el juego completo. Para la primera partida, mejor sin ellas."
+    }
+  ],
+  "vars": {},
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero en el centro de la mesa."
+        },
+        {
+          "id": "decks",
+          "who": "table",
+          "text": "Separa las cartas de desarrollo por tipo (color) y periodo (número del reverso) y baraja cada grupo de 8 por separado. Forma 4 mazos, uno por color, con el periodo III abajo, el II en medio y el I arriba, y deja cada mazo junto a su torre."
+        },
+        {
+          "id": "excomm",
+          "who": "table",
+          "text": "Separa las losetas de excomunión por periodo, elige 1 al azar de cada uno y colócala en su espacio del tablero. Devuelve el resto a la caja."
+        },
+        {
+          "id": "supplyDice",
+          "who": "table",
+          "text": "Reserva y dados:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "supply",
+              "text": "Deja los recursos y las monedas junto al tablero como reserva general (piezas pequeñas = 1, grandes = 5; son ilimitados)."
+            },
+            {
+              "id": "dice",
+              "text": "Deja los 3 dados junto al tablero."
+            }
+          ]
+        },
+        {
+          "id": "mod2",
+          "who": "table",
+          "text": "Con 2 jugadores, coloca todas las losetas de modificación del tablero en sus lugares (los que tienen los símbolos de 3 y 4 jugadores): quedan bloqueadas la segunda casilla de cosecha y de producción y 2 casillas del mercado.",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "mod3",
+          "who": "table",
+          "text": "Con 3 jugadores, coloca las 2 losetas de modificación con el símbolo de 4 jugadores: bloquean 2 casillas del mercado.",
+          "when": {
+            "eq": [
+              "players",
+              3
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "kit",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y recibe: tablero personal, loseta de bonos personales (cara básica), 3 familiares de su color y 1 incoloro con su pegatina, y 3 marcadores de excomunión.",
+          "when": {
+            "not": {
+              "is": "advanced"
+            }
+          }
+        },
+        {
+          "id": "kitAdv",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y recibe: tablero personal, 3 familiares de su color y 1 incoloro con su pegatina, y 3 marcadores de excomunión.",
+          "when": {
+            "is": "advanced"
+          }
+        },
+        {
+          "id": "discs",
+          "who": "eachPlayer",
+          "text": "Pon un disco de tu color en la casilla 0 de los marcadores de puntos de victoria, militares y de fe; el cuarto va al marcador de orden de turno."
+        },
+        {
+          "id": "resources",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge 2 maderas, 2 piedras y 3 sirvientes."
+        },
+        {
+          "id": "order",
+          "who": "table",
+          "text": "Sortea el orden de turno y coloca los discos en el marcador. Monedas iniciales: el 1.º recibe 5, el 2.º 6, el 3.º 7 y el 4.º 8.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "bonusTiles",
+          "who": "eachPlayer",
+          "text": "Avanzado: gira las losetas de bonos personales a la cara avanzada. En orden inverso de turno, cada jugador elige una.",
+          "when": {
+            "is": "advanced"
+          }
+        },
+        {
+          "id": "leaders",
+          "who": "eachPlayer",
+          "text": "Avanzado: baraja las cartas de líder y reparte 4 a cada jugador. Cada uno se queda 1 y pasa el resto a la derecha, hasta tener 4.",
+          "when": {
+            "is": "advanced"
+          }
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda (6 en total: 3 periodos de 2 rondas)",
+      "items": [
+        {
+          "id": "deploy",
+          "text": "A. Despliegue: roba 4 cartas de cada mazo y colócalas en su torre, de abajo arriba. El primer jugador tira los 3 dados y los coloca en su sitio."
+        },
+        {
+          "id": "actions",
+          "text": "B. Acciones: por orden de turno, cada uno coloca 1 familiar por turno hasta quedarse sin ellos. Cada familiar vale lo que su dado (el incoloro vale 0). Antes de colocarlo puedes gastar sirvientes: +1 por sirviente."
+        },
+        {
+          "id": "vatican",
+          "text": "C. Vaticano (rondas 2, 4 y 6): hace falta 3/4/5 de fe en el periodo I/II/III. Si llegas, puedes apoyar a la Iglesia: pierdes toda tu fe y ganas los PV de esa casilla. Si no llegas o no quieres, te excomulgan (marcador en la loseta del periodo) y conservas tu fe."
+        },
+        {
+          "id": "end",
+          "text": "D. Fin de ronda: descarta las cartas que queden en las torres. El nuevo orden de turno sale del Palacio del consejo (de izquierda a derecha; quien no esté mantiene su orden detrás). Recupera tus familiares."
+        }
+      ]
+    },
+    {
+      "id": "places",
+      "title": "Dónde colocar familiares",
+      "items": [
+        {
+          "id": "towers",
+          "text": "Torres: pisos de valor 1/3/5/7; los pisos 3 y 4 dan un bono. Si la torre ya tiene familiares, paga 3 monedas. No puede haber dos familiares de tu color en la misma torre (el incoloro sí). Paga el coste, coge la carta y aplica su efecto inmediato. Máximo 6 cartas de cada tipo."
+        },
+        {
+          "id": "territory",
+          "text": "Territorios: no cuestan nada, pero a partir del tercero necesitas los puntos militares que indique su espacio (no se gastan)."
+        },
+        {
+          "id": "harvest",
+          "text": "Cosecha / producción: valor mínimo 1. La casilla pequeña admite 1 familiar; la alargada, cualquier número pero con −3 al valor (no se usa a 2 jugadores). Activa tu bono personal y las cartas con valor de activación ≤ al de la acción."
+        },
+        {
+          "id": "market",
+          "text": "Mercado: valor mínimo 1; 5 monedas, 5 sirvientes, 3 puntos militares + 2 monedas, o 2 privilegios distintos (las 2 últimas casillas, solo a 4 jugadores)."
+        },
+        {
+          "id": "council",
+          "text": "Palacio del consejo: valor mínimo 1, sin límite; 1 privilegio y 1 moneda, y marca el orden de turno de la ronda siguiente."
+        },
+        {
+          "id": "privileges",
+          "text": "Privilegio: 1 madera y 1 piedra, 2 sirvientes, 2 monedas, 2 puntos militares o 1 punto de fe."
+        },
+        {
+          "id": "leadersRef",
+          "text": "Líderes: en tu turno puedes jugar los que cumplan su requisito (no se paga), descartar uno por 1 privilegio o activar su habilidad de una vez por ronda.",
+          "when": {
+            "is": "advanced"
+          }
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Marcador de PV",
+        "help": "Incluye lo ganado durante la partida y en el Vaticano."
+      },
+      {
+        "id": "territories",
+        "label": "Territorios",
+        "help": "3 → 1 · 4 → 4 · 5 → 10 · 6 → 20."
+      },
+      {
+        "id": "characters",
+        "label": "Personajes",
+        "help": "1 → 1 · 2 → 3 · 3 → 6 · 4 → 10 · 5 → 15 · 6 → 21."
+      },
+      {
+        "id": "ventures",
+        "label": "Empresas",
+        "help": "Suma de los PV de tus cartas de empresa."
+      },
+      {
+        "id": "military",
+        "label": "Fuerza militar",
+        "help": "1.º: 5 PV · 2.º: 2 PV (empate en 1.º: todos 5 y nadie 2)."
+      },
+      {
+        "id": "resources",
+        "label": "Recursos",
+        "help": "1 PV por cada 5 recursos de cualquier tipo."
+      },
+      {
+        "id": "excomm",
+        "label": "Excomuniones del periodo III",
+        "help": "Lo que reste tu loseta de excomunión, si te afecta.",
+        "negative": true
+      }
+    ],
+    "tiebreak": "Gana el jugador más avanzado en el orden de turno."
+  }
+}

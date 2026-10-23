@@ -1,0 +1,981 @@
+{
+  "schemaVersion": 1,
+  "id": "castillosBorgona",
+  "name": "Castillos de Borgoña",
+  "publisher": "Awaken Realms / Maldito Games",
+  "sources": [
+    {
+      "title": "Reglamento Los castillos de Borgoña (edición especial)",
+      "file": "Castillos_de_borgona.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
+  "options": [
+    {
+      "id": "soloMode",
+      "label": "Modo solitario",
+      "type": "choice",
+      "default": "chato",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": "chato",
+          "label": "Contra el Châteautoma"
+        },
+        {
+          "value": "solo10",
+          "label": "Reto en solitario (10.ª expansión)"
+        }
+      ]
+    },
+    {
+      "id": "chatoExtra",
+      "label": "¿Añadís al Châteautoma como jugador extra?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "in": [
+          "players",
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "id": "chatoLevel",
+      "label": "Dificultad del Châteautoma",
+      "type": "choice",
+      "default": "exp",
+      "when": {
+        "any": [
+          {
+            "all": [
+              {
+                "eq": [
+                  "players",
+                  1
+                ]
+              },
+              {
+                "eq": [
+                  "soloMode",
+                  "chato"
+                ]
+              }
+            ]
+          },
+          {
+            "is": "chatoExtra"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "value": "nov",
+          "label": "Novato"
+        },
+        {
+          "value": "exp",
+          "label": "Experimentado (recomendado)"
+        },
+        {
+          "value": "expert",
+          "label": "Experto"
+        }
+      ]
+    },
+    {
+      "id": "teams",
+      "label": "¿Partida por equipos (9.ª expansión)?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "players",
+          4
+        ]
+      }
+    },
+    {
+      "id": "duchy",
+      "label": "Tableros de ducado",
+      "type": "choice",
+      "default": "base",
+      "when": {
+        "all": [
+          {
+            "not": {
+              "is": "teams"
+            }
+          },
+          {
+            "not": {
+              "all": [
+                {
+                  "eq": [
+                    "players",
+                    1
+                  ]
+                },
+                {
+                  "eq": [
+                    "soloMode",
+                    "solo10"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "choices": [
+        {
+          "value": "base",
+          "label": "Juego base (1-10)"
+        },
+        {
+          "value": "exp1",
+          "label": "1.ª expansión (11-18)"
+        },
+        {
+          "value": "champ",
+          "label": "Campeonato alemán 2013/2016 (19-20)"
+        },
+        {
+          "value": "special",
+          "label": "Edición especial (21-22)"
+        },
+        {
+          "value": "outposts",
+          "label": "Puestos fronterizos (23-30, 4.ª expansión)"
+        }
+      ]
+    },
+    {
+      "id": "firstGame",
+      "label": "¿Es vuestra primera partida?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "duchy",
+          "base"
+        ]
+      }
+    },
+    {
+      "id": "expTiles",
+      "label": "¿2.ª expansión: 4 losetas hexagonales adicionales?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expWhite",
+      "label": "¿5.ª expansión: Castillos blancos?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expInns",
+      "label": "¿6.ª expansión: Posadas?",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "expRoutes",
+      "label": "¿8.ª expansión: Rutas comerciales?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "gte": [
+          "players",
+          2
+        ]
+      }
+    },
+    {
+      "id": "expShields",
+      "label": "¿Los escudos?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "gte": [
+          "players",
+          2
+        ]
+      }
+    },
+    {
+      "id": "expVines",
+      "label": "¿Viñedos?",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "vars": {
+    "chato": [
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                1
+              ]
+            },
+            {
+              "eq": [
+                "soloMode",
+                "chato"
+              ]
+            }
+          ]
+        },
+        "value": true
+      },
+      {
+        "when": {
+          "is": "chatoExtra"
+        },
+        "value": true
+      },
+      {
+        "value": false
+      }
+    ],
+    "solo10": [
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                1
+              ]
+            },
+            {
+              "eq": [
+                "soloMode",
+                "solo10"
+              ]
+            }
+          ]
+        },
+        "value": true
+      },
+      {
+        "value": false
+      }
+    ],
+    "seats": [
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                1
+              ]
+            },
+            {
+              "eq": [
+                "soloMode",
+                "chato"
+              ]
+            }
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                2
+              ]
+            },
+            {
+              "is": "chatoExtra"
+            }
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                3
+              ]
+            },
+            {
+              "is": "chatoExtra"
+            }
+          ]
+        },
+        "value": 4
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "boardSide": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": "la cara de 2 jugadores"
+      },
+      {
+        "value": "la cara de 3-4 jugadores"
+      }
+    ],
+    "duchyRange": [
+      {
+        "when": {
+          "eq": [
+            "duchy",
+            "exp1"
+          ]
+        },
+        "value": "del 11 al 18"
+      },
+      {
+        "when": {
+          "eq": [
+            "duchy",
+            "champ"
+          ]
+        },
+        "value": "del campeonato alemán (19 o 20)"
+      },
+      {
+        "when": {
+          "eq": [
+            "duchy",
+            "special"
+          ]
+        },
+        "value": "de la edición especial (21 o 22)"
+      },
+      {
+        "when": {
+          "eq": [
+            "duchy",
+            "outposts"
+          ]
+        },
+        "value": "de puestos fronterizos (23 al 30)"
+      },
+      {
+        "value": "del juego base"
+      }
+    ],
+    "sellVp": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "bonusVp": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": "5 (y 2 el segundo)"
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": "6 (y 3 el segundo)"
+      },
+      {
+        "value": "7 (y 4 el segundo)"
+      }
+    ],
+    "routes": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 3
+      }
+    ],
+    "shieldsText": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": "1 escudo en cada almacén"
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": "1 escudo en los almacenes 1, 3 y 5 y 2 en los almacenes 2, 4 y 6"
+      },
+      {
+        "value": "2 escudos en cada almacén"
+      }
+    ],
+    "vineShop": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            4
+          ]
+        },
+        "value": "6 losetas dobles en el almacén de vides y 3 en la tienda"
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": "3 losetas dobles en el almacén de vides y 3 en la tienda"
+      },
+      {
+        "value": "3 losetas dobles en el almacén de vides y 1 en la tienda"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero por {boardSide}."
+        },
+        {
+          "id": "supply",
+          "who": "table",
+          "text": "Deja junto al tablero las monedas de plata, las fichas de trabajador y el dado blanco."
+        },
+        {
+          "id": "hexes",
+          "who": "table",
+          "text": "Separa las losetas hexagonales por el color del reverso. Mete en sus bolsas las de ganado (verdes), edificios (beis), monasterios (amarillas) y almacén negro (negras). Deja en pilas boca arriba los castillos, barcos y minas."
+        },
+        {
+          "id": "extraTiles",
+          "who": "table",
+          "text": "Mezcla las 4 losetas adicionales de la 2.ª expansión con las de su color (negras y amarillas).",
+          "when": {
+            "is": "expTiles"
+          }
+        },
+        {
+          "id": "whiteCastles",
+          "who": "table",
+          "text": "Mezcla los castillos blancos con sus reservas (edificios, monasterios o almacén negro, según el reverso).",
+          "when": {
+            "is": "expWhite"
+          }
+        },
+        {
+          "id": "goods",
+          "who": "table",
+          "text": "Mezcla boca abajo las 42 losetas de mercancía, forma 5 pilas de 5 y pon una en cada casilla de fase (A a E). Las 17 restantes, en una pila aparte."
+        },
+        {
+          "id": "bonus",
+          "who": "table",
+          "text": "Coloca las 12 losetas de bonificación en sus casillas: en cada una, las dos del mismo color con la 5/6/7 encima."
+        },
+        {
+          "id": "outpostBonus",
+          "who": "table",
+          "text": "Apila las losetas de bonificación de puesto fronterizo en su casilla, con la 5/6/7 encima.",
+          "when": {
+            "eq": [
+              "duchy",
+              "outposts"
+            ]
+          }
+        },
+        {
+          "id": "shieldsSetup",
+          "who": "table",
+          "text": "Escudos: mezcla los 18 escudos boca abajo y pon {shieldsText}, boca arriba. El resto, a la caja (no se reponen).",
+          "when": {
+            "is": "expShields"
+          }
+        },
+        {
+          "id": "vines",
+          "who": "table",
+          "text": "Viñedos: deja cerca la reserva de bonificaciones de vid, el almacén de vides y la tienda de vides debajo (a 2-3 jugadores, por su cara marcada). Mete las losetas dobles en la bolsa.",
+          "when": {
+            "is": "expVines"
+          },
+          "tip": "Para quitar azar: a 3 jugadores retira un color de uva (sus losetas dobles y su bonificación); a 2, dos colores."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "when": {
+        "not": {
+          "is": "teams"
+        }
+      },
+      "steps": [
+        {
+          "id": "kit",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge: tablero de jugador, 2 dados, indicador de orden de turno, indicador y ficha de puntos de victoria, hoja de ayuda y 1 moneda de plata.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "duchyStep",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge al azar un tablero de ducado {duchyRange}, elige su cara, lo pone en su tablero y lo cubre con la cubierta de plástico.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "firstDuchy",
+          "who": "eachPlayer",
+          "text": "Primera partida: usad todos el ducado 1 o 2 (el mismo número) y poned el castillo inicial en la casilla 6 del centro.",
+          "when": {
+            "is": "firstGame"
+          }
+        },
+        {
+          "id": "exp1Rule",
+          "who": "table",
+          "text": "Regla opcional de los ducados 11-18: cada loseta nueva debe estar junto a un castillo o conectada a él por losetas de su mismo color. Además, puedes gastar tus 2 acciones y 5 PV para coger un castillo apartado.",
+          "when": {
+            "eq": [
+              "duchy",
+              "exp1"
+            ]
+          }
+        },
+        {
+          "id": "startGoods",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge 3 losetas de mercancía al azar de la pila de 17 y las pone boca arriba en su almacén de mercancías (apiladas si coinciden). Las sobrantes, a la caja.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "vp",
+          "who": "eachPlayer",
+          "text": "Coloca tu indicador de puntos al principio del marcador.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Cada uno tira un dado: empieza quien saque más. Trabajadores iniciales: el 1.º recibe 1, el 2.º 2, el 3.º 3 y el 4.º 4. Apilad los indicadores de orden de turno en la primera casilla (el inicial arriba).",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "firstSolo",
+          "who": "table",
+          "text": "Empiezas tú (con 1 trabajador); el Châteautoma es siempre el último.",
+          "when": {
+            "all": [
+              {
+                "eq": [
+                  "players",
+                  1
+                ]
+              },
+              {
+                "is": "chato"
+              }
+            ]
+          }
+        },
+        {
+          "id": "castle",
+          "who": "eachPlayer",
+          "text": "Todos a la vez colocan su castillo inicial en la casilla que elijan de su ducado.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "white",
+          "who": "table",
+          "text": "El jugador inicial coge el dado blanco.",
+          "when": {
+            "not": {
+              "is": "solo10"
+            }
+          }
+        },
+        {
+          "id": "routesStep",
+          "who": "eachPlayer",
+          "text": "Rutas comerciales: cada jugador coge {routes} losetas de ruta al azar y las pone en orden aleatorio bajo su tablero.",
+          "when": {
+            "is": "expRoutes"
+          }
+        },
+        {
+          "id": "vineyard",
+          "who": "eachPlayer",
+          "text": "Viñedos: cada jugador recibe un tablero de viñedo y 1 bonificación de vid al azar (de un juego de 6 distintas).",
+          "when": {
+            "is": "expVines"
+          }
+        }
+      ]
+    },
+    {
+      "id": "teamsSetup",
+      "title": "Equipos",
+      "when": {
+        "is": "teams"
+      },
+      "steps": [
+        {
+          "id": "teamSeats",
+          "who": "eachPlayer",
+          "text": "Formad 2 equipos de 2 (A y B), sentados juntos si es posible."
+        },
+        {
+          "id": "teamBoard",
+          "who": "eachPlayer",
+          "text": "Cada equipo recibe un tablero de equipo (31a + 32a; el avanzado 31b + 32b) con el castillo en la casilla borgoña central (en el avanzado, en la 1 o la 6) y 3 mercancías al azar."
+        },
+        {
+          "id": "teamRes",
+          "who": "eachPlayer",
+          "text": "Junto a cada tablero de equipo: 3 trabajadores (primer equipo) o 5 (segundo) y 2 monedas de plata. Cada jugador recibe sus 2 dados, indicadores y ficha de PV."
+        },
+        {
+          "id": "teamOrder",
+          "who": "table",
+          "text": "Orden de turno de la primera ronda: A1, B1, A2, B2. El primero coge el dado blanco."
+        }
+      ]
+    },
+    {
+      "id": "chatoSetup",
+      "title": "Châteautoma",
+      "when": {
+        "is": "chato"
+      },
+      "steps": [
+        {
+          "id": "chBoard",
+          "who": "rival",
+          "text": "Pon el ducado del Châteautoma por la cara 35 junto al tablero. Usa un juego de piezas de un color (solo necesita 1 dado). Cuenta como un jugador más en toda la preparación y empieza siempre el último en el orden de turno."
+        },
+        {
+          "id": "chCards",
+          "who": "rival",
+          "text": "Baraja las cartas de condado 1-9 (las 10-17 son para Viñedos). Revela hasta sacar una con casilla de castillo y ponla bajo el espacio 1-4. Baraja el resto, deja el mazo bajo el espacio de la izquierda y revela 1 bajo el espacio 5-6."
+        },
+        {
+          "id": "chStart",
+          "who": "rival",
+          "text": "Pon un castillo en la casilla de castillo de la carta 1-4, 1 mercancía de cada tipo en su casilla numerada (apártalas al preparar las mercancías) y 1 moneda de plata. No usa trabajadores."
+        }
+      ]
+    },
+    {
+      "id": "solo10Setup",
+      "title": "Reto en solitario",
+      "when": {
+        "is": "solo10"
+      },
+      "steps": [
+        {
+          "id": "s10Board",
+          "who": "eachPlayer",
+          "text": "Usa el tablero por la cara de 2 jugadores y el ducado de solitario: cara 33 (novatos) o 34 (veteranos). Pon un castillo en cualquier casilla borgoña."
+        },
+        {
+          "id": "s10Res",
+          "who": "eachPlayer",
+          "text": "Empiezas con 1 moneda de plata, 2 trabajadores y 3 mercancías al azar (sin límite de colores). Coges tus 2 dados y el dado blanco."
+        },
+        {
+          "id": "s10Goal",
+          "who": "eachPlayer",
+          "text": "Pon tu indicador de PV al principio del marcador y tu indicador de orden de turno en la casilla 50: es la meta de puntos."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "phase",
+      "title": "Inicio de cada fase (5 fases de 5 rondas)",
+      "items": [
+        {
+          "id": "clear",
+          "text": "Retira las losetas hexagonales que queden en el tablero (nunca las mercancías) y rellena los 6 almacenes y el almacén negro con losetas al azar. Las casillas marcadas con 4 solo a 4 jugadores; a 3, la casilla «3BD» lleva mina en las fases B y D."
+        },
+        {
+          "id": "goodsRound",
+          "text": "Pon boca arriba las 5 mercancías de la fase en las casillas de ronda."
+        },
+        {
+          "id": "inn",
+          "text": "Posadas: pon una posada junto al almacén negro (encima de la anterior si queda).",
+          "when": {
+            "is": "expInns"
+          }
+        },
+        {
+          "id": "vinesPhase",
+          "text": "Viñedos: retira las losetas dobles que queden y rellena el almacén y la tienda de vides ({vineShop}).",
+          "when": {
+            "is": "expVines"
+          }
+        }
+      ]
+    },
+    {
+      "id": "round",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "roll",
+          "text": "Todos tiran sus 2 dados; el jugador inicial tira también el blanco y pone la mercancía de la ronda en el almacén que indique."
+        },
+        {
+          "id": "two",
+          "text": "En tu turno haces 2 acciones, una por dado. Cada trabajador cambia un dado en ±1 (del 1 se pasa al 6 y viceversa)."
+        },
+        {
+          "id": "acts",
+          "text": "Acciones: coger una loseta del almacén del número del dado (a una casilla de llave) · colocar una loseta en tu ducado en una casilla del número del dado y su color, junto a otra ya puesta · vender todas las mercancías del color del dado (1 plata y {sellVp} PV por loseta) · coger 2 trabajadores."
+        },
+        {
+          "id": "black",
+          "text": "Una vez por turno puedes comprar una loseta del almacén negro por 2 platas."
+        },
+        {
+          "id": "tiles",
+          "text": "Al colocar: barco = coges las mercancías de un almacén y avanzas en el orden de turno · castillo = acción extra con el número que quieras · mina = 1 plata al final de cada fase · ganado = PV (suma el del mismo tipo en el pasto) · edificio = su efecto (uno de cada tipo por ciudad) · monasterio = efecto o puntos finales."
+        },
+        {
+          "id": "zones",
+          "text": "Zona completada: PV por tamaño (1-36) + PV por fase (10 en A … 2 en E). Primer jugador en completar todas las casillas de un color: {bonusVp} PV."
+        },
+        {
+          "id": "shieldsRef",
+          "text": "Escudos: con un doble puedes coger un escudo del almacén de ese número en lugar de tus 2 acciones. Al final de cada fase paga 1 plata por escudo o retíralo.",
+          "when": {
+            "is": "expShields"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chatoTurn",
+      "title": "Turno del Châteautoma",
+      "when": {
+        "is": "chato"
+      },
+      "items": [
+        {
+          "id": "ch1",
+          "text": "Al tirar, el dado blanco elige su carta de condado activa (1-4 izquierda, 5-6 derecha). En su turno tira su dado y coge del almacén de ese número la primera loseta que encaje en su carta (de arriba a la izquierda); si no, sigue en sentido horario, luego su depósito y por último el almacén negro.",
+          "who": "rival"
+        },
+        {
+          "id": "ch2",
+          "text": "Aplica la bonificación de la loseta, vende si cubre un símbolo de venta, puntúa la carta si la completa y, si tiene 2 platas, compra en el almacén negro. Detalles en las páginas 23-25.",
+          "who": "rival"
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "endE",
+          "text": "Tras la fase E (25 rondas). Al final de cada fase: 1 plata por mina."
+        },
+        {
+          "id": "soloEnd",
+          "text": "Reto en solitario: ganas si llenas las 37 casillas de tu ducado antes de que acaben las 25 rondas.",
+          "when": {
+            "is": "solo10"
+          }
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Marcador de PV"
+      },
+      {
+        "id": "goods",
+        "label": "Mercancías sin vender",
+        "help": "1 PV cada una."
+      },
+      {
+        "id": "silver",
+        "label": "Plata",
+        "help": "1 PV por moneda."
+      },
+      {
+        "id": "workers",
+        "label": "Trabajadores",
+        "help": "1 PV por cada 2."
+      },
+      {
+        "id": "monasteries",
+        "label": "Monasterios de puntuación final"
+      },
+      {
+        "id": "shields",
+        "label": "Escudos",
+        "help": "Puntos finales de tus escudos.",
+        "when": {
+          "is": "expShields"
+        }
+      },
+      {
+        "id": "vines",
+        "label": "Viñedo",
+        "help": "Según el tamaño de cada zona de vid del mismo tipo.",
+        "when": {
+          "is": "expVines"
+        }
+      }
+    ],
+    "tiebreak": "Gana quien tenga menos casillas libres en su ducado; si persiste, quien esté más atrás en el orden de turno.",
+    "notes": "Châteautoma: suma 4 por monasterio (en su ducado o en cartas incompletas), 1 por mercancía sin vender, 1 por plata, 1 por loseta en su depósito y 2 por loseta en cartas incompletas. Si empatáis, gana él.",
+    "rival": {
+      "label": "Châteautoma",
+      "when": {
+        "is": "chato"
+      }
+    }
+  }
+}
