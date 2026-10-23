@@ -74,4 +74,3 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Wingspan**: sin modo solitario (el cuadernillo del Automubon no está en el proyecto).
 - **Arnak**: la campaña de La expedición perdida no está incluida; solo partidas normales.
 - **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
-- **Portadas**: faltan las de Arquitectos, Aventureros al Tren, Carcassonne, Catan, Catan: El Duelo, Everdell, Faraway, Five Tribes, Galaxy Trucker, Heat, Saboteur, SETI y Terraforming Mars: Dados (de momento, inicial + tono elegido a mano).
