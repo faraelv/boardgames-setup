@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "id": "sevenWonders",
+  "name": "7 Wonders",
+  "publisher": "Repos Production",
+  "sources": [
+    {
+      "title": "Reglamento 7 Wonders",
+      "file": "7 Wonders.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 7,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "side",
+      "label": "Cara de las Maravillas",
+      "type": "choice",
+      "default": "A",
+      "choices": [
+        {
+          "value": "A",
+          "label": "Cara A (recomendada al principio)"
+        },
+        {
+          "value": "B",
+          "label": "Cara B"
+        },
+        {
+          "value": "card",
+          "label": "La que indique la carta repartida"
+        }
+      ]
+    },
+    {
+      "id": "chooseWonders",
+      "label": "¿Elegís las Maravillas en vez de repartirlas al azar?",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "vars": {
+    "cardsFor": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": "solo las cartas 3+ (como a 3 jugadores)"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "solo las cartas 3+"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "las cartas 3+ y 4+"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": "las cartas 3+, 4+ y 5+"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            6
+          ]
+        },
+        "value": "las cartas 3+ a 6+"
+      },
+      {
+        "value": "todas las cartas (3+ a 7+)"
+      }
+    ],
+    "guilds": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            3
+          ]
+        },
+        "value": 5
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            6
+          ]
+        },
+        "value": 8
+      },
+      {
+        "value": 9
+      }
+    ],
+    "sideText": [
+      {
+        "when": {
+          "eq": [
+            "side",
+            "A"
+          ]
+        },
+        "value": "por la cara A"
+      },
+      {
+        "when": {
+          "eq": [
+            "side",
+            "B"
+          ]
+        },
+        "value": "por la cara B"
+      },
+      {
+        "value": "por la cara que indique su carta"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "decks",
+      "title": "Mazos de Era",
+      "steps": [
+        {
+          "id": "filter",
+          "who": "table",
+          "text": "En cada mazo de Era (I, II y III), usa {cardsFor}. Devuelve el resto a la caja (el número de jugadores está en la parte inferior central de cada carta)."
+        },
+        {
+          "id": "guildsStep",
+          "who": "table",
+          "text": "Elige al azar y en secreto {guilds} cartas de Gremio (moradas) y barájalas en el mazo de la Era III. Devuelve los demás Gremios a la caja sin mirarlos.",
+          "tip": "Si los mazos están bien preparados, cada Era se reparte entera: 7 cartas por jugador.",
+          "when": {
+            "gte": [
+              "players",
+              3
+            ]
+          }
+        },
+        {
+          "id": "guilds2p",
+          "who": "table",
+          "text": "Elige al azar y en secreto 5 Gremios y barájalos en el mazo de la Era III.",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "wondersRandom",
+          "who": "eachPlayer",
+          "text": "Baraja las 7 cartas de Maravilla y reparte 1 a cada jugador: indica su tablero. Cada uno lo usa {sideText}.",
+          "when": {
+            "not": {
+              "is": "chooseWonders"
+            }
+          }
+        },
+        {
+          "id": "wondersChoose",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige su tablero de Maravilla y lo usa {sideText}.",
+          "when": {
+            "is": "chooseWonders"
+          }
+        },
+        {
+          "id": "coinsConflict",
+          "who": "table",
+          "text": "Monedas y conflictos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "coins",
+              "text": "Cada jugador empieza con 3 monedas de valor 1 sobre su tablero. El resto de monedas forman la banca."
+            },
+            {
+              "id": "conflict",
+              "text": "Deja los marcadores de Conflicto en reserva junto a la banca."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "twoPlayers",
+      "title": "Modo experto para 2 jugadores",
+      "when": {
+        "eq": [
+          "players",
+          2
+        ]
+      },
+      "steps": [
+        {
+          "id": "freeCity",
+          "who": "table",
+          "text": "Reparte (o elegid) un tercer tablero de Maravilla y colócalo al lado de los jugadores: es la Ciudad Libre. También recibe 3 monedas."
+        },
+        {
+          "id": "border",
+          "who": "table",
+          "text": "Coloca la carta Frontera entre los dos jugadores."
+        },
+        {
+          "id": "deal2p",
+          "who": "table",
+          "text": "Reparte 7 cartas a cada jugador y forma con las 7 restantes un mazo boca abajo a la derecha de la carta Frontera: es el mazo de la Ciudad Libre."
+        },
+        {
+          "id": "freeCard",
+          "who": "table",
+          "text": "El jugador sentado a la izquierda de la Ciudad Libre coge la carta de Ciudad Libre."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Turno (6 por Era, todos a la vez)",
+      "items": [
+        {
+          "id": "pick",
+          "text": "Elige 1 carta de tu mano y déjala boca abajo; pasa el resto al vecino."
+        },
+        {
+          "id": "actions",
+          "text": "Con esa carta: construye la estructura, úsala para construir la siguiente etapa de tu Maravilla (pagando el coste del tablero) o descártala por 3 monedas."
+        },
+        {
+          "id": "trade",
+          "text": "Comercio: compra a tus vecinos los recursos de su tablero y de sus cartas marrones y grises por 2 monedas cada uno (no pueden negarse). Solo puedes gastar monedas que tenías al empezar el turno."
+        },
+        {
+          "id": "chain",
+          "text": "Construcción en cadena: si tienes la estructura indicada en la carta, la construyes gratis. No puedes tener dos estructuras iguales."
+        },
+        {
+          "id": "direction",
+          "text": "Las manos pasan a la izquierda en la Era I, a la derecha en la II y a la izquierda en la III. En el 6.º turno juegas 1 de las 2 últimas cartas y descartas la otra."
+        },
+        {
+          "id": "freeCityTurn",
+          "text": "Ciudad Libre: quien tiene su carta roba 1 carta de su mazo, elige 2 cartas (una para la Ciudad Libre, que se juega primero, y otra para él) y la carta cambia de manos cada turno. La Ciudad Libre solo descarta si no puede construir y siempre aprovecha las cadenas.",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "era",
+      "title": "Fin de cada Era: conflictos",
+      "items": [
+        {
+          "id": "war",
+          "text": "Compara tus escudos con cada vecino: si tienes más, ganas +1 (Era I), +3 (Era II) o +5 (Era III); si tienes menos, −1; si empatáis, nada."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "military",
+        "label": "Conflictos militares",
+        "help": "Suma de tus marcadores (puede ser negativa: escribe el signo)."
+      },
+      {
+        "id": "treasury",
+        "label": "Tesorería",
+        "help": "1 punto por cada 3 monedas."
+      },
+      {
+        "id": "wonder",
+        "label": "Maravilla"
+      },
+      {
+        "id": "civil",
+        "label": "Estructuras civiles (azules)"
+      },
+      {
+        "id": "science",
+        "label": "Estructuras científicas (verdes)",
+        "help": "Cada símbolo: nº iguales al cuadrado; +7 por cada trío distinto."
+      },
+      {
+        "id": "commerce",
+        "label": "Estructuras comerciales (amarillas)"
+      },
+      {
+        "id": "guilds",
+        "label": "Gremios (moradas)"
+      }
+    ],
+    "tiebreak": "Gana quien tenga más monedas. Si también empatan, comparten la victoria."
+  }
+}

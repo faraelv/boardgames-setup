@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 1,
+  "id": "distilled",
+  "name": "Distilled",
+  "publisher": "Paverson Games / Meeple Foundry",
+  "sources": [
+    {
+      "title": "Reglamento Distilled",
+      "file": "Distilled.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 5,
+    "default": 3
+  },
+  "options": [
+    {
+      "id": "recipes",
+      "label": "Selección de Recetas",
+      "type": "choice",
+      "default": "A",
+      "help": "A, B y C son las equilibradas. D-H se centran en una región o tipo de licor.",
+      "choices": [
+        {
+          "value": "A",
+          "label": "A – Equilibrada (primera partida)"
+        },
+        {
+          "value": "B",
+          "label": "B – Equilibrada"
+        },
+        {
+          "value": "C",
+          "label": "C – Equilibrada"
+        },
+        {
+          "value": "D",
+          "label": "D – Licores europeos"
+        },
+        {
+          "value": "E",
+          "label": "E – Licores americanos"
+        },
+        {
+          "value": "F",
+          "label": "F – Asia y Oceanía"
+        },
+        {
+          "value": "G",
+          "label": "G – Licores que no se envejecen"
+        },
+        {
+          "value": "H",
+          "label": "H – Licores que se envejecen"
+        }
+      ]
+    },
+    {
+      "id": "soloHard",
+      "label": "Dificultad del solitario",
+      "type": "choice",
+      "default": "normal",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "hard",
+          "label": "Difícil: objetivos B en la fila 4"
+        },
+        {
+          "value": "harder",
+          "label": "Muy difícil: objetivos B en las filas 2 y 4"
+        }
+      ]
+    }
+  ],
+  "vars": {
+    "awards": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": 0
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            5
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 5
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "display",
+          "who": "table",
+          "text": "Coloca el tablero de expositor. Deja el barril indicador de ronda en la casilla 1 y una ficha de puntuación por jugador junto al tablero."
+        },
+        {
+          "id": "basicMarket",
+          "who": "table",
+          "text": "Mercado básico: coloca su tablero y reparte todas las cartas de Ingrediente y Objeto básico en 7 mazos boca arriba, como muestra el tablero."
+        },
+        {
+          "id": "premium",
+          "who": "table",
+          "text": "Mercado prémium: baraja por separado los mazos de mejoras de destilería, Ingredientes prémium y Objetos prémium y revela 4 cartas de cada uno en fila, a su derecha. Coloca el camión al lado (ahí van los descartes del mercado prémium)."
+        },
+        {
+          "id": "supply",
+          "who": "table",
+          "text": "Reservas:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "flavor",
+              "text": "Baraja las cartas de Sabor boca abajo y deja al lado las de Alcohol boca arriba."
+            },
+            {
+              "id": "cubes",
+              "text": "Deja a mano los cubos de bronce, plata y oro y las monedas."
+            }
+          ]
+        },
+        {
+          "id": "recipeCards",
+          "who": "table",
+          "text": "Selección de Recetas {recipes}: da a cada jugador una carta de esa selección y devuelve el resto a la caja."
+        },
+        {
+          "id": "labels",
+          "who": "table",
+          "text": "Coloca sobre el expositor, en montones, las Etiquetas de Licor de esa selección: 2 de Moonshine y 2 de Vodka por jugador, y 1 por jugador de cada uno de los otros licores. El resto, a la caja.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "labelsSolo",
+          "who": "table",
+          "text": "Coloca sobre el expositor todas las Etiquetas de Moonshine, de Vodka y de las 7 Recetas de la selección.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "awardsStep",
+          "who": "table",
+          "text": "Elige al azar {awards} Premios de Licor (uno más que jugadores) y déjalos boca arriba.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "boards",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge un tablero de destilería y un portarecetas con su carta de selección de Recetas a la derecha."
+        },
+        {
+          "id": "items",
+          "who": "eachPlayer",
+          "text": "Cada uno pone en el almacén de su destilería un Barril de metal y una Botella de cristal iniciales."
+        },
+        {
+          "id": "goals",
+          "who": "eachPlayer",
+          "text": "Baraja los objetivos de destilería y reparte 3 a cada jugador (secretos). El resto, a la caja. Al final de la 3.ª ronda descartaréis 1.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Da la ficha de primer jugador a quien haya visitado una destilería más recientemente, o sortéalo.",
+          "randomizer": {
+            "type": "firstPlayer"
+          },
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "distillers",
+          "who": "eachPlayer",
+          "text": "Reparte al azar 2 cartas de Destilador de la selección {recipes} a cada jugador (las de cada selección están en las páginas 18-19 del reglamento).",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          },
+          "tip": "Selección A: EE. UU., Brasil, Jamaica, Canadá, China, Corea, India, Australia, Inglaterra, Francia, Escocia e Irlanda."
+        },
+        {
+          "id": "distillerSolo",
+          "who": "eachPlayer",
+          "text": "Elige un Destilador cualquiera de la selección {recipes}. Coge los Ingredientes y monedas de su dorso (Ingredientes a la despensa), su Receta Distintiva (en el portarecetas) y su Ingrediente Distintivo (fuera del tablero, a un lado), y pon la carta en la oficina.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "chooseDistiller",
+          "who": "eachPlayer",
+          "text": "Cada uno se queda 1 Destilador y devuelve el otro. Coge los Ingredientes y monedas de su dorso (Ingredientes a la despensa), su Receta Distintiva (en el portarecetas) y su Ingrediente Distintivo (fuera del tablero, a un lado), y pone la carta en la oficina.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "solo",
+      "title": "Modo solitario",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "soloGoals",
+          "who": "table",
+          "text": "Separa los objetivos de solitario por tipo (A, B y C), baraja cada tipo y forma el «barril» de abajo arriba: fila 1 con 2 objetivos C, fila 2 con 3 C, fila 3 con 4 B, fila 4 con 3 C y fila 5 con 2 A."
+        },
+        {
+          "id": "soloHarder",
+          "who": "table",
+          "text": "Más difícil: usa objetivos B en la fila 4 en lugar de C.",
+          "when": {
+            "eq": [
+              "soloHard",
+              "hard"
+            ]
+          }
+        },
+        {
+          "id": "soloHardest",
+          "who": "table",
+          "text": "Aún más difícil: usa objetivos B en las filas 2 y 4 en lugar de C.",
+          "when": {
+            "eq": [
+              "soloHard",
+              "harder"
+            ]
+          }
+        },
+        {
+          "id": "soloSwap",
+          "who": "table",
+          "text": "Pon la carta de intercambio de objetivo junto al barril."
+        },
+        {
+          "id": "soloBDeck",
+          "who": "table",
+          "text": "Baraja los objetivos B sobrantes y déjalos boca abajo junto al mercado prémium. Devuelve a la caja los A y C sobrantes."
+        },
+        {
+          "id": "soloFlip",
+          "who": "table",
+          "text": "Voltea los objetivos de las filas 1, 3 y 5 y pon una ficha de puntuación que no sea la tuya junto a la fila 1: marca la fila activa."
+        },
+        {
+          "id": "soloIgnore",
+          "who": "table",
+          "text": "En solitario no se usan los objetivos de destilería ni los Premios de Licor."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda (7 en total)",
+      "items": [
+        {
+          "id": "start",
+          "text": "Inicio: por orden de turno, resolved los efectos de inicio de ronda del Destilador y de las mejoras."
+        },
+        {
+          "id": "market",
+          "text": "1. Mercado: por turnos, compra 1 carta o 1 cubo de categoría por turno, o pasa. Máximo 2 cartas del mercado básico por ronda. Al pasar todos, descarta al camión la última carta de cada fila prémium (las 2 últimas a 2 jugadores) y repón."
+        },
+        {
+          "id": "marketSolo",
+          "text": "En solitario, en lugar del mantenimiento, descarta el primer objetivo B del mazo y retira del mercado prémium las cartas que indique el dorso revelado.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "distill",
+          "text": "2. Destilación (a la vez): puedes cambiar 1 carta por un Ingrediente básico de igual o menor coste. Pon en el Tanque al menos 1 Levadura, 1 Azúcar y 1 Agua, añade 1 Alcohol por cada Azúcar, baraja, retira la carta de arriba y la de abajo (a la despensa) y revela: comprueba qué Receta cumples, añade el Barril y coge su Etiqueta."
+        },
+        {
+          "id": "sell",
+          "text": "3. Venta (por turnos, 1 licor por turno): añade una Botella, cobra monedas y PL y coloca la Etiqueta en una Recompensa de tu tablero."
+        },
+        {
+          "id": "age",
+          "text": "4. Envejecimiento: los licores que deban envejecer van a la bodega (máx. 2) y cada licor de la bodega recibe 1 carta de Sabor boca abajo."
+        },
+        {
+          "id": "end",
+          "text": "Fin de ronda: comprobad los Premios de Licor (empate: se reparten redondeando hacia arriba). Si no vendiste nada, puedes cambiar hasta 4 PL por monedas. Avanza el barril y pasa la ficha de primer jugador. Al final de la 3.ª ronda, descarta 1 objetivo."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "PL del marcador",
+        "help": "Ventas, premios y recompensas durante la partida."
+      },
+      {
+        "id": "cellar",
+        "label": "Licores en la bodega",
+        "help": "PL de ingredientes, barril y receta, +1 por carta de Sabor."
+      },
+      {
+        "id": "bottles",
+        "label": "Colección de Botellas",
+        "help": "Misma región: 2→2, 3→4, 4→7, 5→10, 6+→15. +5 si tienes de 3 regiones."
+      },
+      {
+        "id": "upgrades",
+        "label": "Mejoras de destilería"
+      },
+      {
+        "id": "goals",
+        "label": "Objetivos de destilería",
+        "when": {
+          "gte": [
+            "players",
+            2
+          ]
+        }
+      },
+      {
+        "id": "coins",
+        "label": "Monedas",
+        "help": "1 PL por cada 5 monedas."
+      }
+    ],
+    "tiebreak": "Gana quien tenga más monedas. Si persiste, victoria compartida.",
+    "notes": "En solitario ganas si completas al menos un objetivo de cada fila y alcanzas la suma de los objetivos A y B completados (+5 si usaste el intercambio)."
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "id": "wingspan",
+  "name": "Wingspan",
+  "publisher": "Stonemaier Games / Maldito Games",
+  "sources": [
+    {
+      "title": "Reglamento Wingspan",
+      "file": "Wingspan.pdf"
+    },
+    {
+      "title": "Wingspan – Appendix (EN)",
+      "file": "Wingspan_apendice_EN.pdf"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 5,
+    "default": 3
+  },
+  "options": [
+    {
+      "id": "goalSide",
+      "label": "Cara del tablero de objetivos",
+      "type": "choice",
+      "default": "blue",
+      "help": "La azul es la recomendada si alguien juega por primera vez.",
+      "choices": [
+        {
+          "value": "blue",
+          "label": "Azul: 1 punto por elemento (menos competitiva)"
+        },
+        {
+          "value": "green",
+          "label": "Verde: mayorías 1.º/2.º/3.º (más competitiva)"
+        }
+      ]
+    }
+  ],
+  "vars": {
+    "goalText": [
+      {
+        "when": {
+          "eq": [
+            "goalSide",
+            "green"
+          ]
+        },
+        "value": "por la cara verde (mayorías: 1.º, 2.º y 3.º puesto)"
+      },
+      {
+        "value": "por la cara azul (1 punto por elemento, máximo 5)"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "birds",
+          "who": "table",
+          "text": "Baraja las cartas de ave, forma el mazo junto a la bandeja de aves y llena la bandeja con 3 cartas boca arriba."
+        },
+        {
+          "id": "supplyFeeder",
+          "who": "table",
+          "text": "Suministro y comedero:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "supply",
+              "text": "Deja todas las fichas de alimento y los huevos en el suministro, al alcance de todos."
+            },
+            {
+              "id": "feeder",
+              "text": "Lanza los 5 dados de alimento en la torre del comedero."
+            }
+          ]
+        },
+        {
+          "id": "goalBoard",
+          "who": "table",
+          "text": "Coloca el tablero de objetivos {goalText}."
+        },
+        {
+          "id": "goalTiles",
+          "who": "table",
+          "text": "Baraja las 8 losetas de objetivo sin mirarlas y pon 1 al azar (con la cara que salga) en cada uno de los 4 espacios de ronda. El resto, a la caja."
+        },
+        {
+          "id": "bonusDeck",
+          "who": "table",
+          "text": "Baraja las cartas de bonificación y deja el mazo en la mesa."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "kit",
+          "who": "eachPlayer",
+          "text": "Cada jugador recibe 1 tablero de jugador, 8 cubos de acción de su color, 2 cartas de bonificación al azar, 5 cartas de ave al azar y 5 fichas de alimento (1 de cada tipo)."
+        },
+        {
+          "id": "keepBirds",
+          "who": "eachPlayer",
+          "text": "Cada uno se queda hasta 5 aves y descarta el resto. Por cada ave que se quede, descarta 1 ficha de alimento (por ejemplo, 2 aves y 3 alimentos, o 4 aves y 1 alimento).",
+          "tip": "Fíjate en el alimento que piden las aves que te quedas (esquina superior izquierda). Los poderes marrones ayudan mucho al principio."
+        },
+        {
+          "id": "keepBonus",
+          "who": "eachPlayer",
+          "text": "Cada uno se queda 1 de sus 2 cartas de bonificación y descarta la otra. Puedes mirar las bonificaciones mientras eliges aves, y viceversa."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Elige al jugador inicial al azar y dale la ficha de jugador inicial.",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: 1 acción (pon un cubo)",
+      "items": [
+        {
+          "id": "play",
+          "text": "Jugar un ave: cubo sobre la columna donde va. Paga los huevos de esa columna (columnas 2-3: 1; 4-5: 2) y su alimento (2 alimentos cualesquiera valen por 1). Colócala en el hueco libre más a la izquierda de su hábitat y usa su poder «al jugarla»."
+        },
+        {
+          "id": "food",
+          "text": "Obtener alimento (bosque): coge tantos dados del comedero como indique el hueco. Si el hueco lo muestra, descarta 1 carta para 1 alimento más. Luego activa los poderes marrones del bosque de derecha a izquierda."
+        },
+        {
+          "id": "eggs",
+          "text": "Poner huevos (pradera): pon los huevos del hueco respetando el límite de cada ave. Si lo muestra, paga 1 alimento por 1 huevo más. Activa los poderes marrones de la pradera."
+        },
+        {
+          "id": "cards",
+          "text": "Robar cartas (humedal): roba de la bandeja o del mazo. Si lo muestra, descarta 1 huevo por 1 carta más. Activa los poderes marrones del humedal. La bandeja se repone al final del turno."
+        },
+        {
+          "id": "feederRule",
+          "text": "Comedero: si se vacía, tira los 5 dados. Si todos los dados que quedan muestran la misma cara y vas a coger alimento, puedes volver a tirarlos todos antes."
+        },
+        {
+          "id": "pink",
+          "text": "Poderes rosas: se activan una vez entre tus turnos, durante el turno de otro jugador."
+        }
+      ]
+    },
+    {
+      "id": "round",
+      "title": "Fin de ronda (4 rondas)",
+      "items": [
+        {
+          "id": "cubes",
+          "text": "Cuando todos han colocado sus cubos: quitad los cubos de los tableros."
+        },
+        {
+          "id": "goal",
+          "text": "Puntuad el objetivo de la ronda: cada jugador marca su resultado con 1 cubo (aunque sea 0). En la cara verde, los empatados suman los puestos que ocupan y los reparten (redondeando hacia abajo); hace falta al menos 1 elemento."
+        },
+        {
+          "id": "tray",
+          "text": "Descartad las aves de la bandeja y reponedla. La ficha de jugador inicial pasa a la izquierda."
+        },
+        {
+          "id": "turns",
+          "text": "Turnos por jugador: ronda 1 → 8, ronda 2 → 7, ronda 3 → 6, ronda 4 → 5."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "birds",
+        "label": "Aves",
+        "help": "Puntos impresos en tus aves."
+      },
+      {
+        "id": "bonus",
+        "label": "Cartas de bonificación"
+      },
+      {
+        "id": "goals",
+        "label": "Objetivos de fin de ronda"
+      },
+      {
+        "id": "eggs",
+        "label": "Huevos",
+        "help": "1 por huevo sobre tus aves."
+      },
+      {
+        "id": "cached",
+        "label": "Alimento almacenado",
+        "help": "1 por ficha guardada en una carta."
+      },
+      {
+        "id": "tucked",
+        "label": "Cartas solapadas",
+        "help": "1 por carta bajo tus aves."
+      }
+    ],
+    "tiebreak": "Gana quien tenga más fichas de alimento sin usar. Si persiste, victoria compartida."
+  }
+}

@@ -5,16 +5,99 @@
   "publisher": "Ravensburger / alea",
   "sources": [
     {
+      "title": "Reglamento Puerto Rico 1897 Special Edition",
+      "file": "Puerto_rico_edicion_especial.pdf"
+    },
+    {
       "title": "Reglamento Puerto Rico 1897",
       "file": "Puerto_rico.pdf"
     }
   ],
   "players": {
-    "min": 2,
+    "min": 1,
     "max": 5,
     "default": 4
   },
   "options": [
+    {
+      "id": "edition",
+      "label": "¿Qué edición tenéis?",
+      "type": "choice",
+      "default": "special",
+      "help": "Las reglas son las mismas; cambian algunos componentes (bandejas, bolsa de plantaciones) y la especial trae más expansiones y el Puertoma.",
+      "choices": [
+        {
+          "value": "special",
+          "label": "Special Edition"
+        },
+        {
+          "value": "standard",
+          "label": "Estándar",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "puertoma2p",
+      "label": "¿Jugáis los 2 contra un Puertoma (jugador virtual)?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "all": [
+          {
+            "eq": [
+              "players",
+              2
+            ]
+          },
+          {
+            "eq": [
+              "edition",
+              "special"
+            ]
+          }
+        ]
+      },
+      "help": "Alternativa más interactiva a las reglas clásicas de 2 jugadores: se prepara como una partida de 3."
+    },
+    {
+      "id": "botLevel",
+      "label": "Dificultad del Puertoma",
+      "type": "choice",
+      "default": "normal",
+      "when": {
+        "any": [
+          {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          {
+            "is": "puertoma2p"
+          }
+        ]
+      },
+      "choices": [
+        {
+          "value": "easy",
+          "label": "Fácil"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "hard",
+          "label": "Difícil"
+        }
+      ]
+    },
     {
       "id": "expNewBuildings",
       "label": "¿1ª expansión: Los nuevos edificios?",
@@ -38,15 +121,72 @@
       "label": "¿4ª expansión: El festival?",
       "type": "boolean",
       "default": false
+    },
+    {
+      "id": "expFestivalCards",
+      "label": "¿5ª expansión: Cartas de festival?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "all": [
+          {
+            "eq": [
+              "edition",
+              "special"
+            ]
+          },
+          {
+            "is": "expFestival"
+          }
+        ]
+      }
+    },
+    {
+      "id": "expAchievements",
+      "label": "¿6ª expansión: Logros?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "edition",
+          "special"
+        ]
+      }
+    },
+    {
+      "id": "achDraft",
+      "label": "¿Logros con selección (draft)?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "expAchievements"
+      },
+      "help": "Recomendado para jugadores con experiencia."
     }
   ],
   "vars": {
-    "coins": [
+    "seats": [
       {
         "when": {
           "eq": [
             "players",
-            2
+            1
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                2
+              ]
+            },
+            {
+              "is": "puertoma2p"
+            }
           ]
         },
         "value": 3
@@ -55,7 +195,7 @@
         "when": {
           "eq": [
             "players",
-            3
+            2
           ]
         },
         "value": 2
@@ -64,6 +204,137 @@
         "when": {
           "eq": [
             "players",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 5
+      }
+    ],
+    "bots": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": true
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "eq": [
+                "players",
+                2
+              ]
+            },
+            {
+              "is": "puertoma2p"
+            }
+          ]
+        },
+        "value": true
+      },
+      {
+        "value": false
+      }
+    ],
+    "workersTotal": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": 42
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": 58
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            4
+          ]
+        },
+        "value": 79
+      },
+      {
+        "value": 100
+      }
+    ],
+    "planterRole": [
+      {
+        "when": {
+          "eq": [
+            "edition",
+            "special"
+          ]
+        },
+        "value": "Agricultor"
+      },
+      {
+        "value": "Plantador"
+      }
+    ],
+    "producerRole": [
+      {
+        "when": {
+          "eq": [
+            "edition",
+            "special"
+          ]
+        },
+        "value": "Artesano"
+      },
+      {
+        "value": "Productor"
+      }
+    ],
+    "coins": [
+      {
+        "when": {
+          "eq": [
+            "seats",
+            2
+          ]
+        },
+        "value": 3
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
+            3
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "seats",
             4
           ]
         },
@@ -77,7 +348,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             2
           ]
         },
@@ -86,7 +357,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -95,7 +366,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             4
           ]
         },
@@ -109,7 +380,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             2
           ]
         },
@@ -118,7 +389,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -127,7 +398,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             4
           ]
         },
@@ -141,7 +412,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             2
           ]
         },
@@ -150,7 +421,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -159,7 +430,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             4
           ]
         },
@@ -173,7 +444,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -182,7 +453,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             5
           ]
         },
@@ -196,7 +467,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             2
           ]
         },
@@ -205,7 +476,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -214,7 +485,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             4
           ]
         },
@@ -228,7 +499,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             2
           ]
         },
@@ -237,7 +508,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             3
           ]
         },
@@ -246,7 +517,7 @@
       {
         "when": {
           "eq": [
-            "players",
+            "seats",
             4
           ]
         },
@@ -254,6 +525,20 @@
       },
       {
         "value": 6
+      }
+    ],
+    "botSentence": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": "los 2 Puertomas cuentan como jugadores"
+      },
+      {
+        "value": "el Puertoma cuenta como un jugador más"
       }
     ]
   },
@@ -269,16 +554,38 @@
           "group": true,
           "substeps": [
             {
+              "id": "trays",
+              "text": "Coloca el tablero principal en el centro y, cerca, la bandeja de edificios, la de recursos y las bandejas de PV y trabajadores de {seats} jugadores ({vp} PV y {workersTotal} trabajadores). Pon el Registro de Empleo y la Casa de Comercio en su sitio.",
+              "when": {
+                "eq": [
+                  "edition",
+                  "special"
+                ]
+              }
+            },
+            {
               "id": "central",
-              "text": "Coloca el tablero central con la banca en el centro y deja las 51 monedas en la banca."
+              "text": "Coloca el tablero central con la banca en el centro y deja las 51 monedas en la banca.",
+              "when": {
+                "eq": [
+                  "edition",
+                  "standard"
+                ]
+              }
             },
             {
               "id": "vp",
-              "text": "Prepara {vp} puntos de victoria en 2 montones."
+              "text": "Prepara {vp} puntos de victoria en 2 montones.",
+              "when": {
+                "eq": [
+                  "edition",
+                  "standard"
+                ]
+              }
             },
             {
               "id": "quarries",
-              "text": "Deja las 8 losetas de cantera boca arriba."
+              "text": "Deja las 8 losetas de cantera boca arriba en una pila."
             }
           ]
         },
@@ -300,7 +607,7 @@
                   },
                   {
                     "gte": [
-                      "players",
+                      "seats",
                       3
                     ]
                   }
@@ -319,7 +626,7 @@
                   },
                   {
                     "eq": [
-                      "players",
+                      "seats",
                       2
                     ]
                   }
@@ -350,17 +657,33 @@
           "substeps": [
             {
               "id": "plantations2p",
-              "text": "Con 2 jugadores, retira del juego 3 losetas de cada tipo (maíz, fruta, azúcar, tabaco, café y cantera).",
+              "text": "Con 2 jugadores, retira del juego 3 losetas de maíz, fruta, azúcar, tabaco, café y cantera.",
               "when": {
                 "eq": [
-                  "players",
+                  "seats",
                   2
                 ]
               }
             },
             {
               "id": "plantations",
-              "text": "Mezcla boca abajo las losetas de plantación restantes en pilas y revela {faceUpPlantations} junto a las canteras (una más que jugadores)."
+              "text": "Mezcla boca abajo las losetas de plantación restantes en pilas y revela {faceUpPlantations} junto a las canteras (una más que jugadores).",
+              "when": {
+                "eq": [
+                  "edition",
+                  "standard"
+                ]
+              }
+            },
+            {
+              "id": "bag",
+              "text": "Mete todas las plantaciones en la bolsa y saca al azar {faceUpPlantations} (una más que jugadores) al tablero.",
+              "when": {
+                "eq": [
+                  "edition",
+                  "special"
+                ]
+              }
             }
           ]
         },
@@ -376,14 +699,14 @@
             },
             {
               "id": "smugglerRole",
-              "text": "Añade la tarjeta de rol Contrabandista y deja a mano los carteles de contrabandista.",
+              "text": "Añade el rol Contrabandista y deja a mano su ficha.",
               "when": {
                 "is": "expSmuggler"
               }
             },
             {
               "id": "ships",
-              "text": "Barcos cargueros: los de {ships} casillas."
+              "text": "Barcos mercantes: los de {ships} casillas."
             }
           ]
         },
@@ -402,18 +725,47 @@
               "text": "Con 2 jugadores, retira 2 barriles de cada tipo.",
               "when": {
                 "eq": [
-                  "players",
+                  "seats",
                   2
                 ]
               }
             },
             {
               "id": "workers",
-              "text": "Pon {players} trabajadores en el Registro de Empleo y deja {workers} como reserva.",
+              "text": "Pon {seats} trabajadores en el Registro de Empleo.",
               "when": {
-                "not": {
-                  "is": "expBurghers"
-                }
+                "all": [
+                  {
+                    "not": {
+                      "is": "expBurghers"
+                    }
+                  },
+                  {
+                    "eq": [
+                      "edition",
+                      "special"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "workersStd",
+              "text": "Pon {seats} trabajadores en el Registro de Empleo y deja {workers} como reserva.",
+              "when": {
+                "all": [
+                  {
+                    "not": {
+                      "is": "expBurghers"
+                    }
+                  },
+                  {
+                    "eq": [
+                      "edition",
+                      "standard"
+                    ]
+                  }
+                ]
               }
             },
             {
@@ -446,6 +798,14 @@
               "text": "Edificios: mezcla un edificio de cada tipo de la tercera fila y pon uno al azar. Si coincide con el productor de la plantación elegida, repite. Con 2 jugadores, rellena el hueco en el tablero con su gemelo."
             }
           ]
+        },
+        {
+          "id": "festivalCards",
+          "who": "table",
+          "text": "Cartas de festival: roba 3 al azar, ponlas en los espacios del tablero de festival y sortea para cada una las plantaciones, mercancías o edificios que pida, como en El festival.",
+          "when": {
+            "is": "expFestivalCards"
+          }
         }
       ]
     },
@@ -456,12 +816,12 @@
         {
           "id": "boards",
           "who": "eachPlayer",
-          "text": "Cada jugador coge un tablero individual y {coins} monedas, que deja a la vista sobre su retrato."
+          "text": "Cada jugador coge un tablero de jugador y {coins} monedas, que deja a la vista."
         },
         {
           "id": "governor",
           "who": "table",
-          "text": "Sortea el jugador inicial: recibe la tarjeta de Gobernador.",
+          "text": "El jugador inicial es siempre un humano (sortéalo si sois varios): recibe el marcador de Gobernador.",
           "randomizer": {
             "type": "firstPlayer"
           }
@@ -472,15 +832,91 @@
           "text": "Plantación inicial, en orden de turno: {startPlantations}. Cada uno la pone boca arriba en una casilla de cultivo de su isla."
         },
         {
+          "id": "achievements",
+          "who": "eachPlayer",
+          "text": "Logros: reparte 4 cartas de logro boca abajo a cada jugador. Se pueden mirar, pero no enseñar.",
+          "when": {
+            "all": [
+              {
+                "is": "expAchievements"
+              },
+              {
+                "not": {
+                  "is": "achDraft"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "achievementsDraft",
+          "who": "eachPlayer",
+          "text": "Logros con selección: cada jugador recibe 4, se queda 1 boca abajo y pasa el resto a la izquierda; repetid hasta tener 4 cada uno.",
+          "when": {
+            "is": "achDraft"
+          }
+        },
+        {
           "id": "rounds2p",
           "who": "table",
           "when": {
             "eq": [
-              "players",
+              "seats",
               2
             ]
           },
           "text": "Con 2 jugadores, en cada ronda se eligen 6 de los 7 roles (3 cada uno); el séptimo recibe 1 moneda y después cambia el Gobernador."
+        }
+      ]
+    },
+    {
+      "id": "puertoma",
+      "title": "Puertoma (jugador virtual)",
+      "when": {
+        "is": "bots"
+      },
+      "steps": [
+        {
+          "id": "pmSeat",
+          "who": "rival",
+          "text": "Prepara la partida como para {seats} jugadores: {botSentence} en todo (monedas, plantaciones, roles, barcos…). Los Puertomas juegan siempre después de los humanos."
+        },
+        {
+          "id": "pmBoards",
+          "who": "rival",
+          "text": "Cada Puertoma usa su propio tablero de jugador de Puertoma en lugar del normal. Coge sus monedas iniciales y su plantación inicial según su puesto en el orden de turno, y pone la plantación en el espacio de isla correspondiente de más a la izquierda."
+        },
+        {
+          "id": "pmAction",
+          "who": "rival",
+          "text": "Pon el tablero de acción de Puertoma a la vista con la ficha de acción en la casilla del Constructor. Baraja las cartas de desempate y déjalas boca abajo al lado."
+        },
+        {
+          "id": "pmSkills",
+          "who": "rival",
+          "text": "Cada Puertoma pone su ficha de reserva junto a su tablero, baraja sus losetas de habilidad y coloca 1 al azar de cada nivel (1 a 4) boca abajo en su tablero."
+        },
+        {
+          "id": "pmEasy",
+          "who": "rival",
+          "text": "Nivel fácil: cuando un Puertoma desbloquee 2 habilidades, descarta las otras 2.",
+          "when": {
+            "eq": [
+              "botLevel",
+              "easy"
+            ]
+          }
+        },
+        {
+          "id": "pmHard",
+          "who": "rival",
+          "text": "Nivel difícil: voltea la habilidad de nivel 1 de cada Puertoma (empieza activa). El que tiene fruta gana un edificio de nivel 1 al azar, 1 trabajador en la fruta y 1 caja de maíz. El que tiene maíz gana un edificio de nivel 2 al azar y 1 caja de azúcar, y empieza con solo 1 moneda.",
+          "when": {
+            "eq": [
+              "botLevel",
+              "hard"
+            ]
+          }
         }
       ]
     }
@@ -492,15 +928,44 @@
       "items": [
         {
           "id": "pick",
-          "text": "Empezando por el Gobernador, cada jugador elige 1 rol: él tiene el privilegio y todos (en orden, desde él) hacen la acción."
+          "text": "Empezando por el Gobernador, cada jugador elige 1 rol (y coge sus monedas): él usa la ventaja y todos, desde él hacia la izquierda, hacen la acción. Todo es opcional salvo el Capitán."
         },
         {
           "id": "roles",
-          "text": "Plantador (+cantera) · Reclutador (+1 trabajador) · Constructor (−1 al coste) · Productor (+1 barril) · Mercader (+1 moneda) · Capitán (+1 PV) · Aventurero (1 moneda, solo él)."
+          "text": "{planterRole} (ventaja: cantera en vez de plantación) · Reclutador (+1 trabajador) · Constructor (−1 al coste) · {producerRole} (+1 mercancía) · Mercader (+1 moneda) · Capitán (+1 PV) · Aventurero (1 moneda, solo él)."
         },
         {
           "id": "coins",
-          "text": "Fin de ronda: los roles no elegidos reciben 1 moneda y el Gobernador pasa a la izquierda."
+          "text": "Fin de ronda: 1 moneda en cada rol no elegido, se devuelven los roles y el Gobernador pasa a la izquierda."
+        },
+        {
+          "id": "two",
+          "text": "A 2 jugadores, cada uno elige 3 roles por ronda, alternando; el séptimo recibe 1 moneda.",
+          "when": {
+            "eq": [
+              "seats",
+              2
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "pmTurn",
+      "title": "Cómo elige rol el Puertoma",
+      "when": {
+        "is": "bots"
+      },
+      "items": [
+        {
+          "id": "pm1",
+          "who": "rival",
+          "text": "Solo elige roles disponibles y rentables para él. Orden: 1) un rol adyacente a la ficha de acción siguiendo las flechas; 2) el rol con más monedas (el Contrabandista cuenta como 2); 3) roba carta de desempate y elige el primer rol válido de la lista."
+        },
+        {
+          "id": "pm2",
+          "who": "rival",
+          "text": "Si elige o sigue un rol adyacente por flecha a la ficha de acción, mueve la ficha a ese rol. Las acciones concretas de cada rol están en las páginas 37-38 del reglamento."
         }
       ]
     },
@@ -510,7 +975,15 @@
       "items": [
         {
           "id": "end",
-          "text": "Al final de la ronda en que no se pueden reponer los trabajadores del Registro, alguien construye su 12ª casilla o se agotan las fichas de PV."
+          "text": "Termina al final de la fase en que no se puede repoblar el Registro de Empleo, alguien llena sus 12 espacios de edificio o se coge la última ficha de PV durante el Capitán (si se acaban en otra fase, se juega hasta el final del siguiente Capitán)."
+        },
+        {
+          "id": "pmEnd",
+          "who": "rival",
+          "text": "Un Puertoma llena su ciudad con 2 edificios de cada uno de los 4 niveles.",
+          "when": {
+            "is": "bots"
+          }
         }
       ]
     }
@@ -538,8 +1011,22 @@
         "when": {
           "is": "expBurghers"
         }
+      },
+      {
+        "id": "achievements",
+        "label": "Logros",
+        "when": {
+          "is": "expAchievements"
+        }
       }
     ],
-    "tiebreak": "Gana quien tenga más monedas y barriles (1 barril = 1 moneda)."
+    "tiebreak": "Gana quien tenga más monedas y mercancías juntas. Si persiste, victoria compartida.",
+    "rival": {
+      "label": "Puertoma",
+      "when": {
+        "is": "bots"
+      }
+    },
+    "notes": "Puertoma: no usa los bonus de sus edificios grandes; en su lugar suma 6 por edificio grande, 1 por trabajador sin usar, 3 por cantera, 2 por cada tipo de plantación con sus 2 losetas activas y 1 por cada 2 mercancías y monedas (hacia arriba). En solitario, anota aquí el mejor de los dos."
   }
 }
