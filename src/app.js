@@ -5,11 +5,26 @@ let GAMES = [];
 const APP_VERSION = document.documentElement.dataset.version || 'local';
 
 /* ---------- almacenamiento (opcional, solo en este navegador) ---------- */
+// El progreso de una partida (casillas, eventos y puntos) caduca a las 8 h del último cambio:
+// sobrevive a que Android cierre la app a mitad de partida, pero la siguiente empieza de cero.
+const SESSION_KEY = /^(done|events|score):/;
+const SESSION_TTL = 8 * 60 * 60 * 1000;
 const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  get(k, d) {
+    try {
+      const raw = localStorage.getItem(k);
+      if (!raw) return d;
+      const v = JSON.parse(raw);
+      if (!SESSION_KEY.test(k)) return v;
+      if (v && typeof v === 'object' && 't' in v && Date.now() - v.t < SESSION_TTL) return v.v;
+      localStorage.removeItem(k); return d; // caducado (o guardado con el formato antiguo, sin fecha)
+    } catch { return d; }
+  },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(SESSION_KEY.test(k) ? { v, t: Date.now() } : v)); } catch {} },
   del(k) { try { localStorage.removeItem(k); } catch {} },
 };
+// Al abrir, limpiar el progreso caducado de partidas anteriores.
+try { for (const k of Object.keys(localStorage)) if (SESSION_KEY.test(k)) store.get(k); } catch {}
 
 /* ---------- interfaz ---------- */
 const app = document.getElementById('app');
