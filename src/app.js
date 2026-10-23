@@ -5,10 +5,10 @@ let GAMES = [];
 const APP_VERSION = document.documentElement.dataset.version || 'local';
 
 /* ---------- almacenamiento (opcional, solo en este navegador) ---------- */
-// El progreso de una partida (casillas, eventos y puntos) caduca 1 h después del último cambio:
+// El progreso de una partida (casillas, eventos y puntos) caduca 4 h después del último cambio:
 // sobrevive a que Android cierre la app a mitad de partida, pero la siguiente empieza de cero.
 const SESSION_KEY = /^(done|events|score):/;
-const SESSION_TTL = 60 * 60 * 1000;
+const SESSION_TTL = 4 * 60 * 60 * 1000;
 const store = {
   get(k, d) {
     try {
