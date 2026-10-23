@@ -1,0 +1,1029 @@
+{
+  "schemaVersion": 1,
+  "id": "arnak",
+  "name": "Las ruinas perdidas de Arnak",
+  "publisher": "Czech Games Edition / Devir",
+  "sources": [
+    {
+      "title": "Reglamento Las ruinas perdidas de Arnak",
+      "file": "Arnak.pdf"
+    },
+    {
+      "title": "Líderes de la expedición",
+      "file": "Arnak_lideres.pdf"
+    },
+    {
+      "title": "La expedición perdida",
+      "file": "Arnak_expedicion_perdida.pdf"
+    },
+    {
+      "title": "Twisted Paths (Cofre de aventuras)",
+      "file": "Arnak_cofre_aventuras_EN.pdf"
+    },
+    {
+      "title": "Surprise Shipment",
+      "file": "Arnak_surprise_shipment_EN.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
+  "options": [
+    {
+      "id": "temple",
+      "label": "Templo (marcador de investigación)",
+      "type": "choice",
+      "default": "bird",
+      "help": "El Pájaro es el recomendado para la primera partida. Los templos de las expansiones están pensados para jugar con líderes.",
+      "choices": [
+        {
+          "value": "bird",
+          "label": "Templo del Pájaro (básico)"
+        },
+        {
+          "value": "serpent",
+          "label": "Templo de la Serpiente (básico)"
+        },
+        {
+          "value": "monkey",
+          "label": "Templo del Mono (Líderes)"
+        },
+        {
+          "value": "lizard",
+          "label": "Templo del Lagarto (Líderes)"
+        },
+        {
+          "value": "waterfall",
+          "label": "Templo de la Cascada (Expedición perdida)"
+        },
+        {
+          "value": "tree",
+          "label": "Templo del Árbol (Expedición perdida)"
+        },
+        {
+          "value": "spider",
+          "label": "Templo de la Araña (Twisted Paths)"
+        },
+        {
+          "value": "owl",
+          "label": "Templo del Búho (Twisted Paths)"
+        }
+      ]
+    },
+    {
+      "id": "islandSide",
+      "label": "Cara del tablero bajo el templo",
+      "type": "choice",
+      "default": "serpent",
+      "when": {
+        "in": [
+          "temple",
+          [
+            "monkey",
+            "lizard",
+            "waterfall",
+            "tree"
+          ]
+        ]
+      },
+      "help": "Se recomienda la de la Serpiente: sus yacimientos tienen costes de viaje más interesantes.",
+      "choices": [
+        {
+          "value": "serpent",
+          "label": "Templo de la Serpiente"
+        },
+        {
+          "value": "bird",
+          "label": "Templo del Pájaro"
+        }
+      ]
+    },
+    {
+      "id": "leaders",
+      "label": "¿Jugáis con líderes?",
+      "type": "boolean",
+      "default": false,
+      "help": "Capitán, Cetrera, Baronesa, Profesor, Exploradora y Místico (Líderes de la expedición) y Periodista y Mecánica (Expedición perdida)."
+    },
+    {
+      "id": "expLeaders",
+      "label": "¿Mezcláis las cartas y losetas de Líderes de la expedición?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "expMissing",
+      "label": "¿Mezcláis las cartas y losetas de La expedición perdida?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "expTwisted",
+      "label": "¿Mezcláis las losetas de Twisted Paths?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "expSurprise",
+      "label": "¿Mezcláis Surprise Shipment?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "moonStaff",
+      "label": "¿Variante de la Vara de la Luna Roja?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "expLeaders"
+      },
+      "help": "Rota más rápido la fila de cartas."
+    },
+    {
+      "id": "redTiles",
+      "label": "Solitario: ¿cuántas acciones rojas usa el rival?",
+      "type": "choice",
+      "default": 0,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": 0,
+          "label": "0 (todas verdes, la más fácil)"
+        },
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 2,
+          "label": "2"
+        },
+        {
+          "value": 3,
+          "label": "3"
+        },
+        {
+          "value": 4,
+          "label": "4"
+        },
+        {
+          "value": 5,
+          "label": "5"
+        }
+      ]
+    },
+    {
+      "id": "purple",
+      "label": "Solitario: ¿acciones moradas (Twisted Paths)?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "help": "Sustituyen a la versión roja de su acción: +2 de dificultad cada una. El rival usa también cuaderno."
+    },
+    {
+      "id": "rivalGoals",
+      "label": "Solitario: ¿objetivos del rival (Twisted Paths)?",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      }
+    }
+  ],
+  "vars": {
+    "side": [
+      {
+        "when": {
+          "in": [
+            "temple",
+            [
+              "bird"
+            ]
+          ]
+        },
+        "value": "bird"
+      },
+      {
+        "when": {
+          "in": [
+            "temple",
+            [
+              "serpent"
+            ]
+          ]
+        },
+        "value": "serpent"
+      },
+      {
+        "when": {
+          "in": [
+            "temple",
+            [
+              "spider",
+              "owl"
+            ]
+          ]
+        },
+        "value": "twisted"
+      },
+      {
+        "when": {
+          "eq": [
+            "islandSide",
+            "bird"
+          ]
+        },
+        "value": "bird"
+      },
+      {
+        "value": "serpent"
+      }
+    ],
+    "boardText": [
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "bird"
+          ]
+        },
+        "value": "el tablero principal por la cara del Templo del Pájaro"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "serpent"
+          ]
+        },
+        "value": "el tablero principal por la cara del Templo de la Serpiente"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "spider"
+          ]
+        },
+        "value": "el tablero de Twisted Paths por la cara del Templo de la Araña (el tablero original se queda en la caja)"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "owl"
+          ]
+        },
+        "value": "el tablero de Twisted Paths por la cara del Templo del Búho (el tablero original se queda en la caja)"
+      },
+      {
+        "when": {
+          "eq": [
+            "islandSide",
+            "bird"
+          ]
+        },
+        "value": "el tablero principal por la cara del Templo del Pájaro y, encima de su marcador de investigación, el nuevo tablero de investigación"
+      },
+      {
+        "value": "el tablero principal por la cara del Templo de la Serpiente y, encima de su marcador de investigación, el nuevo tablero de investigación"
+      }
+    ],
+    "templeName": [
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "monkey"
+          ]
+        },
+        "value": "del Mono"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "lizard"
+          ]
+        },
+        "value": "del Lagarto"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "waterfall"
+          ]
+        },
+        "value": "de la Cascada"
+      },
+      {
+        "when": {
+          "eq": [
+            "temple",
+            "tree"
+          ]
+        },
+        "value": "del Árbol"
+      },
+      {
+        "value": ""
+      }
+    ],
+    "pile": [
+      {
+        "when": {
+          "lte": [
+            "players",
+            2
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "seats": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            1
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 2
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 3
+      },
+      {
+        "value": 4
+      }
+    ],
+    "assistantsPile": [
+      {
+        "when": {
+          "is": "expLeaders"
+        },
+        "value": 5
+      },
+      {
+        "value": 4
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero",
+      "steps": [
+        {
+          "id": "mainBoard",
+          "who": "table",
+          "text": "Coloca {boardText}."
+        },
+        {
+          "id": "cardRow",
+          "who": "table",
+          "text": "Fila de cartas: baraja el mazo de artefactos y el de objetos por separado y déjalos en su recuadro, con las cartas de Miedo en el suyo. Pon la vara lunar en la ronda I, 1 artefacto boca arriba a su izquierda y 5 objetos a su derecha."
+        },
+        {
+          "id": "idols",
+          "who": "table",
+          "text": "Mezcla los ídolos boca abajo. Pon 1 boca arriba en cada yacimiento de nivel 1 y, en cada yacimiento de nivel 2, 1 boca arriba y 1 boca abajo (como indica el tablero).",
+          "when": {
+            "not": {
+              "eq": [
+                "temple",
+                "owl"
+              ]
+            }
+          }
+        },
+        {
+          "id": "idolsOwl",
+          "who": "table",
+          "text": "Mezcla los ídolos boca abajo (si usas los de La expedición perdida, retira los que dan losetas de templo de 2 puntos o efectos de pedestal). Pon 1 boca arriba en cada yacimiento de nivel 1. En este tablero, los yacimientos de nivel 2 de la segunda fila empiezan con 1 ídolo boca arriba y 1 boca abajo, y cuestan 2 más para explorar.",
+          "when": {
+            "eq": [
+              "temple",
+              "owl"
+            ]
+          }
+        },
+        {
+          "id": "block3",
+          "who": "table",
+          "text": "Con 3 jugadores, mezcla las losetas de anulación, revela 3 y tapa con ellas la casilla de arqueólogo indicada en esos 3 yacimientos de nivel 1. Devuelve las otras 2.",
+          "when": {
+            "eq": [
+              "players",
+              3
+            ]
+          }
+        },
+        {
+          "id": "block2",
+          "who": "table",
+          "text": "Con 2 jugadores (o en solitario), tapa las 5 casillas de arqueólogo con símbolo de jugadores extra: cada yacimiento de nivel 1 solo admite 1 arqueólogo.",
+          "when": {
+            "lte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "templeTiles",
+          "who": "table",
+          "text": "Losetas de templo: haz pilas de {pile} losetas cada una en el Templo: 1 pila de 11 puntos arriba, 2 de 6 en el centro y 3 de 2 abajo. El resto, a la caja.",
+          "when": {
+            "not": {
+              "eq": [
+                "temple",
+                "owl"
+              ]
+            }
+          }
+        },
+        {
+          "id": "rewards",
+          "who": "table",
+          "text": "Mezcla boca abajo las losetas de recompensa a la investigación. Haz con {pile} de ellas la pila de recompensas del Templo (boca abajo, arriba del marcador) y pon 1 boca arriba en cada casilla del marcador que la lleve (las marcadas con 3+ o 4 solo con esos jugadores). El resto, a la caja.",
+          "when": {
+            "not": {
+              "eq": [
+                "temple",
+                "owl"
+              ]
+            }
+          }
+        },
+        {
+          "id": "reserve",
+          "who": "table",
+          "text": "Reserva: fichas de recursos, losetas de yacimiento de nivel 1 y de nivel 2 mezcladas boca abajo y guardianes mezclados boca abajo."
+        },
+        {
+          "id": "assistants",
+          "who": "table",
+          "text": "Ayudantes: ponlos con la cara plateada, mézclalos y forma 3 pilas de {assistantsPile}.",
+          "when": {
+            "not": {
+              "eq": [
+                "side",
+                "serpent"
+              ]
+            }
+          }
+        },
+        {
+          "id": "assistantsSerpent",
+          "who": "table",
+          "text": "Ayudantes (Templo de la Serpiente): pon {pile} al azar en la casilla de rescate del marcador (solo el de arriba a la vista) y forma 3 pilas en la reserva: dos de 3 y una con el resto.",
+          "when": {
+            "eq": [
+              "side",
+              "serpent"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "expansions",
+      "title": "Contenido de expansiones",
+      "when": {
+        "any": [
+          {
+            "is": "expLeaders"
+          },
+          {
+            "is": "expMissing"
+          },
+          {
+            "is": "expTwisted"
+          },
+          {
+            "is": "expSurprise"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "id": "mixLeaders",
+          "who": "table",
+          "text": "Líderes de la expedición: mezcla sus artefactos, objetos, yacimientos, guardianes, ayudantes e ídolos con los del juego. Sustituye la Llave de piedra y el ayudante minero por sus nuevas versiones. Sobrarán 4 ídolos: guárdalos para el Templo del Lagarto o a la caja.",
+          "when": {
+            "is": "expLeaders"
+          }
+        },
+        {
+          "id": "mixMissing",
+          "who": "table",
+          "text": "La expedición perdida: mezcla sus objetos, artefactos, ayudantes, guardianes, ídolos y los yacimientos Prospector y Viajero. Si sale uno de esos yacimientos, saca de la caja el mazo de encuentro que indique, barájalo y déjalo junto al tablero.",
+          "when": {
+            "is": "expMissing"
+          }
+        },
+        {
+          "id": "mixTwisted",
+          "who": "table",
+          "text": "Twisted Paths: mezcla sus yacimientos, guardianes, ayudantes e ídolos con los del juego.",
+          "when": {
+            "is": "expTwisted"
+          }
+        },
+        {
+          "id": "mixSurprise",
+          "who": "table",
+          "text": "Surprise Shipment: mezcla sus 30 artefactos, 20 objetos y 2 yacimientos de nivel 2. Sustituye el yacimiento del avión estrellado por la versión actualizada.",
+          "when": {
+            "is": "expSurprise"
+          }
+        },
+        {
+          "id": "moon",
+          "who": "table",
+          "text": "Vara de la Luna Roja: al final de cada ronda, la vara destierra los 2 objetos y los 2 artefactos más cercanos antes de avanzar.",
+          "when": {
+            "is": "moonStaff"
+          }
+        }
+      ]
+    },
+    {
+      "id": "temples",
+      "title": "Templo {templeName}",
+      "when": {
+        "in": [
+          "temple",
+          [
+            "monkey",
+            "lizard",
+            "waterfall",
+            "tree"
+          ]
+        ]
+      },
+      "steps": [
+        {
+          "id": "tMonkey",
+          "who": "table",
+          "text": "Templo del Mono: las losetas de recompensa van en pilas secretas boca abajo (1 por jugador). En la casilla del artefacto, roba artefactos hasta encontrar uno con el coste indicado, colócalo y vuelve a barajar los demás.",
+          "when": {
+            "eq": [
+              "temple",
+              "monkey"
+            ]
+          }
+        },
+        {
+          "id": "tLizard",
+          "who": "table",
+          "text": "Templo del Lagarto: mezcla los 4 ídolos sobrantes en una pila boca abajo junto a su fila, y pon un guardián al azar boca abajo en su casilla. Nadie pasa del guardián hasta derrotarlo.",
+          "when": {
+            "eq": [
+              "temple",
+              "lizard"
+            ]
+          }
+        },
+        {
+          "id": "tWaterfall",
+          "who": "table",
+          "text": "Templo de la Cascada: pon en el espacio del yacimiento oculto 1 yacimiento de nivel 2 por jugador, al azar y boca abajo, y coloca las losetas de cascada tapando los dos costes indicados.",
+          "when": {
+            "eq": [
+              "temple",
+              "waterfall"
+            ]
+          }
+        },
+        {
+          "id": "tTree",
+          "who": "table",
+          "text": "Templo del Árbol: antes de repartir ídolos en los yacimientos, forma dos pilas de ídolos al azar boca abajo (1 por jugador cada una) en sus espacios.",
+          "when": {
+            "eq": [
+              "temple",
+              "tree"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "twisted",
+      "title": "Templo de Twisted Paths",
+      "when": {
+        "in": [
+          "temple",
+          [
+            "spider",
+            "owl"
+          ]
+        ]
+      },
+      "steps": [
+        {
+          "id": "tSpider",
+          "who": "table",
+          "text": "Templo de la Araña: pon {pile} tablillas oscuras en cada espacio de tablillas oscuras, bajo los yacimientos de nivel 2. El resto, a la caja.",
+          "when": {
+            "eq": [
+              "temple",
+              "spider"
+            ]
+          }
+        },
+        {
+          "id": "tOwlTop",
+          "who": "table",
+          "text": "Templo del Búho: usa sus propias losetas de templo (las normales se quedan en la caja). Pon losetas de templo del Búho e ídolos boca abajo arriba del templo según los números impresos.",
+          "when": {
+            "eq": [
+              "temple",
+              "owl"
+            ]
+          }
+        },
+        {
+          "id": "tOwlTrack",
+          "who": "table",
+          "text": "Coloca en el marcador una loseta de templo del Búho o una loseta de recompensa en cada espacio indicado (algunas solo a 3-4 jugadores), y losetas e ídolos en los 6 pasadizos secretos.",
+          "when": {
+            "eq": [
+              "temple",
+              "owl"
+            ]
+          }
+        },
+        {
+          "id": "tOwlLantern",
+          "who": "eachPlayer",
+          "text": "Cada jugador deja su ficha de linterna en su tablilla.",
+          "when": {
+            "eq": [
+              "temple",
+              "owl"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "leaderSetup",
+      "title": "Líderes",
+      "when": {
+        "is": "leaders"
+      },
+      "steps": [
+        {
+          "id": "pick",
+          "who": "eachPlayer",
+          "text": "Elegid líder (o sortead con las fichas de asignación). De más sencillo a más complejo: Capitán, Cetrera, Baronesa, Profesor, Exploradora, Místico; Periodista y Mecánica son de La expedición perdida."
+        },
+        {
+          "id": "leaderKit",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge la tablilla y las cartas iniciales de su líder (sustituyen a las básicas) más 2 cartas de Miedo, las piezas de investigación y los arqueólogos de un color, y la ficha de tienda de ese color."
+        },
+        {
+          "id": "special",
+          "who": "eachPlayer",
+          "text": "Preparación propia de cada líder:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "lCaptain",
+              "text": "Capitán: coge también el arqueólogo gris (tiene 3)."
+            },
+            {
+              "id": "lFalconer",
+              "text": "Cetrera: pon el águila en la casilla inicial de su marcador."
+            },
+            {
+              "id": "lBaroness",
+              "text": "Baronesa: pon las monedas indicadas sobre los espacios II-V de la fila de cartas. Empieza con Entrega especial en la mano y roba 4."
+            },
+            {
+              "id": "lProfessor",
+              "text": "Profesor: roba 3 artefactos boca arriba (su archivo), deja el maletín cerca y pon las fichas indicadas sobre los espacios II-V de la fila de cartas."
+            },
+            {
+              "id": "lExplorer",
+              "text": "Exploradora: usa 1 sola arqueóloga. Pon 2 tentempiés en su tablilla y el de la brújula sobre el espacio III de la fila de cartas."
+            },
+            {
+              "id": "lMystic",
+              "text": "Místico: los Miedos que destierre van a su pila ritual. Tras robar su mano roba además 1 carta de Miedo (empieza con 6)."
+            },
+            {
+              "id": "lJournalist",
+              "text": "Periodista: pon 1 artículo bajo cada yacimiento de nivel 1 y 2, y 2 (3 a 2 jugadores) en las muescas de su tablilla. Elige al azar 2 de las 4 losetas de periódico con una cara al azar. Empieza con el cuaderno sobre la lupa."
+            },
+            {
+              "id": "lMechanic",
+              "text": "Mecánica: baraja los 8 artilugios dorados en 4 pares boca abajo: uno junto a su tablilla y los otros en los espacios I, III y V de la fila de cartas. Pon el mono ayudante en el espacio III."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "kit",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge su tablilla, sus piezas de investigación (lupa sobre cuaderno, en la casilla inicial del marcador), 2 arqueólogos y sus 4 cartas básicas (2 Financiación y 2 Exploración).",
+          "when": {
+            "not": {
+              "is": "leaders"
+            }
+          }
+        },
+        {
+          "id": "deck",
+          "who": "eachPlayer",
+          "text": "Añade 2 cartas de Miedo, baraja tu mazo de 6 cartas y déjalo boca abajo en tu tablilla.",
+          "when": {
+            "not": {
+              "is": "leaders"
+            }
+          }
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Empieza quien haya viajado más recientemente a un sitio nuevo, o sortéalo: recibe el indicador de jugador inicial.",
+          "randomizer": {
+            "type": "firstPlayer"
+          },
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "startRes",
+          "who": "eachPlayer",
+          "text": "Recursos iniciales: 1.º 2 monedas · 2.º 1 moneda y 1 brújula · 3.º 2 monedas y 1 brújula · 4.º 1 moneda y 2 brújulas.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "soloRes",
+          "who": "eachPlayer",
+          "text": "Eres el segundo jugador: empiezas con 1 moneda y 1 brújula.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "draw",
+          "who": "eachPlayer",
+          "text": "Cada jugador roba 5 cartas de su mazo (con líderes, la Baronesa y el Místico siguen su propia preparación)."
+        }
+      ]
+    },
+    {
+      "id": "solo",
+      "title": "Expedición rival (solitario)",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "steps": [
+        {
+          "id": "rivalBoard",
+          "who": "rival",
+          "text": "Usa otra tablilla por la cara de las tiendas grises como expedición rival, con las 6 figuras de arqueólogo que no sean de tu color. Pon su lupa en una casilla inicial del marcador."
+        },
+        {
+          "id": "rivalStack",
+          "who": "rival",
+          "text": "Forma su pila de 10 acciones: las 5 de arqueólogo y una de cada pareja verde/roja ({redTiles} rojas al azar, el resto verdes). Barájala boca abajo.",
+          "when": {
+            "not": {
+              "is": "purple"
+            }
+          }
+        },
+        {
+          "id": "rivalPurple",
+          "who": "rival",
+          "text": "Forma su pila de 10 acciones: las 5 de arqueólogo y una de cada tipo eligiendo entre verdes, rojas y moradas (roja +1 y morada +2 de dificultad). El rival tendrá también cuaderno.",
+          "when": {
+            "is": "purple"
+          }
+        },
+        {
+          "id": "rivalTemple",
+          "who": "rival",
+          "text": "Templo de Twisted Paths: baraja también su loseta de acción del templo en la pila (11 losetas).",
+          "when": {
+            "in": [
+              "temple",
+              [
+                "spider",
+                "owl"
+              ]
+            ]
+          }
+        },
+        {
+          "id": "rivalGoalsStep",
+          "who": "rival",
+          "text": "Objetivos del rival: deja las 5 losetas de objetivo boca abajo y a mano las losetas de templo de 2 puntos sobrantes.",
+          "when": {
+            "is": "rivalGoals"
+          }
+        },
+        {
+          "id": "rivalFirst",
+          "who": "rival",
+          "text": "El rival es siempre el jugador inicial."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: 1 acción principal + acciones gratuitas",
+      "items": [
+        {
+          "id": "dig",
+          "text": "Excavar: paga el viaje de la casilla y pon un arqueólogo en un yacimiento descubierto; aplica su efecto."
+        },
+        {
+          "id": "discover",
+          "text": "Descubrir: paga brújulas y el viaje a un yacimiento sin descubrir de nivel 1 o 2; quédate el ídolo (aplica el boca arriba), revela el yacimiento y su efecto, y saca un guardián encima."
+        },
+        {
+          "id": "guardian",
+          "text": "Derrotar a un guardián donde tengas arqueólogo: paga su coste; te da su favor (1 uso) y 5 PV."
+        },
+        {
+          "id": "buy",
+          "text": "Comprar: objeto con monedas (va al fondo de tu mazo) o artefacto con brújulas (a tu zona de juego; puedes usar su efecto gratis ya)."
+        },
+        {
+          "id": "play",
+          "text": "Jugar una carta por su efecto (los artefactos desde la mano cuestan 1 inscripción)."
+        },
+        {
+          "id": "research",
+          "text": "Investigar: avanza la lupa o el cuaderno (nunca por encima de la lupa) pagando el coste; coge la recompensa y aplica el efecto de la fila."
+        },
+        {
+          "id": "pass",
+          "text": "Pasar: no juegas más esta ronda."
+        },
+        {
+          "id": "free",
+          "text": "Gratis: cartas con rayo, colocar un ídolo en una casilla (pierdes los puntos de esa casilla), usar ayudantes o el favor de un guardián. 2 monedas = 1 avión (paga cualquier viaje)."
+        }
+      ]
+    },
+    {
+      "id": "round",
+      "title": "Fin de ronda (5 rondas)",
+      "items": [
+        {
+          "id": "back",
+          "text": "Recupera tus arqueólogos: +1 Miedo por cada uno que vuelva de un yacimiento con guardián."
+        },
+        {
+          "id": "shuffle",
+          "text": "Baraja tu zona de juego y ponla en el fondo del mazo. Endereza los ayudantes."
+        },
+        {
+          "id": "row",
+          "text": "Destierra las dos cartas junto a la vara lunar, avánzala y repón la fila. El jugador inicial pasa a la izquierda y todos roban hasta 5."
+        },
+        {
+          "id": "rivalRound",
+          "text": "El rival juega sus 10 acciones cada ronda (aunque tú pases) y empieza siempre él.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          },
+          "who": "rival"
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "research",
+        "label": "Investigación",
+        "help": "Puntos de la fila de tu lupa, cuaderno (y linterna) o puesto en el Templo."
+      },
+      {
+        "id": "temple",
+        "label": "Losetas de templo"
+      },
+      {
+        "id": "idols",
+        "label": "Ídolos y casillas vacías",
+        "help": "3 por ídolo + los puntos de las casillas de ídolo sin usar."
+      },
+      {
+        "id": "guardians",
+        "label": "Guardianes",
+        "help": "5 por cada uno."
+      },
+      {
+        "id": "cards",
+        "label": "Objetos y artefactos",
+        "help": "Puntos de la esquina inferior derecha."
+      },
+      {
+        "id": "altars",
+        "label": "Altares de la Araña",
+        "help": "Mayorías en cada altar menos la penalización por tablilla oscura usada.",
+        "when": {
+          "eq": [
+            "temple",
+            "spider"
+          ]
+        }
+      },
+      {
+        "id": "fear",
+        "label": "Miedo",
+        "help": "1 por carta de Miedo y 2 por ficha de Miedo.",
+        "negative": true
+      }
+    ],
+    "tiebreak": "Gana quien llegó antes al Templo; si ninguno llegó, quien tenga más puntos de investigación. Si persiste, victoria compartida. (Templo del Búho: más puntos de investigación y losetas de templo juntos).",
+    "rival": {
+      "label": "Rival",
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      }
+    },
+    "notes": "Rival: puntos de su lupa, losetas de templo, guardianes, cartas compradas, 3 por ídolo único boca arriba y 2 por cada ídolo de la pila −1 (+1 por ídolo con la acción morada de descubrir) y sus objetivos. No pierde puntos por tablillas oscuras."
+  }
+}

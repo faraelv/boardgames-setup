@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "id": "arkNova",
+  "name": "Ark Nova",
+  "publisher": "Feuerland / Capstone Games",
+  "sources": [
+    {
+      "title": "Ark Nova – Rulebook (EN)",
+      "file": "Ark_Nova_EN.pdf"
+    }
+  ],
+  "players": {
+    "min": 1,
+    "max": 4,
+    "default": 2
+  },
+  "options": [
+    {
+      "id": "map",
+      "label": "Mapas de zoo",
+      "type": "choice",
+      "default": "A",
+      "choices": [
+        {
+          "value": "A",
+          "label": "Mapa A (primera partida, ventaja inicial)"
+        },
+        {
+          "value": "0",
+          "label": "Mapa 0 (más casillas de bonificación)"
+        },
+        {
+          "value": "adv",
+          "label": "Mapas avanzados 1-8 (con habilidad propia)"
+        }
+      ]
+    },
+    {
+      "id": "advPick",
+      "label": "¿Cómo repartís los mapas avanzados?",
+      "type": "choice",
+      "default": "two",
+      "when": {
+        "eq": [
+          "map",
+          "adv"
+        ]
+      },
+      "choices": [
+        {
+          "value": "two",
+          "label": "Cada uno roba 2 y elige 1"
+        },
+        {
+          "value": "draft",
+          "label": "Se muestran jugadores + 1 y se eligen en orden inverso"
+        }
+      ]
+    },
+    {
+      "id": "soloAppeal",
+      "label": "Solitario: atractivo inicial",
+      "type": "choice",
+      "default": 20,
+      "when": {
+        "eq": [
+          "players",
+          1
+        ]
+      },
+      "choices": [
+        {
+          "value": 20,
+          "label": "20 (recomendado)"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 0,
+          "label": "0 (reto)"
+        }
+      ]
+    }
+  ],
+  "vars": {
+    "mapText": [
+      {
+        "when": {
+          "eq": [
+            "map",
+            "A"
+          ]
+        },
+        "value": "un Mapa A al azar (todos iguales). Pon un recinto de 3 casillas, con la cara vacía (el 3) arriba, en las casillas indicadas"
+      },
+      {
+        "when": {
+          "eq": [
+            "map",
+            "0"
+          ]
+        },
+        "value": "un Mapa 0"
+      },
+      {
+        "when": {
+          "eq": [
+            "advPick",
+            "draft"
+          ]
+        },
+        "value": "un mapa avanzado: mostrad tantos como jugadores + 1 y elegid 1 en orden inverso de turno"
+      },
+      {
+        "value": "un mapa avanzado: roba 2 al azar y elige 1"
+      }
+    ],
+    "projects": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 4
+      },
+      {
+        "value": 3
+      }
+    ],
+    "soloTile": [
+      {
+        "when": {
+          "eq": [
+            "soloAppeal",
+            20
+          ]
+        },
+        "value": "Coloca la loseta pequeña de solitario en la casilla 45 del marcador de atractivo (cara 45): «máx. 25 de atractivo» pasa a ser máx. 45."
+      },
+      {
+        "when": {
+          "eq": [
+            "soloAppeal",
+            10
+          ]
+        },
+        "value": "Coloca la loseta pequeña de solitario en la casilla 35 del marcador de atractivo (cara 35): «máx. 25 de atractivo» pasa a ser máx. 35."
+      },
+      {
+        "value": "No uses la loseta pequeña de solitario."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero en el centro (la cara que prefiráis). Pon el marcador de descanso en la casilla de inicio de {players} jugadores del marcador de descanso.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "boardSolo",
+          "who": "table",
+          "text": "Coloca el tablero en el centro. En solitario no se usa el marcador de descanso: pon 7 fichas de un color libre en la columna izquierda de la loseta grande de solitario.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "bonusTiles",
+          "who": "table",
+          "text": "Baraja las 9 losetas de bonificación y pon 1 al azar boca arriba en cada uno de los 4 espacios amarillos en blanco (no en los 2 con iconos). El resto, a la caja."
+        },
+        {
+          "id": "deck",
+          "who": "table",
+          "text": "Baraja las cartas de zoo en un mazo boca abajo y reparte 6 boca abajo en los espacios del tablero: es el expositor (se gira al final de la preparación)."
+        },
+        {
+          "id": "association",
+          "who": "table",
+          "text": "Coloca el tablero de asociación junto al tablero, con sitio para una fila de cartas arriba y otra abajo. Pon en él 1 zoo asociado de cada continente y 1 universidad de cada tipo."
+        },
+        {
+          "id": "baseProjects",
+          "who": "table",
+          "text": "Baraja los proyectos de conservación base y deja {projects} boca arriba debajo del tablero de asociación."
+        },
+        {
+          "id": "block2",
+          "who": "table",
+          "text": "Con 2 jugadores, usa 6 fichas de un color libre para bloquear: el nivel izquierdo del primer proyecto, el central del segundo y el derecho del tercero, y las 3 casillas de la columna izquierda del área de donación.",
+          "when": {
+            "eq": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "supplyFinal",
+          "who": "table",
+          "text": "Reserva y puntuación final:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "supply",
+              "text": "Deja los 2 organizadores con los recintos y fichas como reserva general."
+            },
+            {
+              "id": "finalCards",
+              "text": "Baraja las cartas de puntuación final y déjalas boca abajo junto al tablero de asociación."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "mapStep",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge {mapText}. El resto de mapas, a la caja."
+        },
+        {
+          "id": "actionCards",
+          "who": "eachPlayer",
+          "text": "Cada jugador coge su juego de 5 cartas de acción por la cara I: Animales bajo la ranura 1 (la de la izquierda) y las otras 4 al azar en las demás."
+        },
+        {
+          "id": "counters",
+          "who": "eachPlayer",
+          "text": "Pon tus contadores de conservación y reputación en la primera casilla de su marcador. Atractivo según el orden de turno: el 1.º en 0, el 2.º en 1, el 3.º en 2 y el 4.º en 3.",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "countersSolo",
+          "who": "eachPlayer",
+          "text": "Pon tus contadores de conservación y reputación en la primera casilla y el de atractivo en {soloAppeal}. {soloTile}",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "mapKit",
+          "who": "eachPlayer",
+          "text": "En tu mapa:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "tokens",
+              "text": "Pon 7 fichas de tu color en los espacios del borde izquierdo de tu mapa y deja el resto a mano."
+            },
+            {
+              "id": "workers",
+              "text": "Coloca 1 trabajador de asociación sobre la libreta de tu mapa (activo) y los otros 3 tumbados en los espacios de debajo."
+            },
+            {
+              "id": "money",
+              "text": "Cada jugador coge 25 de dinero y lo pone en la libreta."
+            }
+          ]
+        },
+        {
+          "id": "scoringCards",
+          "who": "eachPlayer",
+          "text": "Cada jugador roba 2 cartas de puntuación final (secretas)."
+        },
+        {
+          "id": "firstPlayer",
+          "who": "table",
+          "text": "Sortea el jugador inicial. Se juega en sentido horario.",
+          "randomizer": {
+            "type": "firstPlayer"
+          },
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "hand",
+          "who": "eachPlayer",
+          "text": "Cada jugador roba 8 cartas de zoo, se queda 4 y descarta 4 boca arriba en la pila de descarte.",
+          "tip": "Recomendado: 1-2 patrocinadores y 2-3 animales sin requisitos difíciles al principio, mejor si encajan con los proyectos de conservación base."
+        },
+        {
+          "id": "reveal",
+          "who": "table",
+          "text": "Cuando todos hayan elegido, gira las 6 cartas del expositor."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "turn",
+      "title": "Tu turno: 1 acción",
+      "items": [
+        {
+          "id": "mech",
+          "text": "Elige 1 de tus 5 cartas de acción: su fuerza es el número de su ranura (1-5). Puedes gastar fichas X para sumar +1 cada una (máx. 5 fichas). Después la carta pasa a la ranura 1 y las de su izquierda se desplazan a la derecha."
+        },
+        {
+          "id": "cards",
+          "text": "Cartas: avanza el descanso 2 y roba del mazo según la tabla, o (con fuerza 5; con la mejora, 3) coge 1 carta cualquiera del expositor."
+        },
+        {
+          "id": "build",
+          "text": "Construir: 1 edificio (mejorada: varios distintos) de tamaño ≤ fuerza, pagando 2 por casilla y junto a otro edificio (el primero en el borde). Quioscos separados por 2 casillas."
+        },
+        {
+          "id": "animals",
+          "text": "Animales: juega animales según la tabla de la carta, cumpliendo requisitos y pagando su coste (−3 por icono de continente con zoo asociado). Necesitan un recinto vacío del tamaño mínimo (y agua/roca si lo piden)."
+        },
+        {
+          "id": "association",
+          "text": "Asociación: manda trabajadores a una tarea de valor ≤ fuerza: reputación (2), zoo asociado (3), universidad (4) o apoyar un proyecto de conservación (5). Mejorada: varias tareas y 1 donación."
+        },
+        {
+          "id": "sponsors",
+          "text": "Patrocinadores: juega 1 patrocinador de nivel ≤ fuerza (mejorada: varios con nivel total ≤ fuerza + 1), o avanza el descanso tantas casillas como la fuerza y cobra ese dinero (mejorada: el doble)."
+        },
+        {
+          "id": "x",
+          "text": "Ficha X: mueve cualquier carta a la ranura 1 y coge 1 ficha X."
+        }
+      ]
+    },
+    {
+      "id": "break",
+      "title": "Descanso",
+      "items": [
+        {
+          "id": "trigger",
+          "text": "Cuando el marcador de descanso llega al final, quien lo provocó gana 1 ficha X y, al acabar su turno, todos hacen el descanso:",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "triggerSolo",
+          "text": "En solitario, al acabar cada turno mueve la ficha superior de la columna izquierda de la loseta de solitario a la derecha; al vaciarse, descanso. Al empezarlo, pon la ficha de arriba en el hueco de donación más barato y devuelve el resto a la izquierda.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "text": "1) Descarta hasta tu límite de mano (3, o 5 con la universidad). 2) Quita fichas de multiplicador, veneno y constricción. 3) Recupera trabajadores y repón zoos asociados y universidades. 4) Descarta las cartas de las carpetas 1 y 2 del expositor y repónlo. 5) Ingresos: según tu atractivo, quioscos y efectos de ingresos. 6) Devuelve el marcador de descanso al inicio."
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin de la partida",
+      "items": [
+        {
+          "id": "endTrigger",
+          "text": "Cuando tus contadores de atractivo y conservación están en la misma zona de puntuación (o se han cruzado), los demás juegan un turno más (si ocurre en un descanso, todos).",
+          "when": {
+            "gte": [
+              "players",
+              2
+            ]
+          }
+        },
+        {
+          "id": "endSolo",
+          "text": "La partida dura 6 rondas de descanso. Ganas si acabas con al menos 100 PV.",
+          "when": {
+            "eq": [
+              "players",
+              1
+            ]
+          }
+        },
+        {
+          "id": "final10",
+          "text": "La primera vez que alguien llega a 10 de conservación, todos descartan 1 de sus 2 cartas de puntuación final."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "appeal",
+        "label": "Atractivo final",
+        "help": "Tras aplicar las cartas de puntuación final y efectos de fin de partida."
+      },
+      {
+        "id": "consVp",
+        "label": "PV de conservación",
+        "help": "El número blanco de la casilla donde acaba tu contador de conservación."
+      }
+    ],
+    "tiebreak": "Gana quien haya apoyado más proyectos de conservación (fichas retiradas del borde izquierdo de su mapa). Si persiste, comparten la victoria.",
+    "notes": "Antes de anotar, mueve los contadores con tus cartas de puntuación final (máx. 4 de conservación por carta) y las cartas con icono de fin de partida."
+  }
+}

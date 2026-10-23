@@ -68,3 +68,6 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Faraway**: rango 2–6 jugadores asumido.
 - **Heat**: sin hoja de puntos (los puntos de campeonato están en el reglamento avanzado, que no tenemos).
 - **Puerto Rico (Festival)**: sus recompensas no se puntúan aparte (las 3 PV del edificio van en fichas de PV).
+- **Wingspan**: sin modo solitario (el cuadernillo del Automubon no está en el proyecto).
+- **Arnak**: la campaña de La expedición perdida no está incluida; solo partidas normales.
+- **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
