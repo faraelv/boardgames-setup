@@ -1,0 +1,862 @@
+{
+  "schemaVersion": 1,
+  "id": "duneUprising",
+  "name": "Dune: Imperium – Insurrección",
+  "publisher": "Dire Wolf / Gale Force Nine",
+  "sources": [
+    {
+      "title": "Reglamento Dune: Imperium – Insurrección",
+      "file": "Dune uprising.pdf"
+    },
+    {
+      "title": "Linajes",
+      "file": "Dune uprising Linaje.pdf"
+    },
+    {
+      "title": "El Auge de Ix",
+      "file": "Dune uprising augeIX.pdf"
+    }
+  ],
+  "players": {
+    "min": 3,
+    "max": 4,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "choam",
+      "label": "Módulo de la CHOAM (contratos)",
+      "type": "boolean",
+      "default": false,
+      "help": "Se recomienda jugar al menos una partida sin él."
+    },
+    {
+      "id": "linaje",
+      "label": "Expansión Linajes",
+      "type": "boolean",
+      "default": false,
+      "help": "Comandantes Sardaukar, 8 líderes nuevos y cartas nuevas."
+    },
+    {
+      "id": "tecnologia",
+      "label": "Módulo de Tecnología de Linajes",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "linaje"
+      },
+      "help": "Piezas de Tecnología ixianas."
+    },
+    {
+      "id": "ix",
+      "label": "Expansión El Auge de Ix",
+      "type": "boolean",
+      "default": false,
+      "help": "Tablero de Ix, Tecnología, Cargueros y acorazados."
+    },
+    {
+      "id": "ixConflicts",
+      "label": "Añadir los Conflictos de El Auge de Ix",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "ix"
+      },
+      "help": "El reglamento recomienda no añadirlos: dificultan emparejar iconos de batalla."
+    },
+    {
+      "id": "epic",
+      "label": "Partida épica (a 12 PV)",
+      "type": "boolean",
+      "default": false,
+      "when": {
+        "is": "ix"
+      },
+      "help": "Modalidad de El Auge de Ix: más larga y dura."
+    }
+  ],
+  "vars": {
+    "goal": [
+      {
+        "when": {
+          "is": "epic"
+        },
+        "value": 12
+      },
+      {
+        "value": 10
+      }
+    ],
+    "startScore": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 1
+      },
+      {
+        "value": 0
+      }
+    ],
+    "troops": [
+      {
+        "when": {
+          "is": "epic"
+        },
+        "value": 5
+      },
+      {
+        "value": 3
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "board",
+      "title": "Tablero",
+      "steps": [
+        {
+          "id": "main",
+          "who": "table",
+          "text": "Coloca el tablero en el centro por la cara de Insurrección. Pon la ficha de Muralla Escudo en su hueco, bajo «Refinería de especia», y las 4 fichas de Alianza en sus huecos de los medidores de Influencia (Emperador, Cofradía, Bene Gesserit y Fremen)."
+        },
+        {
+          "id": "choamBoard",
+          "who": "table",
+          "text": "Dobla por la mitad el suplemento de tablero de la CHOAM y ponlo tapando solo la esquina superior derecha del tablero: cubre «Reunir apoyo» y «Salón de actos». Pon el tablero de Ix al lado y baraja sus piezas de Tecnología en 3 montones (de 6 piezas si solo usas las de Ix); voltea la primera de cada montón.",
+          "when": {
+            "is": "ix"
+          },
+          "tip": "Esos dos tableros no tienen puestos de observación impresos: jugad como si cada uno tuviera uno. El de la CHOAM conecta «Contrabando» y «Fletado interestelar»; el de Ix, «Acorazado» y «Negociación tecnológica»."
+        },
+        {
+          "id": "techMix",
+          "who": "table",
+          "text": "Mezcla también las 18 piezas de Tecnología de Linajes con las de Ix y repártelas en 3 montones lo más iguales posible sobre el tablero de Ix. No uses el tablero de la Embajada ixiana.",
+          "when": {
+            "all": [
+              {
+                "is": "ix"
+              },
+              {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "tecnologia"
+                  }
+                ]
+              }
+            ]
+          },
+          "warning": "Sin el módulo de la CHOAM, quita antes la pieza «Transportes de la CHOAM»."
+        },
+        {
+          "id": "embassy",
+          "who": "table",
+          "text": "Pon el tablero de la Embajada ixiana junto al tablero. Mezcla las 18 piezas de Tecnología en 3 montones de 6 boca abajo sobre él y voltea la primera de cada montón.",
+          "when": {
+            "all": [
+              {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "tecnologia"
+                  }
+                ]
+              },
+              {
+                "not": {
+                  "is": "ix"
+                }
+              }
+            ]
+          },
+          "warning": "Sin el módulo de la CHOAM, quita antes la pieza «Transportes de la CHOAM» y reparte las 17 restantes lo más igual posible."
+        },
+        {
+          "id": "contracts",
+          "who": "table",
+          "text": "CHOAM: baraja los 20 contratos boca abajo, voltea 2 y ponlos en sus casillas bajo «Consejo del Landsraad». Los 18 restantes, boca abajo junto al banco.",
+          "when": {
+            "is": "choam"
+          },
+          "tip": "Con Linajes, añade antes sus 8 contratos."
+        },
+        {
+          "id": "sardaukar",
+          "who": "table",
+          "text": "Linajes: coge los 7 Comandantes Sardaukar de un solo tipo (madera o plástico). Pon 1 en cada una de estas casillas, dejando sitio para un Agente: «Sardaukar», «Servicio leal», «Entregar suministros», «Alto Consejo» y «Reunir apoyo».",
+          "when": {
+            "all": [
+              {
+                "is": "linaje"
+              },
+              {
+                "not": {
+                  "is": "ix"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "sardaukar4",
+          "who": "table",
+          "text": "Pon un sexto Comandante Sardaukar en «Salón de actos».",
+          "when": {
+            "all": [
+              {
+                "is": "linaje"
+              },
+              {
+                "not": {
+                  "is": "ix"
+                }
+              },
+              {
+                "eq": [
+                  "players",
+                  4
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sardaukarIx",
+          "who": "table",
+          "text": "Linajes: coge los 7 Comandantes Sardaukar de un solo tipo (madera o plástico). Pon 1 en cada una de estas casillas, dejando sitio para un Agente: «Sardaukar», «Servicio leal», «Entregar suministros», «Alto Consejo» y «Acorazado» (las otras dos están tapadas por el suplemento de la CHOAM).",
+          "when": {
+            "all": [
+              {
+                "is": "linaje"
+              },
+              {
+                "is": "ix"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sardaukarIx4",
+          "who": "table",
+          "text": "Pon un sexto Comandante Sardaukar en «Negociación tecnológica».",
+          "when": {
+            "all": [
+              {
+                "is": "linaje"
+              },
+              {
+                "is": "ix"
+              },
+              {
+                "eq": [
+                  "players",
+                  4
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sardaukarBank",
+          "who": "table",
+          "text": "Deja el último Comandante Sardaukar en el banco (es para la carta Estandarte Sardaukar) y devuelve a la caja los que sobren. Baraja las 14 Habilidades de Comandante Sardaukar en una pila boca abajo y revela 4.",
+          "when": {
+            "is": "linaje"
+          }
+        }
+      ]
+    },
+    {
+      "id": "decks",
+      "title": "Mazos",
+      "steps": [
+        {
+          "id": "conflictPool",
+          "who": "table",
+          "text": "Junta las cartas de Conflicto y sepáralas por dorso (I, II y III).",
+          "tip": "Añade al montón las de las expansiones que uses."
+        },
+        {
+          "id": "conflictAdd",
+          "who": "table",
+          "text": "Añade a las cartas de Conflicto:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "cl",
+              "text": "Las 2 de Linajes (1 de Conflicto I y 1 de Conflicto II).",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "ci",
+              "text": "Las 4 de El Auge de Ix (2 de I, 1 de II y 1 de III).",
+              "when": {
+                "is": "ixConflicts"
+              }
+            },
+            {
+              "id": "ce",
+              "text": "Solo «Supremacía económica» de El Auge de Ix como cuarta carta de Conflicto III: la partida épica necesita 5.",
+              "when": {
+                "all": [
+                  {
+                    "is": "epic"
+                  },
+                  {
+                    "not": {
+                      "is": "ixConflicts"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "conflictDeck",
+          "who": "table",
+          "text": "Forma el mazo de Conflictos de 10 cartas en su hueco del tablero, todo boca abajo: abajo 4 cartas de Conflicto III al azar, encima 5 de Conflicto II al azar y arriba 1 de Conflicto I. Devuelve las demás a la caja sin mirarlas.",
+          "when": {
+            "not": {
+              "is": "epic"
+            }
+          }
+        },
+        {
+          "id": "conflictEpic",
+          "who": "table",
+          "text": "Partida épica: forma el mazo de Conflictos sin cartas de Conflicto I: abajo 5 cartas de Conflicto III al azar y encima 5 de Conflicto II al azar. Devuelve las demás a la caja sin mirarlas.",
+          "when": {
+            "is": "epic"
+          }
+        },
+        {
+          "id": "cardAdds",
+          "who": "table",
+          "text": "Antes de barajar, añade a los mazos de Intriga y del Imperio:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "aChoam",
+              "text": "CHOAM: las 4 Intrigas y las 4 cartas del Imperio con el símbolo de la CHOAM.",
+              "when": {
+                "is": "choam"
+              }
+            },
+            {
+              "id": "aLin",
+              "text": "Linajes: sus 15 Intrigas y 25 cartas del Imperio normales.",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "aLinChoam",
+              "text": "Linajes + CHOAM: la Intriga «Negociación coercitiva» y sus 5 cartas del Imperio de la CHOAM.",
+              "when": {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "choam"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "aLinTech",
+              "text": "Módulo de Tecnología: sus 2 Intrigas y 2 cartas del Imperio con el símbolo de Tecnología.",
+              "when": {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "tecnologia"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "aIx",
+              "text": "El Auge de Ix: sus 17 Intrigas y 35 cartas del Imperio.",
+              "when": {
+                "is": "ix"
+              }
+            }
+          ]
+        },
+        {
+          "id": "intrigue",
+          "who": "table",
+          "text": "Baraja el mazo de Intrigas y déjalo boca abajo junto al tablero."
+        },
+        {
+          "id": "imperium",
+          "who": "table",
+          "text": "Baraja el mazo del Imperio, déjalo boca abajo y revela 5 cartas en fila: es la Fila del Imperio."
+        },
+        {
+          "id": "noChoam",
+          "who": "table",
+          "text": "Sin la CHOAM: deja en la caja las cartas de Intriga y del Imperio marcadas con su símbolo (también las de Linajes).",
+          "when": {
+            "not": {
+              "is": "choam"
+            }
+          }
+        },
+        {
+          "id": "reserve",
+          "who": "table",
+          "text": "Al lado, haz la Reserva: un montón con las 8 cartas «Preparar el camino» y otro con las 10 «La especia debe fluir»."
+        }
+      ]
+    },
+    {
+      "id": "bank",
+      "title": "Banco",
+      "steps": [
+        {
+          "id": "bankSetup",
+          "who": "table",
+          "text": "Monta el banco: fichas de Especia y de Solaris, el Agua sobrante, los gusanos de arena (de madera, de plástico o ambos) y las 4 fichas de Garfios de doma. Son ilimitados: si algo se agota, usad un sustituto."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "leaders",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige un Líder (o se reparten al azar) y lo deja delante.",
+          "tip": "Primera partida: Líderes de un solo icono. Para ser fieles a la historia, no uséis dos Líderes de la misma Casa.",
+          "warning": "Shaddam Corrino IV solo se usa con el módulo de la CHOAM."
+        },
+        {
+          "id": "leaderPool",
+          "who": "table",
+          "text": "Además de los Líderes de Insurrección, podéis elegir:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "lpL",
+              "text": "Los 8 de Linajes.",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "lpLt",
+              "text": "Kota Odax de Ix (solo con el módulo de Tecnología).",
+              "when": {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "tecnologia"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "lpIx",
+              "text": "Los de El Auge de Ix menos Ilesa Ecaz: necesita las cartas de Espacio de pliegue del Dune: Imperium original.",
+              "when": {
+                "is": "ix"
+              }
+            }
+          ]
+        },
+        {
+          "id": "leaderBits",
+          "who": "eachPlayer",
+          "text": "Componentes de Líderes concretos:",
+          "group": true,
+          "substeps": [
+            {
+              "id": "feyd",
+              "text": "Feyd-Rautha: ficha de Feyd en la casilla izquierda de su medidor de Entrenamiento."
+            },
+            {
+              "id": "jessica",
+              "text": "Dama Jessica: empieza por esa cara (no la de Reverenda Madre)."
+            },
+            {
+              "id": "tuek",
+              "text": "Esmar Tuek: la casilla «Sietch de Tuek» junto al tablero (es de Hacedor).",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "piter",
+              "text": "Piter de Vries: sus 12 cartas de Intriga retorcida.",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "yrkoon",
+              "text": "Navegante Y'rkoon: sus 10 cartas de Navegación.",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "chani",
+              "text": "Chani: la ficha de Tácticas en la casilla de su medidor que corresponde al número de jugadores.",
+              "when": {
+                "is": "linaje"
+              }
+            },
+            {
+              "id": "tessia",
+              "text": "Tessia Vernius: sus 4 fichas de Detector.",
+              "when": {
+                "is": "ix"
+              }
+            }
+          ]
+        },
+        {
+          "id": "deck",
+          "who": "eachPlayer",
+          "text": "Cada jugador baraja su mazo inicial de 10 cartas y lo deja boca abajo a la izquierda de su Líder."
+        },
+        {
+          "id": "deckEpic",
+          "who": "eachPlayer",
+          "text": "Partida épica: antes de barajar, cada uno cambia 1 «Dune, el Planeta del Desierto» por 1 «Controlar la especia».",
+          "when": {
+            "is": "epic"
+          }
+        },
+        {
+          "id": "color",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge sus piezas. Deja 1 ficha de Agua en su suministro."
+        },
+        {
+          "id": "agents",
+          "who": "eachPlayer",
+          "text": "Pon 2 Agentes sobre tu Líder; el tercero (Maestro de armas) va junto al tablero."
+        },
+        {
+          "id": "tracks",
+          "who": "eachPlayer",
+          "text": "Pon un disco en la casilla {startScore} del medidor de Puntuación, el indicador de Combate en el 0 (cara normal) y 1 cubo en la casilla inferior de cada uno de los 4 medidores de Influencia."
+        },
+        {
+          "id": "garrison",
+          "who": "eachPlayer",
+          "text": "Los otros 12 cubos son tus tropas: pon {troops} en la guarnición circular más cercana y el resto en tu suministro."
+        },
+        {
+          "id": "supply",
+          "who": "eachPlayer",
+          "text": "En tu suministro, a la vista: indicadores de Control, Espías, ficha de Consejero y el resto de piezas."
+        },
+        {
+          "id": "ixPlayer",
+          "who": "eachPlayer",
+          "text": "El Auge de Ix: pon tus 2 acorazados en tu suministro y tu ficha de Carguero en la casilla inferior del medidor de Flete.",
+          "when": {
+            "is": "ix"
+          }
+        },
+        {
+          "id": "ixContracts",
+          "who": "eachPlayer",
+          "text": "CHOAM + Ix: baraja los 10 contratos de El Auge de Ix (dorso distinto) y da 2 a cada jugador. Cada uno elige uno y lo deja boca arriba en su suministro; el resto, a la caja.",
+          "when": {
+            "all": [
+              {
+                "is": "choam"
+              },
+              {
+                "is": "ix"
+              }
+            ]
+          }
+        },
+        {
+          "id": "epicIntrigue",
+          "who": "eachPlayer",
+          "text": "Partida épica: cada jugador roba 1 carta de Intriga.",
+          "when": {
+            "is": "epic"
+          },
+          "tip": "Si alguien lleva al Vizconde Hundro Moritani, usa su Espionaje después de que robéis todos."
+        },
+        {
+          "id": "objectives",
+          "who": "eachPlayer",
+          "text": "Baraja las cartas de Objetivo (quita las marcadas «1-3J» o «4/6J» que no sean para vuestro número) y da 1 a cada jugador, boca arriba. Quien tenga la que muestra el indicador de Jugador inicial se lo queda."
+        }
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "id": "round",
+      "title": "Ronda",
+      "items": [
+        {
+          "id": "r1",
+          "text": "1. Inicio: revela la siguiente carta de Conflicto y cada uno roba 5 cartas de su mazo.",
+          "when": {
+            "not": {
+              "any": [
+                {
+                  "is": "ix"
+                },
+                {
+                  "all": [
+                    {
+                      "is": "linaje"
+                    },
+                    {
+                      "is": "tecnologia"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "r1t",
+          "text": "1. Inicio: revela la siguiente carta de Conflicto, cada uno roba 5 cartas de su mazo y las piezas de Tecnología usadas vuelven boca arriba.",
+          "when": {
+            "any": [
+              {
+                "is": "ix"
+              },
+              {
+                "all": [
+                  {
+                    "is": "linaje"
+                  },
+                  {
+                    "is": "tecnologia"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "r2",
+          "text": "2. Turnos: en orden horario desde el jugador inicial, cada uno hace un turno de Agente o de Revelación. Tras revelar ya no juegas más en la ronda."
+        },
+        {
+          "id": "r3",
+          "text": "3. Combate: desde el jugador inicial, quien tenga unidades en el Conflicto puede jugar Intrigas de Combate o pasar; cuando todos pasan seguidos, se reparten las recompensas."
+        },
+        {
+          "id": "r4",
+          "text": "4. Hacedores: añade 1 especia en cada casilla de Hacedor sin Agente («Depresión Hagga», «Depresión Imperial», «Desierto profundo»)."
+        },
+        {
+          "id": "r5",
+          "text": "5. Retorno: si alguien tiene {goal}+ PV o el mazo de Conflictos está vacío, la partida termina. Si no, recuperad los Agentes y el indicador de Jugador inicial pasa a la izquierda."
+        }
+      ]
+    },
+    {
+      "id": "agent",
+      "title": "Turno de Agente",
+      "items": [
+        {
+          "id": "a1",
+          "text": "Juega 1 carta y envía un Agente a una casilla vacía cuyo icono coincida con uno de la carta. Paga su coste y cumple sus requisitos (Influencia 2 en «Privilegio imperial», «Transporte de mercancías» y «Sietch Tabr»)."
+        },
+        {
+          "id": "a2",
+          "text": "Recibe el efecto de la casilla y el del recuadro de Agente de la carta, en el orden que quieras. Casilla de Facción: +1 Influencia con ella."
+        },
+        {
+          "id": "a3",
+          "text": "Casilla de Combate (espadas cruzadas): puedes desplegar en el Conflicto las unidades reclutadas en este turno y hasta 2 más de tu guarnición."
+        },
+        {
+          "id": "a4",
+          "text": "Espías: retorna uno conectado a la casilla para Infiltrarte (ignorar al Agente rival) o para Recabar información (robar 1 carta, justo al colocar el Agente). El icono de Espía en la carta te deja ir a cualquier casilla conectada a un Espía tuyo."
+        },
+        {
+          "id": "a5",
+          "text": "Gusanos de arena: necesitan Garfios de doma en tu guarnición y que el Conflicto no esté protegido por la Muralla Escudo. Van directos al Conflicto."
+        },
+        {
+          "id": "a6",
+          "text": "Linajes: en una casilla con Comandante Sardaukar, paga 2 solaris para adquirirlo y reclutarlo y elige 1 Habilidad (no repetida). Una vez por turno puedes pagar 2 solaris para reclutar uno de tu suministro.",
+          "when": {
+            "is": "linaje"
+          }
+        },
+        {
+          "id": "a7",
+          "text": "Ix: Carguero = sube 1 casilla o vuelve abajo y cobra esa casilla y todas las inferiores. Acorazado = pon en servicio uno (máx. 2). Negociación tecnológica = una tropa como Negociador en Ix (−1 especia por cada uno al comprar Tecnología).",
+          "when": {
+            "is": "ix"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "title": "Turno de Revelación",
+      "items": [
+        {
+          "id": "v1",
+          "text": "Revela las cartas que te quedan en la mano y resuelve sus recuadros de Revelación (no los de las cartas jugadas como Agente)."
+        },
+        {
+          "id": "v2",
+          "text": "Gasta la Persuasión en la Fila del Imperio o la Reserva. Las cartas compradas van a tu descarte y la fila se repone al momento. Lo que no gastes se pierde."
+        },
+        {
+          "id": "v3",
+          "text": "Potencia de Combate: tropa 2, gusano 3, cada espada revelada 1. Sin unidades en el Conflicto tu Potencia es 0.",
+          "when": {
+            "not": {
+              "is": "ix"
+            }
+          }
+        },
+        {
+          "id": "v3ix",
+          "text": "Potencia de Combate: tropa 2, gusano 3, acorazado 3, cada espada revelada 1. Sin unidades en el Conflicto tu Potencia es 0 (un acorazado sí cuenta como unidad).",
+          "when": {
+            "is": "ix"
+          }
+        },
+        {
+          "id": "v4",
+          "text": "Mando (6+): ese efecto solo se activa si generas 6 o más de Persuasión en el turno.",
+          "when": {
+            "is": "linaje"
+          }
+        },
+        {
+          "id": "v5",
+          "text": "Despeja: todas tus cartas en juego van a tu pila de descartes."
+        }
+      ]
+    },
+    {
+      "id": "combat",
+      "title": "Combate y recompensas",
+      "items": [
+        {
+          "id": "c1",
+          "text": "1.º recibe la primera recompensa y se queda la carta de Conflicto; 2.º la segunda; 3.º la tercera solo a 4 jugadores. Con Potencia 0 no recibes nada."
+        },
+        {
+          "id": "c2",
+          "text": "Empate al 1.º: los empatados reciben la segunda y nadie gana la carta. A 4 jugadores, si empatan exactamente 2, el resto pugna por la tercera. Empate al 2.º: los empatados reciben la tercera."
+        },
+        {
+          "id": "c3",
+          "text": "Con un gusano en el Conflicto duplicas tus recompensas (no el Control ni el icono de batalla)."
+        },
+        {
+          "id": "c4",
+          "text": "Iconos de batalla: si la carta ganada coincide con otra boca arriba en tu suministro, ponlas boca abajo y gana 1 PV."
+        },
+        {
+          "id": "c5",
+          "text": "Control (Arrakeen, Depresión Imperial, Refinería): pon tu indicador; cobras 1 solari (o 1 especia en la Depresión) cada vez que alguien va allí, y 1 tropa de defensa si sale su Conflicto."
+        },
+        {
+          "id": "c6",
+          "text": "Después, las tropas vuelven a vuestro suministro (no a la guarnición) y los gusanos, al banco."
+        },
+        {
+          "id": "c7",
+          "text": "Acorazados: no vuelven al suministro. Si ganas con uno, controla un lugar sin acorazado hasta el final del siguiente Combate; si no ganas, vuelven a la guarnición.",
+          "when": {
+            "is": "ix"
+          }
+        }
+      ]
+    },
+    {
+      "id": "influence",
+      "title": "Influencia y Alianzas",
+      "items": [
+        {
+          "id": "i1",
+          "text": "Influencia 2 con una Facción: +1 PV (lo pierdes si bajas de 2)."
+        },
+        {
+          "id": "i2",
+          "text": "Influencia 4: bonificación de esa casilla (no se pierde)."
+        },
+        {
+          "id": "i3",
+          "text": "El primero en llegar a 4 se lleva la ficha de Alianza (+1 PV). Si alguien le supera en el medidor, se la quita con el PV."
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "categories": [
+      {
+        "id": "track",
+        "label": "Puntos del marcador",
+        "help": "PV del medidor de Puntuación antes del Desenlace."
+      },
+      {
+        "id": "endgame",
+        "label": "Intrigas de Desenlace",
+        "help": "PV de las Intrigas de Desenlace jugadas al final."
+      },
+      {
+        "id": "wild",
+        "label": "Emparejar comodines",
+        "help": "1 PV por cada pareja hecha con un icono de batalla comodín al final."
+      },
+      {
+        "id": "tech",
+        "label": "Tecnología al final",
+        "help": "PV de piezas de Tecnología que puntúan en el Desenlace.",
+        "when": {
+          "any": [
+            {
+              "is": "ix"
+            },
+            {
+              "all": [
+                {
+                  "is": "linaje"
+                },
+                {
+                  "is": "tecnologia"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "tiebreak": "Desempate, por orden: más especia, más solaris, más agua y más tropas en la guarnición.",
+    "notes": "La partida acaba al final de la ronda en que alguien llega a {goal} PV o se vacía el mazo de Conflictos."
+  }
+}

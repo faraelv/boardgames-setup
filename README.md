@@ -74,3 +74,4 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Wingspan**: sin modo solitario (el cuadernillo del Automubon no está en el proyecto).
 - **Arnak**: la campaña de La expedición perdida no está incluida; solo partidas normales.
 - **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
+- **Dune: Imperium – Insurrección**: solo 3–4 jugadores (los suplementos de Rivales para 1–2 y de 6 jugadores no están en el proyecto).
