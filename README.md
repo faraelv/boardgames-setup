@@ -75,3 +75,4 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Arnak**: la campaña de La expedición perdida no está incluida; solo partidas normales.
 - **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
 - **Dune: Imperium – Insurrección**: solo 3–4 jugadores (los suplementos de Rivales para 1–2 y de 6 jugadores no están en el proyecto).
+- **La corona del viejo rey**: rango 2–4 asumido (el reglamento no lo indica) y sin modo solitario (va en otro cuadernillo).
