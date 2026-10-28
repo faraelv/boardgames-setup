@@ -5,7 +5,7 @@
   "publisher": "Eerie Idol Games / Leder Games",
   "sources": [
     {
-      "title": "The Old King's Crown – Rulebook (EN)",
+      "title": "Reglamento de La corona del viejo rey (inglés)",
       "file": "Corona_del_viejo_rey_EN.pdf"
     }
   ],
@@ -76,12 +76,12 @@
         {
           "id": "board",
           "who": "table",
-          "text": "Coloca el tablero del Reino (Kingdom Board) al alcance de todos, con la loseta de Consejos (Councils Tile) justo encima."
+          "text": "Coloca el tablero del Reino al alcance de todos, con la loseta de Consejos justo encima."
         },
         {
           "id": "advDeal",
           "who": "table",
-          "text": "Preparación avanzada: baraja las cartas del Reino (Kingdom Cards) y reparte 5 boca abajo a cada jugador. Podéis mirarlas y comentarlas, pero no enseñarlas.",
+          "text": "Preparación avanzada: baraja las cartas del Reino y reparte 5 boca abajo a cada jugador. Podéis mirarlas y comentarlas, pero no enseñarlas.",
           "when": {
             "is": "advanced"
           }
@@ -89,17 +89,17 @@
         {
           "id": "road",
           "who": "table",
-          "text": "Gran Camino (Great Road): baraja las cartas del Reino y déjalas boca abajo en el hueco de la izquierda (es el mazo del Reino). Roba y pon boca arriba 1 carta en cada uno de los 3 huecos, empezando por el de la derecha. Por último, voltea la carta superior del mazo: debe haber 4 cartas visibles."
+          "text": "Gran Camino: baraja las cartas del Reino y déjalas boca abajo en el hueco de la izquierda (es el mazo del Reino). Roba y pon boca arriba 1 carta en cada uno de los 3 huecos, empezando por el de la derecha. Por último, voltea la carta superior del mazo: debe haber 4 cartas visibles."
         },
         {
           "id": "reserve",
           "who": "table",
-          "text": "Reserva: junta las fichas de Influencia (i) y de Saber (Lore, p) junto al tablero."
+          "text": "Reserva: junta las fichas de Influencia y de Saber junto al tablero."
         },
         {
           "id": "favour",
           "who": "table",
-          "text": "Pon el disco del Favor del Reino (Kingdom's Favour) en la Localización «Harvest Field» del tablero."
+          "text": "Pon el disco del Favor del Reino en la Localización «Campo de la Cosecha» del tablero."
         },
         {
           "id": "markers",
@@ -109,7 +109,7 @@
           "substeps": [
             {
               "id": "season",
-              "text": "Marcador de Estación en el hueco de Primavera (Spring) con el icono 1."
+              "text": "Marcador de Estación en el hueco de Primavera marcado como inicio."
             },
             {
               "id": "roundM",
@@ -117,7 +117,7 @@
             },
             {
               "id": "clash",
-              "text": "Los 3 marcadores de Choque (Clash) apilados en su hueco: el III abajo y el I arriba."
+              "text": "Los 3 marcadores de Choque apilados en su hueco: el III abajo y el I arriba."
             }
           ]
         }
@@ -130,7 +130,7 @@
         {
           "id": "factions",
           "who": "eachPlayer",
-          "text": "Elegid o sortead las Facciones: Nobleza (Nobility), Clanes (Clans), Alzamiento (Uprising) y Congregación (Gathering). Cada uno coge el tablero de jugador de la suya.",
+          "text": "Elegid o sortead las Facciones: Nobleza, Clanes, Alzamiento y Congregación. Cada uno coge el tablero de jugador de la suya.",
           "randomizer": {
             "type": "pick",
             "from": [
@@ -146,12 +146,12 @@
         {
           "id": "pieces",
           "who": "eachPlayer",
-          "text": "Pon tu Heraldo (Herald) y tus 5 Partidarios (Supporters) en sus huecos del tablero de jugador."
+          "text": "Pon tu Heraldo y tus 5 Partidarios en sus huecos del tablero de jugador."
         },
         {
           "id": "hand",
           "who": "eachPlayer",
-          "text": "Marcador de tamaño de mano en el hueco de arriba a la izquierda, con el icono 1 alineado con la flecha."
+          "text": "Marcador de tamaño de mano en el hueco de arriba a la izquierda, con el símbolo de inicio alineado con la flecha."
         },
         {
           "id": "tactics",
@@ -166,17 +166,17 @@
         {
           "id": "site",
           "who": "eachPlayer",
-          "text": "Pon tu loseta de Lugar de Poder (Site of Power) junto a tu tablero. Busca en tu mazo de Facción las cartas con coste de Saber (L) arriba a la derecha: las Avanzadas y las de Cuartel general (HQ, icono q). Son 5; déjalas boca arriba sobre tu Lugar de Poder."
+          "text": "Pon tu loseta de Lugar de Poder junto a tu tablero. Busca en tu mazo de Facción las cartas con coste de Saber arriba a la derecha: las Avanzadas y las de Cuartel general. Son 5; déjalas boca arriba sobre tu Lugar de Poder."
         },
         {
           "id": "deck",
           "who": "eachPlayer",
-          "text": "Saca de tu mazo a tu Heredero (Heir, icono 1 junto al nombre). Baraja el resto y déjalo boca abajo a la izquierda de tu tablero. Coge el Heredero en la mano y roba hasta tener 6 cartas."
+          "text": "Saca de tu mazo a tu Heredero (lleva el símbolo de inicio junto al nombre). Baraja el resto y déjalo boca abajo a la izquierda de tu tablero. Coge el Heredero en la mano y roba hasta tener 6 cartas."
         },
         {
           "id": "mulligan",
           "who": "eachPlayer",
-          "text": "Preparación avanzada: tras mirar la mano, cada uno decide si la repite (una sola vez). Quien la repita devuelve encima del mazo las cartas sin el símbolo 1, baraja y roba hasta su tamaño de mano.",
+          "text": "Preparación avanzada: tras mirar la mano, cada uno decide si la repite (una sola vez). Quien la repita devuelve encima del mazo las cartas sin el símbolo de inicio, baraja y roba hasta su tamaño de mano.",
           "when": {
             "is": "advanced"
           }
@@ -192,7 +192,7 @@
         {
           "id": "order",
           "who": "table",
-          "text": "Orden inicial en el marcador de Orden (Order Track): de mayor a menor edad, o al azar. Cada uno pone ahí su marcador de Orden. Quien quede primero coge el marcador de Jugador activo.",
+          "text": "Orden inicial en el marcador de Orden: de mayor a menor edad, o al azar. Cada uno pone ahí su marcador de Orden. Quien quede primero coge el marcador de Jugador activo.",
           "randomizer": {
             "type": "firstPlayer"
           }
@@ -215,11 +215,11 @@
       "items": [
         {
           "id": "y",
-          "text": "Inicio del año (no en la 1.ª ronda): todos roban hasta su tamaño de mano. Reordenad el marcador de Orden según la Influencia (i) de cada uno, de más a menos; en empate se invierte el orden previo de los empatados. El primero coge el marcador de Jugador activo."
+          "text": "Inicio del año (no en la 1.ª ronda): todos roban hasta su tamaño de mano. Reordenad el marcador de Orden según la Influencia de cada uno, de más a menos; en empate se invierte el orden previo de los empatados. El primero coge el marcador de Jugador activo."
         },
         {
           "id": "att",
-          "text": "Desgaste (Attrition): si tienes que robar y tu mazo está vacío, baraja tu descarte como nuevo mazo, reduce en 1 tu tamaño de mano (gira el marcador) y roba hasta el nuevo tamaño."
+          "text": "Desgaste: si tienes que robar y tu mazo está vacío, baraja tu descarte como nuevo mazo, reduce en 1 tu tamaño de mano (gira el marcador) y roba hasta el nuevo tamaño."
         }
       ]
     },
@@ -249,7 +249,7 @@
         },
         {
           "id": "s6",
-          "text": "Acciones de Primavera, en orden de turno: Acciones y Órdenes (Commands), como poner Partidarios en Regiones (+1 de Fuerza cada uno en el primer Choque de esa Región)."
+          "text": "Acciones de Primavera, en orden de turno: Acciones y Órdenes, como poner Partidarios en Regiones (+1 de Fuerza cada uno en el primer Choque de esa Región)."
         }
       ]
     },
@@ -271,7 +271,7 @@
         },
         {
           "id": "u4",
-          "text": "Recompensas del ganador: elige una de las 2 Localizaciones de la Región. Si tu Heraldo está ahí, gana 1 i y roba 1 i a cada rival con Heraldo en ella. Luego cobra la recompensa impresa de la Localización."
+          "text": "Recompensas del ganador: elige una de las 2 Localizaciones de la Región. Si tu Heraldo está ahí, gana 1 de Influencia y roba 1 a cada rival con Heraldo en ella. Luego cobra la recompensa impresa de la Localización."
         }
       ]
     },
@@ -281,15 +281,15 @@
       "items": [
         {
           "id": "a1",
-          "text": "En orden de turno, en el orden que quieras: Gobernar (Govern) una vez, Viajar (Journey) una vez y las Acciones y Órdenes que tengas."
+          "text": "En orden de turno, en el orden que quieras: Gobernar una vez, Viajar una vez y las Acciones y Órdenes que tengas."
         },
         {
           "id": "a2",
-          "text": "Gobernar: pon una carta de la mano con iconos v en un Consejo; da su bonificación según tus v en él."
+          "text": "Gobernar: pon una carta de la mano con iconos de Consejo en un Consejo; da su bonificación según tus v en él."
         },
         {
           "id": "a3",
-          "text": "Viajar: manda a la pila de Perdidas (Lost Pile) una carta de la mano con iconos p y gana ese Saber. Puedes gastarlo al momento en cartas de tu Lugar de Poder (su coste L)."
+          "text": "Viajar: manda a la pila de Perdidas una carta de la mano con iconos de Saber y gana ese Saber. Puedes gastarlo al momento en cartas de tu Lugar de Poder (pagando su coste)."
         }
       ]
     },
@@ -303,7 +303,7 @@
         },
         {
           "id": "w2",
-          "text": "Limpieza: los Heraldos vuelven a su tablero; los Partidarios del Mapa van a la pila de Perdidas; quitad los marcadores de Choque; las cartas activas van al descarte (si tienen i encima, quítales 1 i y se quedan)."
+          "text": "Limpieza: los Heraldos vuelven a su tablero; los Partidarios del Mapa van a la pila de Perdidas; quitad los marcadores de Choque; las cartas activas van al descarte (si tienen Influencia encima, quítales 1 y se quedan)."
         },
         {
           "id": "w3",
@@ -316,7 +316,7 @@
     "categories": [
       {
         "id": "influence",
-        "label": "Influencia (i) en tu suministro"
+        "label": "Influencia en tu suministro"
       }
     ],
     "tiebreak": "Si empatáis, gana quien tenga el Favor del Reino. Si ninguno de los empatados lo tiene, gana quien vaya más arriba en el marcador de Orden.",
