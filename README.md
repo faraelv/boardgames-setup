@@ -10,7 +10,7 @@ PWA que guía la preparación de nuestros juegos de mesa según el número de ju
 - **Sortear juego** entre los que marques (con filtro rápido por número de jugadores).
 - **Orden y equipos** desde la pantalla de inicio: sorteo del orden de turno o reparto aleatorio en N equipos equilibrados, con el grupo guardado e invitados puntuales.
 - Cada juego de la lista lleva su portada en miniatura y un fondo suave del color de la portada (sin portada: inicial del juego).
-- En cada guía, pestañas **Turno** (resumen de turno, ronda y fin de partida) y **Puntos** (hoja de puntuación por categorías con recuento y desempate).
+- En cada guía, pestañas **Turno** (resumen de turno, ronda y fin de partida) o **Reglas** (para aprender a jugar, en capítulos) y **Puntos** (hoja de puntuación por categorías con recuento, calculadora por categoría y desempate).
 - La pantalla no se apaga mientras sigues una guía. Las casillas marcadas y los puntos se guardan 4 h desde el último cambio (aguantan que Android cierre la app) y después la partida empieza de cero. Para volver atrás se usa el botón atrás del móvil.
 
 ## Instalar en el móvil
@@ -50,7 +50,8 @@ Para ocultar un juego sin borrarlo, añádelo a `EXCLUDE` en `scripts/build.mjs`
 - `sections` → `steps`: `text`, `who` (`table`, `eachPlayer`, `rival`, `firstPlayer`), `when`, `components`, `tip`, `warning`, `link`, `randomizer` (`firstPlayer`, `pick`, `dice`) y `substeps`.
 - `group: true` en un paso: agrupa tareas sencillas en sus `substeps` (cada una con su `when`). Con un solo subpaso visible se muestra como paso normal; sin ninguno, desaparece. Úsalo para no inflar la lista con pasos triviales.
 - `reference`: bloques `{ id, title, when?, items: [pasos] }` para la pestaña Turno.
-- `scoring`: `{ categories: [{ id, label, help?, when?, negative? }], tiebreak?, notes?, rival?: { label, when? } }` para la pestaña Puntos. `negative` resta lo anotado; `rival` añade una columna para el bot en solitario.
+- `rules` (opcional, sustituye a `reference` y la pestaña pasa a llamarse **Reglas**): capítulos `{ id, title, blocks }`. Cada bloque tiene `kind`: `text`, `cards` (fichas), `table` (`columns` + `rows`), `steps` (paso a paso con `phases` y botones Anterior/Siguiente) o `hand` (cartas que se tocan para ver su detalle). Los elementos admiten `text`, `list`, `options`, `after`, `tip`, `mode` (`sim`, `turn`, `one`) y **negrita** con `**así**`. Ejemplos: `old-kings-crown.json`, `concordia.json`.
+- `scoring`: `{ categories: [{ id, label, help?, when?, negative? }], tiebreak?, notes?, rival?: { label, when? } }` para la pestaña Puntos. `negative` resta lo anotado; `rival` añade una columna para el bot en solitario. Una categoría con `inputs` es una calculadora: suma dato × `mult`, divide entre `divide` (hacia abajo) y multiplica por los datos con `factor` (p. ej. Vesta en Concordia).
 - `events`: preparaciones durante la partida (se muestran aparte, en «Durante la partida»).
 - Condiciones: `is`, `eq`, `in`, `gte`, `lte`, combinadas con `all`, `any` y `not`.
 - Textos en español, **redactados con palabras propias** (no copiados del manual). Indica de dónde sale cada juego en `sources`.
@@ -76,3 +77,4 @@ npm run serve      # construir y servir en http://localhost:4173
 - **Lorenzo il Magnifico**: el PDF es escaneado; revisar la guía en la primera partida.
 - **Dune: Imperium – Insurrección**: solo 3–4 jugadores (los suplementos de Rivales para 1–2 y de 6 jugadores no están en el proyecto).
 - **La corona del viejo rey**: rango 2–4 asumido (el reglamento no lo indica) y sin modo solitario (va en otro cuadernillo).
+- **Concordia**: la hoja de Inicio rápido (preparación) no está en el proyecto; la preparación sale de un resumen en línea y de lo que conocemos del juego. Revisar en la primera partida.

@@ -151,7 +151,7 @@
       }
     },
     "reference": {
-      "description": "Resumen para consultar durante la partida (turno, fin de ronda, fin de partida). Se muestra sin casillas en la pestaña «Turno».",
+      "description": "Resumen para consultar durante la partida (turno, fin de ronda, fin de partida). Se muestra sin casillas en la pestaña «Turno». Si el juego tiene «rules», se usa eso en su lugar.",
       "type": "array",
       "items": {
         "type": "object",
@@ -215,6 +215,39 @@
               "negative": {
                 "type": "boolean",
                 "description": "Se resta: el jugador anota el valor en positivo."
+              },
+              "inputs": {
+                "description": "Calculadora: suma de dato × mult, dividido entre «divide» (hacia abajo) y multiplicado por los datos con factor.",
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "$ref": "#/$defs/id"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "mult": {
+                      "type": "number"
+                    },
+                    "factor": {
+                      "type": "boolean",
+                      "description": "Multiplica el resultado final (p. ej. número de cartas de un dios)."
+                    }
+                  }
+                }
+              },
+              "divide": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Divide el resultado y redondea hacia abajo."
               }
             }
           }
@@ -240,6 +273,188 @@
             }
           },
           "description": "Añade una columna para el rival automático cuando se cumple la condición."
+        }
+      }
+    },
+    "rules": {
+      "description": "Reglas para aprender a jugar, en capítulos. Si existe, sustituye a «reference» y la pestaña se llama «Reglas». Admite **negrita**.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "blocks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "when": {
+            "$ref": "#/$defs/condition"
+          },
+          "blocks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "kind"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/id"
+                },
+                "kind": {
+                  "enum": [
+                    "text",
+                    "cards",
+                    "table",
+                    "steps",
+                    "hand"
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "when": {
+                  "$ref": "#/$defs/condition"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "title"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "$ref": "#/$defs/id"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "when": {
+                        "$ref": "#/$defs/condition"
+                      },
+                      "phase": {
+                        "$ref": "#/$defs/id"
+                      },
+                      "mode": {
+                        "enum": [
+                          "sim",
+                          "turn",
+                          "one"
+                        ]
+                      },
+                      "crumb": {
+                        "type": "string"
+                      },
+                      "tag": {
+                        "type": "string"
+                      },
+                      "subtitle": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "meta": {
+                        "type": "string"
+                      },
+                      "list": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "ordered": {
+                        "type": "boolean"
+                      },
+                      "options": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "title",
+                            "text"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "text": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "after": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "tip": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "phases": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "label"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "$ref": "#/$defs/id"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "sub": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

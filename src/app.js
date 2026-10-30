@@ -348,8 +348,8 @@ function guideKey() { const { ctx } = buildContext(state.game, state.answers); r
 function renderGuide() {
   const g = state.game;
   const guide = generateGuide(g, state.answers);
-  const { visible, ctx, sections, reference, scoring } = guide;
-  const tabs = [['setup', 'Preparación'], reference.length && ['turn', 'Turno'], scoring && ['score', 'Puntos']].filter(Boolean);
+  const { visible, ctx, sections, reference, rules, scoring } = guide;
+  const tabs = [['setup', 'Preparación'], rules?.length ? ['turn', 'Reglas'] : reference.length && ['turn', 'Turno'], scoring && ['score', 'Puntos']].filter(Boolean);
   if (!tabs.some(([id]) => id === state.tab)) state.tab = 'setup';
 
   const chips = [g.players.min !== g.players.max ? (ctx.players === 1 ? 'Solitario' : `${ctx.players} jugadores`) : null,
@@ -362,7 +362,7 @@ function renderGuide() {
     app.append(el('div', { class: 'tabs', role: 'tablist' }, tabs.map(([id, label]) =>
       el('button', { role: 'tab', 'aria-selected': String(state.tab === id), onclick: () => { state.tab = id; render(); window.scrollTo(0, 0); } }, label))));
   }
-  ({ setup: renderSetupTab, turn: renderTurnTab, score: renderScoreTab })[state.tab](guide, tabs);
+  ({ setup: renderSetupTab, turn: rules?.length ? renderRulesTab : renderTurnTab, score: renderScoreTab })[state.tab](guide, tabs);
 }
 
 const pasos = n => n === 1 ? "1 paso" : `${n} pasos`;
@@ -416,7 +416,7 @@ function renderSetupTab({ ctx, sections, events }, tabs) {
 
   const next = tabs.find(([id]) => id === 'turn');
   const finish = el('div', { class: 'finish', hidden: true }, el('h2', {}, 'Todo listo'), el('p', {}, '¡A jugar!'),
-    next && el('button', { class: 'go', onclick: () => { state.tab = 'turn'; render(); window.scrollTo(0, 0); } }, 'Ver resumen del turno'));
+    next && el('button', { class: 'go', onclick: () => { state.tab = 'turn'; render(); window.scrollTo(0, 0); } }, next[1] === 'Reglas' ? 'Ver las reglas' : 'Ver resumen del turno'));
   app.append(finish);
 
   if (events.length) {
@@ -447,6 +447,90 @@ function renderTurnTab({ ctx, reference }) {
   }
 }
 
+
+/* ---------- pestaña Reglas: capítulos con bloques (texto, fichas, tabla, paso a paso, mano de cartas) ---------- */
+// **negrita** en los textos de reglas
+function fmt(text) {
+  return String(text ?? '').split(/\*\*(.+?)\*\*/g).map((part, i) => i % 2 ? el('b', {}, part) : part);
+}
+const MODES = { sim: ['sim', 'A la vez'], turn: ['turn', 'En orden de turno'], one: ['one', 'Un jugador'] };
+
+function ruleBody(it) {
+  return [
+    it.mode && el('span', { class: 'mode ' + MODES[it.mode][0] }, MODES[it.mode][1]),
+    it.text && el('p', {}, fmt(it.text)),
+    it.list?.length && el(it.ordered ? 'ol' : 'ul', { class: 'rlist' }, it.list.map(x => el('li', {}, fmt(x)))),
+    it.options?.length && el('div', { class: 'ropts' }, it.options.map(o => el('div', {}, el('b', {}, o.title), el('span', {}, fmt(o.text))))),
+    it.after?.length && el('ul', { class: 'rlist' }, it.after.map(x => el('li', {}, fmt(x)))),
+    it.tip && el('p', { class: 'note tip' }, fmt(it.tip)),
+  ].filter(Boolean);
+}
+
+function rulesBlock(b, key) {
+  const head = [b.title && el('h3', { class: 'rbTitle' }, b.title), b.note && el('p', { class: 'rbNote' }, fmt(b.note))];
+  if (b.kind === 'text') return el('div', { class: 'rb' }, ...head, el('p', { class: 'rbText' }, fmt(b.text)));
+  if (b.kind === 'cards') return el('div', { class: 'rb' }, ...head, el('div', { class: 'rcards' }, b.items.map(it =>
+    el('div', { class: 'rcard' }, el('h4', {}, it.title), ...ruleBody(it), it.meta && el('small', { class: 'meta' }, it.meta)))));
+  if (b.kind === 'table') return el('div', { class: 'rb' }, ...head, el('div', { class: 'rtable' }, el('table', {},
+    el('thead', {}, el('tr', {}, b.columns.map(c => el('th', {}, c)))),
+    el('tbody', {}, b.rows.map(r => el('tr', {}, r.map(c => el('td', {}, fmt(c)))))))));
+  if (b.kind === 'hand') {
+    const sk = key + ':hand';
+    let cur = store.get(sk, b.items[0].id);
+    if (!b.items.some(i => i.id === cur)) cur = b.items[0].id;
+    const grid = el('div', { class: 'rhand' }), detail = el('div', { class: 'rdetail', 'aria-live': 'polite' });
+    const draw = () => {
+      grid.replaceChildren(...b.items.map(it => el('button', { class: 'rpc', 'aria-pressed': String(it.id === cur),
+        onclick: () => { cur = it.id; store.set(sk, cur); draw(); } },
+        it.tag && el('span', { class: 'tag' }, it.tag), el('b', {}, it.title), it.subtitle && el('span', {}, it.subtitle))));
+      const it = b.items.find(i => i.id === cur);
+      detail.replaceChildren(el('h3', {}, it.title), ...ruleBody(it));
+    };
+    draw();
+    return el('div', { class: 'rb' }, ...head, grid, detail);
+  }
+  if (b.kind === 'steps') {
+    const sk = key + ':step';
+    let i = Math.min(store.get(sk, 0), b.items.length - 1);
+    const phases = b.phases ?? [];
+    const strip = el('div', { class: 'rphases' }), dots = el('div', { class: 'rdots' }), card = el('article', { class: 'rstep', 'aria-live': 'polite' });
+    const prev = el('button', { class: 'ghost' }, '← Anterior'), next = el('button', { class: 'go' }), count = el('span', { class: 'rcount' });
+    const draw = () => {
+      const it = b.items[i];
+      const ph = phases.findIndex(p => p.id === it.phase);
+      card.style.setProperty('--ph', `var(--ph${(ph < 0 ? 0 : ph) % 6})`);
+      strip.replaceChildren(...phases.map((p, n) => el('button', { class: 'rph', style: `--ph:var(--ph${n % 6})`, 'aria-current': String(p.id === it.phase),
+        onclick: () => { i = b.items.findIndex(x => x.phase === p.id); go(); } }, p.sub && el('small', {}, p.sub), el('span', {}, p.label))));
+      const inPh = b.items.map((x, n) => [x, n]).filter(([x]) => x.phase === it.phase);
+      dots.replaceChildren(...inPh.map(([x, n]) => el('button', { class: 'rdot' + (n === i ? ' on' : n < i ? ' done' : ''), 'aria-label': x.title, onclick: () => { i = n; go(); } })));
+      const pos = inPh.findIndex(([, n]) => n === i) + 1;
+      card.replaceChildren(el('div', { class: 'crumb' }, [phases[ph]?.label, inPh.length > 1 && `paso ${pos} de ${inPh.length}`, it.crumb].filter(Boolean).join(' · ')),
+        el('h3', {}, it.title), ...ruleBody(it));
+      count.textContent = `${i + 1} / ${b.items.length}`;
+      prev.disabled = i === 0;
+      next.textContent = i === b.items.length - 1 ? 'Volver al inicio ↺' : 'Siguiente →';
+    };
+    const go = () => { store.set(sk, i); draw(); card.scrollIntoView({ block: 'nearest' }); };
+    prev.onclick = () => { if (i > 0) { i--; go(); } };
+    next.onclick = () => { i = i === b.items.length - 1 ? 0 : i + 1; go(); };
+    draw();
+    return el('div', { class: 'rb' }, ...head, phases.length > 1 ? strip : null, dots, card, el('div', { class: 'rnav' }, prev, count, next),
+      el('p', { class: 'rlegend' }, el('span', { class: 'mode sim' }, 'A la vez'), ' todos juntos · ', el('span', { class: 'mode turn' }, 'En orden de turno'), ' uno tras otro'));
+  }
+  return '';
+}
+
+function renderRulesTab({ rules }) {
+  const g = state.game;
+  const ck = 'rulesCh:' + g.id;
+  let ch = store.get(ck, rules[0].id);
+  if (!rules.some(r => r.id === ch)) ch = rules[0].id;
+  if (rules.length > 1) app.append(el('div', { class: 'seg rchapters' }, rules.map(r => el('button', { 'aria-pressed': String(r.id === ch),
+    onclick: () => { store.set(ck, r.id); render(); } }, r.title))));
+  const chapter = rules.find(r => r.id === ch);
+  app.append(el('section', { class: 'sec rules' }, chapter.blocks.map((b, n) => rulesBlock(b, `rules:${g.id}:${chapter.id}:${b.id || n}`))));
+}
+
 function renderScoreTab({ ctx, scoring }) {
   const g = state.game;
   const names = whoPlaying(ctx);
@@ -454,8 +538,15 @@ function renderScoreTab({ ctx, scoring }) {
   if (scoring.rival) players.push(scoring.rival);
   const key = 'score:' + g.id + ':' + JSON.stringify(players);
   const data = store.get(key, {});
-  const val = (c, p) => Number(data[c]?.[p]) || 0;
-  const totals = () => players.map((p, i) => ({ name: p, total: scoring.categories.reduce((t, c) => t + (c.negative ? -1 : 1) * val(c.id, i), 0) }));
+  const calcVal = (c, p) => {
+    const d = data[c.id]?.[p] || {};
+    const n = x => Number(d[x.id]) || 0;
+    let v = c.inputs.filter(x => !x.factor).reduce((t, x) => t + n(x) * (x.mult ?? 1), 0);
+    if (c.divide) v = Math.floor(v / c.divide);
+    return c.inputs.filter(x => x.factor).reduce((t, x) => t * n(x), v);
+  };
+  const val = (c, p) => c.inputs ? calcVal(c, p) : Number(data[c.id]?.[p]) || 0;
+  const totals = () => players.map((p, i) => ({ name: p, total: scoring.categories.reduce((t, c) => t + (c.negative ? -1 : 1) * val(c, i), 0) }));
   const board = el('div', { class: 'scoreBoard' });
   const drawBoard = () => {
     const t = totals(), best = Math.max(...t.map(x => x.total));
@@ -471,6 +562,7 @@ function renderScoreTab({ ctx, scoring }) {
   const cols = `repeat(${players.length}, minmax(0, 1fr))`;
   app.append(el('div', { class: 'scoreHead', style: `grid-template-columns:${cols}` }, players.map(p => el('span', { title: p }, p))));
   for (const c of scoring.categories) {
+    if (c.inputs) { app.append(calcCategory(c)); continue; }
     app.append(el('div', { class: 'cat' },
       el('div', { class: 'catLabel' }, el('span', {}, (c.negative ? '− ' : '') + c.label), c.help && el('small', {}, c.help)),
       el('div', { class: 'cells', style: `grid-template-columns:${cols}` }, players.map((p, i) => {
@@ -483,6 +575,31 @@ function renderScoreTab({ ctx, scoring }) {
         inp.addEventListener('focus', () => inp.select());
         return inp;
       }))));
+  }
+  function calcCategory(c) {
+    const panel = el('div', { class: 'calcPanel', hidden: true });
+    let open = -1;
+    const outs = players.map((p, i) => el('button', { class: 'calcCell', 'aria-label': `${c.label} · ${p}: calcular`, onclick: () => toggle(i) }, String(val(c, i))));
+    const refresh = () => outs.forEach((o, i) => { o.textContent = String(val(c, i)); o.setAttribute('aria-expanded', String(i === open)); });
+    const toggle = i => {
+      open = open === i ? -1 : i;
+      panel.hidden = open < 0;
+      if (open >= 0) {
+        const d = (data[c.id] ||= {})[open] ||= {};
+        panel.replaceChildren(el('div', { class: 'calcWho' }, players[open]),
+          el('div', { class: 'calcInputs' }, c.inputs.map(x => {
+            const inp = el('input', { type: 'number', min: '0', value: d[x.id] ?? '', placeholder: '0', 'aria-label': `${x.label} · ${players[open]}` });
+            inp.addEventListener('input', () => { d[x.id] = inp.value === '' ? '' : Number(inp.value); store.set(key, data); refresh(); drawBoard(); });
+            inp.addEventListener('focus', () => inp.select());
+            return el('label', {}, el('span', {}, x.label), inp);
+          })));
+        panel.querySelector('input')?.focus();
+      }
+      refresh();
+    };
+    return el('div', { class: 'cat calc' },
+      el('div', { class: 'catLabel' }, el('span', {}, c.label), c.help && el('small', {}, c.help)),
+      el('div', { class: 'cells', style: `grid-template-columns:${cols}` }, outs), panel);
   }
   app.append(board,
     el('div', { class: 'tools' }, el('button', { onclick: () => { store.del(key); render(); } }, 'Borrar puntos')));

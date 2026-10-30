@@ -1,0 +1,681 @@
+{
+  "schemaVersion": 1,
+  "id": "concordia",
+  "name": "Concordia",
+  "publisher": "PD-Verlag / Maldito Games",
+  "sources": [
+    {
+      "title": "Reglamento de Concordia",
+      "file": "Concordia.pdf"
+    },
+    {
+      "title": "Preparación (hoja de Inicio rápido, no incluida en el proyecto): resumen de reglas en línea",
+      "url": "https://www.howtoplay.ro/games/concordia"
+    }
+  ],
+  "players": {
+    "min": 2,
+    "max": 5,
+    "default": 4
+  },
+  "options": [
+    {
+      "id": "map",
+      "label": "Tablero",
+      "type": "choice",
+      "default": "imperium",
+      "choices": [
+        {
+          "value": "imperium",
+          "label": "Imperium (3-5 jugadores)",
+          "when": {
+            "gte": [
+              "players",
+              3
+            ]
+          }
+        },
+        {
+          "value": "italia",
+          "label": "Italia (2-4 jugadores)",
+          "when": {
+            "lte": [
+              "players",
+              4
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "midScore",
+      "label": "Puntuación intermedia (primera partida)",
+      "type": "boolean",
+      "default": false,
+      "help": "Recomendada solo si alguien juega por primera vez."
+    }
+  ],
+  "vars": {
+    "mapName": [
+      {
+        "when": {
+          "eq": [
+            "map",
+            "italia"
+          ]
+        },
+        "value": "Italia"
+      },
+      {
+        "value": "Imperium"
+      }
+    ],
+    "decks": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": "I y II"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "I a III"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "I a IV"
+      },
+      {
+        "value": "I a V"
+      }
+    ],
+    "lastDeck": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": "II"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": "III"
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": "IV"
+      },
+      {
+        "value": "V"
+      }
+    ],
+    "lastMoney": [
+      {
+        "when": {
+          "eq": [
+            "players",
+            2
+          ]
+        },
+        "value": 6
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            3
+          ]
+        },
+        "value": 7
+      },
+      {
+        "when": {
+          "eq": [
+            "players",
+            4
+          ]
+        },
+        "value": 8
+      },
+      {
+        "value": 9
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "table",
+      "title": "Mesa",
+      "steps": [
+        {
+          "id": "board",
+          "who": "table",
+          "text": "Coloca el tablero por la cara {mapName}."
+        },
+        {
+          "id": "cities",
+          "who": "table",
+          "text": "Fichas de ciudad: sepáralas por la letra del dorso, mezcla cada grupo boca abajo y pon una en cada ciudad del mapa con la misma letra. Voltéalas. Roma no lleva ficha y las que sobren vuelven a la caja.",
+          "warning": "La hoja de Inicio rápido no está en el proyecto: si tu tablero marca ciudades o provincias que no se usan con vuestro número de jugadores, seguid lo que indique."
+        },
+        {
+          "id": "bonus",
+          "who": "table",
+          "text": "Marcadores de bonus: pon uno en cada provincia por la cara de mercancía, mostrando la mercancía más valiosa que produce alguna ciudad de esa provincia.",
+          "tip": "De menos a más valiosa: ladrillo, trigo, herramienta, vino y tela."
+        },
+        {
+          "id": "bank",
+          "who": "table",
+          "text": "Banco: mercancías de madera y monedas junto al tablero. Son ilimitadas."
+        },
+        {
+          "id": "forSale",
+          "who": "table",
+          "text": "Cartas de venta: sepáralas por el número romano del dorso y usa solo los mazos {decks}; el resto, a la caja. Baraja cada mazo por separado y apílalos con el {lastDeck} abajo y el I arriba."
+        },
+        {
+          "id": "display",
+          "who": "table",
+          "text": "Pon las 7 primeras cartas boca arriba en las casillas del tablero, de izquierda a derecha. Deja el mazo boca abajo al lado y la carta de Concordia junto al tablero."
+        }
+      ]
+    },
+    {
+      "id": "players",
+      "title": "Jugadores",
+      "steps": [
+        {
+          "id": "color",
+          "who": "eachPlayer",
+          "text": "Cada jugador elige color y coge sus 15 casas, 3 colonos de tierra, 3 de mar y su marcador de puntuación (en la casilla 0)."
+        },
+        {
+          "id": "rome",
+          "who": "eachPlayer",
+          "text": "Pon 1 colono de tierra y 1 de mar en Roma."
+        },
+        {
+          "id": "store",
+          "who": "eachPlayer",
+          "text": "Coge un almacén. Pon en él los otros 2 colonos de tierra y 2 de mar, y estas mercancías: 2 trigo, 1 ladrillo, 1 herramienta, 1 vino y 1 tela."
+        },
+        {
+          "id": "hand",
+          "who": "eachPlayer",
+          "text": "Coge las 7 cartas iniciales de tu color en la mano: Arquitecto, 2 Prefectos, Mercader, Diplomático, Senador y Tribuno."
+        },
+        {
+          "id": "first",
+          "who": "table",
+          "text": "Sortead el jugador inicial. Recibe 5 sestercios y cada jugador siguiente, en sentido horario, 1 más (el último, {lastMoney}).",
+          "randomizer": {
+            "type": "firstPlayer"
+          }
+        },
+        {
+          "id": "praefectus",
+          "who": "table",
+          "text": "El último jugador (a la derecha del inicial) recibe la carta de Praefectus Magnus."
+        },
+        {
+          "id": "mid",
+          "who": "table",
+          "text": "Primera partida: la primera vez que cada uno juegue el Tribuno, haréis una puntuación intermedia (mira Reglas › Fin y reglas clave).",
+          "when": {
+            "is": "midScore"
+          }
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "turn",
+      "title": "Tu turno",
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "En tu turno juegas **una carta** de tu mano y haces lo que dice. No hay rondas ni fases. La carta queda boca arriba en tu descarte personal hasta que juegues el Tribuno."
+        },
+        {
+          "id": "hand",
+          "kind": "hand",
+          "note": "Toca una carta para ver qué hace.",
+          "items": [
+            {
+              "id": "arq",
+              "title": "Arquitecto",
+              "subtitle": "Mover colonos y construir",
+              "tag": "Inicial",
+              "text": "Mueve tus colonos y después construye casas junto a ellos.",
+              "list": [
+                "Tienes tantos puntos de movimiento como colonos tuyos en el tablero. Repártelos como quieras.",
+                "Colonos de tierra por caminos marrones; de mar, por las rutas azules.",
+                "Un colono que está en una ciudad (Roma o recién colocado) sale primero a un camino adyacente. Luego salta de camino a camino pasando por encima de las ciudades.",
+                "No puedes terminar en un camino ocupado, pero sí atravesarlo (cuesta 1 punto igual).",
+                "Al acabar de mover, construye en ciudades adyacentes a tus colonos, pagando el coste (mira Costes y precios)."
+              ],
+              "ordered": true,
+              "tip": "**Primero todo el movimiento, luego todas las construcciones.** No puedes construir y seguir moviendo."
+            },
+            {
+              "id": "pre",
+              "title": "Prefecto",
+              "subtitle": "Producir una provincia o cobrar",
+              "tag": "Inicial ×2",
+              "options": [
+                {
+                  "title": "Producir",
+                  "text": "Elige una provincia cuyo marcador muestre mercancía. Te llevas esa mercancía y volteas el marcador a su cara de monedas. Todas las casas de esa provincia, de todos los jugadores, producen 1 de su mercancía. Si no hay casas, solo cobras el bonus."
+                },
+                {
+                  "title": "Cobrar",
+                  "text": "Cobras tantos sestercios como monedas haya a la vista en todos los marcadores. Después los volteas a su cara de mercancía."
+                }
+              ],
+              "tip": "Si tienes el **Praefectus Magnus** y produces, cobras 2 del bonus y lo pasas a tu derecha. Ojo: la producción también da a los rivales con casas allí."
+            },
+            {
+              "id": "mer",
+              "title": "Mercader",
+              "subtitle": "Dinero y comercio",
+              "tag": "Inicial",
+              "list": [
+                "Cobra 3 sestercios (5 con el Mercader que se compra durante la partida).",
+                "Comercia con el banco con hasta 2 tipos de mercancía: comprar dos, vender dos, o comprar una y vender otra. Cantidad libre.",
+                "Precios fijos del almacén. Solo puedes comprar lo que te quepa."
+              ],
+              "tip": "Un tercer tipo de mercancía no se puede tocar en el mismo turno."
+            },
+            {
+              "id": "dip",
+              "title": "Diplomático",
+              "subtitle": "Copiar a un rival",
+              "tag": "Inicial",
+              "text": "Haz la acción de la carta boca arriba en el descarte de otro jugador, como si la hubieras jugado tú.",
+              "tip": "No puedes copiar un **Tribuno** ni otro **Diplomático**."
+            },
+            {
+              "id": "sen",
+              "title": "Senador",
+              "subtitle": "Comprar hasta 2 cartas",
+              "tag": "Inicial",
+              "list": [
+                "Compra hasta 2 cartas de la fila del tablero; van a tu mano.",
+                "Coste de cada una: la mercancía del recuadro rojo de la carta + la que marca el tablero bajo esa casilla (el «?» vale cualquiera).",
+                "Al terminar, corre las cartas restantes a la izquierda y rellena los huecos de la derecha con el mazo."
+              ],
+              "tip": "Las cartas de la izquierda salen más caras por la casilla. Si solo quieres una, mira si te sale mejor con el Cónsul."
+            },
+            {
+              "id": "tri",
+              "title": "Tribuno",
+              "subtitle": "Recuperar la mano",
+              "tag": "Inicial",
+              "list": [
+                "Recupera todas tus cartas jugadas, incluido el Tribuno.",
+                "Cobra 1 sestercio por cada carta por encima de 3 (contando el Tribuno). Ejemplo: 4 jugadas + Tribuno = 5 cartas → 2 sestercios.",
+                "Además puedes poner 1 colono de tierra o de mar en Roma pagando 1 trigo + 1 herramienta."
+              ],
+              "tip": "Cuanto más alargas antes del Tribuno, más cobras."
+            },
+            {
+              "id": "col",
+              "title": "Colono",
+              "subtitle": "Colonos nuevos o dinero",
+              "tag": "Comprable",
+              "options": [
+                {
+                  "title": "Colonos",
+                  "text": "Por cada colono nuevo paga 1 trigo + 1 herramienta. Ponlos en Roma o en cualquier ciudad donde tengas casa. Puedes poner varios en la misma."
+                },
+                {
+                  "title": "Dinero",
+                  "text": "Cobra 5 sestercios + 1 por cada colono tuyo en el tablero."
+                }
+              ],
+              "tip": "Cada colono en el tablero libera un hueco del almacén y te da 1 punto de movimiento más con el Arquitecto."
+            },
+            {
+              "id": "con",
+              "title": "Cónsul",
+              "subtitle": "Comprar 1 carta barata",
+              "tag": "Comprable",
+              "list": [
+                "Compra 1 carta de la fila pagando solo la mercancía del recuadro rojo.",
+                "No pagas la mercancía del tablero.",
+                "Corre las cartas a la izquierda y repón."
+              ]
+            },
+            {
+              "id": "esp",
+              "title": "Especialistas",
+              "subtitle": "Albañil, Granjero, Herrero, Vinatero, Tejedor",
+              "tag": "Comprable",
+              "text": "Todas tus casas de la mercancía del especialista producen 1 cada una.",
+              "list": [
+                "Ejemplo: Vinatero con casas en 4 ciudades de vino → 4 vinos.",
+                "Los rivales no reciben nada.",
+                "Solo lo que te quepa en el almacén."
+              ],
+              "tip": "Cuentan para **Minerva**: dan los PV de la carta por cada ciudad de su tipo con casa tuya."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "title": "Costes y precios",
+      "blocks": [
+        {
+          "kind": "table",
+          "title": "Construir una casa",
+          "note": "Solo con el Arquitecto, en ciudades junto a tus colonos. Una casa por jugador y ciudad. Nunca en Roma.",
+          "columns": [
+            "Ciudad de…",
+            "Mercancías",
+            "Vacía",
+            "Con 1 casa",
+            "Con 2",
+            "Con 3"
+          ],
+          "rows": [
+            [
+              "Ladrillo",
+              "1 trigo",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            [
+              "Trigo",
+              "1 ladrillo + 1 trigo",
+              "2",
+              "4",
+              "6",
+              "8"
+            ],
+            [
+              "Herramienta",
+              "1 ladrillo + 1 herramienta",
+              "3",
+              "6",
+              "9",
+              "12"
+            ],
+            [
+              "Vino",
+              "1 ladrillo + 1 vino",
+              "4",
+              "8",
+              "12",
+              "16"
+            ],
+            [
+              "Tela",
+              "1 ladrillo + 1 tela",
+              "5",
+              "10",
+              "15",
+              "20"
+            ]
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "Los sestercios se multiplican por (casas que ya hay + 1); las mercancías no cambian. Ejemplo del reglamento: ciudad de vino con 2 casas = 1 ladrillo + 1 vino + 12 sestercios."
+        },
+        {
+          "kind": "table",
+          "title": "Almacén: precios del banco",
+          "note": "Precio fijo para comprar y vender con el Mercader. También es lo que vale cada mercancía para Vesta.",
+          "columns": [
+            "Mercancía",
+            "Precio"
+          ],
+          "rows": [
+            [
+              "Ladrillo",
+              "3"
+            ],
+            [
+              "Trigo",
+              "4"
+            ],
+            [
+              "Herramienta",
+              "5"
+            ],
+            [
+              "Vino",
+              "6"
+            ],
+            [
+              "Tela",
+              "7"
+            ]
+          ]
+        },
+        {
+          "kind": "cards",
+          "title": "Otros costes",
+          "items": [
+            {
+              "id": "colonist",
+              "title": "Colono nuevo",
+              "text": "1 trigo + 1 herramienta cada uno. Con la carta Colono, en Roma o en una ciudad con casa tuya. Con el Tribuno, solo 1 y en Roma."
+            },
+            {
+              "id": "senator",
+              "title": "Comprar carta con el Senador",
+              "text": "La mercancía del recuadro rojo de la carta + la que marca el tablero bajo esa casilla. El «?» vale cualquiera. Hasta 2 cartas."
+            },
+            {
+              "id": "consul",
+              "title": "Comprar carta con el Cónsul",
+              "text": "Solo la mercancía del recuadro rojo. Una carta."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "title": "Fin y reglas clave",
+      "blocks": [
+        {
+          "kind": "cards",
+          "items": [
+            {
+              "id": "end",
+              "title": "Fin de la partida",
+              "text": "Termina cuando alguien compra la **última carta del tablero** o construye su **casa número 15**. Ese jugador se lleva la carta de Concordia (7 PV). Los demás juegan un último turno y se puntúa."
+            },
+            {
+              "id": "tie",
+              "title": "Empate",
+              "text": "Gana quien tenga el Praefectus Magnus, o quien lo fuera a recibir antes."
+            },
+            {
+              "id": "pm",
+              "title": "Praefectus Magnus",
+              "text": "Empieza en el último jugador. Si su dueño hace producir una provincia con el Prefecto (o con el Diplomático), cobra **2 del bonus** en vez de 1 y lo pasa a su derecha. No afecta a la producción de las casas. Si elige cobrar dinero, no se activa ni se pasa."
+            },
+            {
+              "id": "store",
+              "title": "Almacén",
+              "text": "12 huecos. Cada colono o mercancía ocupa uno; al empezar, los colonos ocupan 4. Sacar un colono al tablero libera su hueco. No puedes tirar mercancías para hacer sitio. Si recibes más de lo que cabe, eliges cuáles, pero llenas todos los huecos."
+            },
+            {
+              "id": "trade",
+              "title": "Comercio y reservas",
+              "text": "No se comercia entre jugadores. Mercancías y dinero son ilimitados. Los colonos no: 3 de tierra y 3 de mar por jugador."
+            },
+            {
+              "id": "mid",
+              "title": "Puntuación intermedia",
+              "text": "Solo recomendada en la primera partida. La primera vez que cada uno juega el Tribuno, puntúa como al final. Cuando todos lo han hecho, el que más tenga cobra 2 sestercios y el segundo 1 (en empate, cada uno lo suyo). Luego los marcadores vuelven a 0."
+            },
+            {
+              "id": "errata",
+              "title": "Errata",
+              "text": "El Diplomático de la época IV cuesta herramientas, como indica el símbolo, aunque el texto diga otra cosa."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "notes": "Agrupad las cartas de cada uno por dios. Toca la casilla de cada jugador para meter sus datos: la app calcula los PV.",
+    "categories": [
+      {
+        "id": "vesta",
+        "label": "Vesta",
+        "help": "1 PV por cada 10 sestercios (dinero + mercancías a precio del almacén) por cada carta de Vesta.",
+        "divide": 10,
+        "inputs": [
+          {
+            "id": "ses",
+            "label": "Sestercios"
+          },
+          {
+            "id": "brick",
+            "label": "Ladrillos",
+            "mult": 3
+          },
+          {
+            "id": "food",
+            "label": "Trigo",
+            "mult": 4
+          },
+          {
+            "id": "tools",
+            "label": "Herramientas",
+            "mult": 5
+          },
+          {
+            "id": "wine",
+            "label": "Vino",
+            "mult": 6
+          },
+          {
+            "id": "cloth",
+            "label": "Tela",
+            "mult": 7
+          },
+          {
+            "id": "cards",
+            "label": "Cartas de Vesta",
+            "factor": true
+          }
+        ]
+      },
+      {
+        "id": "jupiter",
+        "label": "Júpiter",
+        "help": "1 PV por cada casa en ciudad que no sea de ladrillo (máx. 15), por cada carta.",
+        "inputs": [
+          {
+            "id": "n",
+            "label": "Casas fuera de ladrillo"
+          },
+          {
+            "id": "cards",
+            "label": "Cartas de Júpiter",
+            "factor": true
+          }
+        ]
+      },
+      {
+        "id": "saturno",
+        "label": "Saturno",
+        "help": "1 PV por cada provincia con al menos una casa tuya, por cada carta.",
+        "inputs": [
+          {
+            "id": "n",
+            "label": "Provincias"
+          },
+          {
+            "id": "cards",
+            "label": "Cartas de Saturno",
+            "factor": true
+          }
+        ]
+      },
+      {
+        "id": "mercurio",
+        "label": "Mercurio",
+        "help": "2 PV por cada tipo de mercancía que produces (máx. 10), por cada carta.",
+        "inputs": [
+          {
+            "id": "n",
+            "label": "Tipos de mercancía",
+            "mult": 2
+          },
+          {
+            "id": "cards",
+            "label": "Cartas de Mercurio",
+            "factor": true
+          }
+        ]
+      },
+      {
+        "id": "marte",
+        "label": "Marte",
+        "help": "2 PV por cada colono tuyo en el tablero (máx. 12), por cada carta.",
+        "inputs": [
+          {
+            "id": "n",
+            "label": "Colonos en el tablero",
+            "mult": 2
+          },
+          {
+            "id": "cards",
+            "label": "Cartas de Marte",
+            "factor": true
+          }
+        ]
+      },
+      {
+        "id": "minerva",
+        "label": "Minerva",
+        "help": "Por cada especialista: los PV de su carta × ciudades de su tipo con casa tuya. Anota la suma."
+      },
+      {
+        "id": "concordia",
+        "label": "Carta de Concordia",
+        "help": "7 PV para quien terminó la partida."
+      }
+    ],
+    "tiebreak": "Gana quien tenga el Praefectus Magnus o quien lo fuera a recibir antes."
+  }
+}

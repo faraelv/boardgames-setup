@@ -208,118 +208,546 @@
       ]
     }
   ],
-  "reference": [
-    {
-      "id": "round",
-      "title": "Ronda (un año)",
-      "items": [
-        {
-          "id": "y",
-          "text": "Inicio del año (no en la 1.ª ronda): todos roban hasta su tamaño de mano. Reordenad el marcador de Orden según la Influencia de cada uno, de más a menos; en empate se invierte el orden previo de los empatados. El primero coge el marcador de Jugador activo."
-        },
-        {
-          "id": "att",
-          "text": "Desgaste: si tienes que robar y tu mazo está vacío, baraja tu descarte como nuevo mazo, reduce en 1 tu tamaño de mano (gira el marcador) y roba hasta el nuevo tamaño."
-        }
-      ]
-    },
-    {
-      "id": "spring",
-      "title": "Primavera",
-      "items": [
-        {
-          "id": "s1",
-          "text": "Pujas: todos eligen a la vez una carta de Facción y la ponen boca abajo. Se revelan y resuelve primero la de más Fuerza (en empate, quien va antes en el Orden). Solo cuenta la Fuerza."
-        },
-        {
-          "id": "s2",
-          "text": "Al resolver tu puja: coge una carta del Gran Camino y Ocúpala con tu carta de puja, o roba una carta del Reino a un rival si tu Fuerza supera la de la carta que la Ocupa (él recupera esa carta a la mano), o devuelve tu carta a la mano."
-        },
-        {
-          "id": "s3",
-          "text": "Reponer el Gran Camino: si se cogió alguna carta, descarta la que quede más a la derecha; si no se cogió ninguna, descarta las 2 de la derecha. Desliza las demás a la derecha, rellena y voltea la carta superior del mazo."
-        },
-        {
-          "id": "s4",
-          "text": "Heraldos: en orden de turno, cada uno pone su Heraldo en una Localización (puede haber varios)."
-        },
-        {
-          "id": "s5",
-          "text": "Cartas a las Regiones: todos a la vez ponen 1 carta boca abajo junto a cada una de las 3 Regiones."
-        },
-        {
-          "id": "s6",
-          "text": "Acciones de Primavera, en orden de turno: Acciones y Órdenes, como poner Partidarios en Regiones (+1 de Fuerza cada uno en el primer Choque de esa Región)."
-        }
-      ]
-    },
-    {
-      "id": "summer",
-      "title": "Verano: Choques",
-      "items": [
-        {
-          "id": "u1",
-          "text": "El último en el Orden pone los marcadores de Choque I, II y III en las Regiones: es el orden de resolución."
-        },
-        {
-          "id": "u2",
-          "text": "Por cada Región: A) se revelan sus cartas; B) Acciones de Día en orden de turno (las cartas boca abajo añadidas se revelan después); C) Efectos de Noche, a la vez y obligatorios; D) suma de Fuerza: cartas activas + 1 por Partidario + Acciones."
-        },
-        {
-          "id": "u3",
-          "text": "Empate: en orden de turno, cada empatado pone una carta boca abajo o pasa, y hay un Choque nuevo solo con las cartas nuevas. Si todos pasan, la Región queda empatada y nadie gana."
-        },
-        {
-          "id": "u4",
-          "text": "Recompensas del ganador: elige una de las 2 Localizaciones de la Región. Si tu Heraldo está ahí, gana 1 de Influencia y roba 1 a cada rival con Heraldo en ella. Luego cobra la recompensa impresa de la Localización."
-        }
-      ]
-    },
-    {
-      "id": "autumn",
-      "title": "Otoño",
-      "items": [
-        {
-          "id": "a1",
-          "text": "En orden de turno, en el orden que quieras: Gobernar una vez, Viajar una vez y las Acciones y Órdenes que tengas."
-        },
-        {
-          "id": "a2",
-          "text": "Gobernar: pon una carta de la mano con iconos de Consejo en un Consejo; da su bonificación según tus v en él."
-        },
-        {
-          "id": "a3",
-          "text": "Viajar: manda a la pila de Perdidas una carta de la mano con iconos de Saber y gana ese Saber. Puedes gastarlo al momento en cartas de tu Lugar de Poder (pagando su coste)."
-        }
-      ]
-    },
-    {
-      "id": "winter",
-      "title": "Invierno",
-      "items": [
-        {
-          "id": "w1",
-          "text": "Efectos de Invierno, a la vez y obligatorios."
-        },
-        {
-          "id": "w2",
-          "text": "Limpieza: los Heraldos vuelven a su tablero; los Partidarios del Mapa van a la pila de Perdidas; quitad los marcadores de Choque; las cartas activas van al descarte (si tienen Influencia encima, quítales 1 y se quedan)."
-        },
-        {
-          "id": "w3",
-          "text": "Avanza el marcador de Ronda. Tras la ronda {rounds}, fin de la partida."
-        }
-      ]
-    }
-  ],
   "scoring": {
     "categories": [
       {
         "id": "influence",
         "label": "Influencia en tu suministro"
+      },
+      {
+        "id": "lore",
+        "label": "Saber convertido",
+        "help": "Solo si tu Lugar de Poder está vacío: 1 de Influencia por cada 2 de Saber.",
+        "inputs": [
+          {
+            "id": "lore",
+            "label": "Saber que te queda"
+          }
+        ],
+        "divide": 2
       }
     ],
     "tiebreak": "Si empatáis, gana quien tenga el Favor del Reino. Si ninguno de los empatados lo tiene, gana quien vaya más arriba en el marcador de Orden.",
     "notes": "Gana quien tenga más Influencia al terminar la ronda {rounds}."
-  }
+  },
+  "rules": [
+    {
+      "id": "round",
+      "title": "Ronda paso a paso",
+      "blocks": [
+        {
+          "id": "year",
+          "kind": "steps",
+          "note": "Cada ronda es un año con cinco fases. Avanza con los botones mientras jugáis.",
+          "phases": [
+            {
+              "id": "start",
+              "label": "Inicio",
+              "sub": "Fase 1"
+            },
+            {
+              "id": "spring",
+              "label": "Primavera",
+              "sub": "Fase 2"
+            },
+            {
+              "id": "summer",
+              "label": "Verano",
+              "sub": "Fase 3"
+            },
+            {
+              "id": "autumn",
+              "label": "Otoño",
+              "sub": "Fase 4"
+            },
+            {
+              "id": "winter",
+              "label": "Invierno",
+              "sub": "Fase 5"
+            }
+          ],
+          "items": [
+            {
+              "id": "draw",
+              "phase": "start",
+              "title": "Robar cartas",
+              "mode": "sim",
+              "list": [
+                "Todos roban de su mazo hasta su tamaño de mano.",
+                "Si el mazo se acaba al robar, sufres **Desgaste**: barajas el descarte como mazo nuevo, tu tamaño de mano baja 1 y sigues robando."
+              ],
+              "tip": "**Ronda 1:** esta fase entera se salta. Empezáis con el Heredero y 5 cartas más en la mano."
+            },
+            {
+              "id": "order",
+              "phase": "start",
+              "title": "Determinar el orden de turno",
+              "mode": "one",
+              "list": [
+                "Reordena el marcador de Orden según la Influencia de cada uno: con más Influencia, antes juegas.",
+                "Empate: los empatados **invierten** el orden que tenían.",
+                "El primero coge el marcador de Jugador activo."
+              ],
+              "tip": "Ir primero no siempre es ventaja: el **último** elige en qué orden se resuelven las regiones en verano."
+            },
+            {
+              "id": "bid",
+              "phase": "spring",
+              "title": "Pujar",
+              "mode": "sim",
+              "list": [
+                "Cada uno elige una carta de su mano y la pone boca abajo.",
+                "En la puja solo cuenta la **fuerza** (más los bonus de habilidades que afecten a pujas). Órdenes y rasgos se ignoran."
+              ]
+            },
+            {
+              "id": "resolve",
+              "phase": "spring",
+              "title": "Resolver pujas",
+              "mode": "turn",
+              "list": [
+                "Se revelan todas a la vez. Resuelve primero la puja más fuerte, luego la siguiente… En empate, quien vaya antes en el Orden.",
+                "Cada jugador elige una opción:"
+              ],
+              "options": [
+                {
+                  "title": "Coger del Gran Camino",
+                  "text": "Tomas una carta del Reino boca arriba y la Ocupas con tu carta de puja."
+                },
+                {
+                  "title": "Robar a un rival",
+                  "text": "Si tu puja supera la fuerza de la carta que Ocupa la suya, te la llevas. Su carta vuelve a su mano."
+                },
+                {
+                  "title": "Retirarse",
+                  "text": "Tu carta de puja vuelve a tu mano."
+                }
+              ],
+              "after": [
+                "Máximo 2 cartas del Reino en tu tablero. Si pones una tercera, descarta una vieja y la carta que la Ocupaba vuelve a tu mano.",
+                "Texto en negrita en una carta del Reino: se cumple al adquirirla.",
+                "Reponer el Gran Camino: si alguien cogió carta, descarta la que quede más a la derecha; si nadie cogió, descarta las dos de la derecha. Desliza a la derecha y rellena hasta tener 4 boca arriba."
+              ]
+            },
+            {
+              "id": "heralds",
+              "phase": "spring",
+              "title": "Colocar Heraldos",
+              "mode": "turn",
+              "list": [
+                "Cada uno pone su Heraldo en una **Localización** concreta (no en la región entera). Puede haber varios en la misma.",
+                "Si ganas el choque de esa región y eliges esa Localización: +1 de Influencia y le robas 1 a cada rival con Heraldo allí."
+              ],
+              "tip": "Tu Heraldo es una apuesta: dice dónde crees que vas a ganar. Si lo pones junto al de un rival, el que gane le roba al otro."
+            },
+            {
+              "id": "cards",
+              "phase": "spring",
+              "title": "Poner cartas junto a las regiones",
+              "mode": "sim",
+              "list": [
+                "Cada uno pone **exactamente una carta boca abajo junto a cada región**: Tierras Altas, Meseta y Tierras Bajas (3 cartas).",
+                "Puedes mirar las tuyas, no las del resto.",
+                "Si alguien tiene menos de 3 cartas, coloca antes que los demás."
+              ],
+              "tip": "Aquí se decide medio verano. Piensa qué región quieres ganar de verdad y cuál vas a sacrificar."
+            },
+            {
+              "id": "springAct",
+              "phase": "spring",
+              "title": "Paso de acción de primavera",
+              "mode": "turn",
+              "list": [
+                "Por turnos, cada uno activa todas las Acciones y Órdenes de primavera que quiera (Tácticas, cartas del Reino, Favor del Reino…).",
+                "Típico: **colocar Partidarios**. Van a una región (no a una Localización), en la cantidad que quieras. Cada uno da +1 de fuerza en el **primer** choque de esa región.",
+                "Al terminar, pasas el marcador de Jugador activo al siguiente."
+              ],
+              "tip": "Los Partidarios del mapa acaban en la pila de Perdidas en invierno. Para recuperarlos necesitas el Consejo de Juramentos u otra habilidad."
+            },
+            {
+              "id": "clashMarkers",
+              "phase": "summer",
+              "title": "Colocar marcadores de Choque",
+              "mode": "one",
+              "list": [
+                "El jugador **último** en el Orden pone los marcadores I, II y III en las tres regiones.",
+                "Así decide en qué orden se resuelven los choques."
+              ],
+              "tip": "El orden importa por el Flanqueo: una carta solo puede huir a una región que aún no se ha resuelto."
+            },
+            {
+              "id": "reveal",
+              "phase": "summer",
+              "title": "Choque · A. Revelar",
+              "mode": "sim",
+              "list": [
+                "Todos revelan sus cartas junto a la región que toca. Ahora están **activas**.",
+                "Las cartas que llegaron aquí por Flanqueo desde otra región también están activas."
+              ],
+              "crumb": "Región I, luego II y luego III"
+            },
+            {
+              "id": "day",
+              "phase": "summer",
+              "title": "Choque · B. Día (acciones)",
+              "mode": "turn",
+              "list": [
+                "Por turnos, cada uno activa Acciones y Órdenes: **Emboscada** (añadir una carta boca abajo), **Retirada**, **Flanqueo**, Tácticas…",
+                "Las Órdenes de una carta solo valen si está activa en **este** choque.",
+                "Al terminar todos, se revelan las cartas añadidas boca abajo. Ahora solo se pueden usar sus propias Acciones y Órdenes, en orden de turno."
+              ],
+              "tip": "Es el momento del farol: un rival que embosca con una carta boca abajo puede esconder un Letal. Decide si te retiras antes de verla.",
+              "crumb": "Región I, luego II y luego III"
+            },
+            {
+              "id": "night",
+              "phase": "summer",
+              "title": "Choque · C. Noche (efectos)",
+              "mode": "sim",
+              "list": [
+                "Se resuelven todos los Efectos obligatorios a la vez.",
+                "Aquí salta **Letal**: elimina todas las cartas activas rivales de este choque (van a la pila de Perdidas). Dos Letales se eliminan entre sí."
+              ],
+              "crumb": "Región I, luego II y luego III"
+            },
+            {
+              "id": "tally",
+              "phase": "summer",
+              "title": "Choque · D. Contar fuerza",
+              "mode": "sim",
+              "list": [
+                "Fuerza total = cartas activas en el choque + 1 por cada Partidario tuyo en la región + bonus de habilidades.",
+                "Aunque te hayan eliminado todo, sigues en el choque con tus Partidarios y bonus.",
+                "Gana quien más fuerza tenga."
+              ],
+              "options": [
+                {
+                  "title": "Si hay empate",
+                  "text": "En orden de turno, cada empatado juega una carta boca abajo o pasa."
+                },
+                {
+                  "title": "Si alguien juega carta",
+                  "text": "Empieza un choque nuevo solo entre los empatados: repetid A–D. Lo del choque anterior (cartas, Partidarios, bonus) ya no cuenta."
+                },
+                {
+                  "title": "Si todos pasan",
+                  "text": "Región empatada: nadie cobra nada."
+                }
+              ],
+              "crumb": "Región I, luego II y luego III"
+            },
+            {
+              "id": "rewards",
+              "phase": "summer",
+              "title": "Choque · E. Recompensas",
+              "mode": "one",
+              "list": [
+                "El ganador elige **una de las dos Localizaciones** de la región.",
+                "Recompensa de Heraldo (si tu Heraldo está ahí): +1 de Influencia y robas 1 a cada rival con Heraldo allí.",
+                "Recompensa de la Localización: la Influencia impresa y, si quieres, el texto extra."
+              ],
+              "tip": "Volteáis el marcador de la región y pasáis a la siguiente. Las cartas de regiones ya resueltas siguen activas hasta el invierno, así que Órdenes de otoño como Reagrupar pueden usarlas.",
+              "after": [
+                "Castillo: gobiernas con una carta activa o de la mano, y echas todas las demás cartas de ese Consejo.",
+                "Páramo: viajas con una carta activa o de la mano.",
+                "Campo de la Cosecha: te llevas el Favor del Reino (o lo recargas si ya era tuyo).",
+                "Necrópolis: da acceso a tu descarte. El resto, léelo en el tablero."
+              ],
+              "crumb": "Región I, luego II y luego III"
+            },
+            {
+              "id": "autumnAct",
+              "phase": "autumn",
+              "title": "Paso de acción de otoño",
+              "mode": "turn",
+              "list": [
+                "Por turnos, cada uno hace esto en el orden que quiera:"
+              ],
+              "tip": "Truco del reglamento: Reagrupa una carta activa a la mano y luego gobierna con ella. Así una carta que ha luchado acaba en un Consejo en vez de en el descarte.",
+              "options": [
+                {
+                  "title": "Gobernar (una vez)",
+                  "text": "Una carta de tu mano con votos va a un Consejo. Allí da su bonificación."
+                },
+                {
+                  "title": "Viajar (una vez)",
+                  "text": "Una carta de tu mano con Saber va a la pila de Perdidas. Ganas ese Saber y puedes gastarlo ya en tu Lugar de Poder."
+                },
+                {
+                  "title": "Acciones y Órdenes",
+                  "text": "Cualquier Acción de otoño: activar Consejos, Reagrupar cartas activas a la mano, Tácticas…"
+                }
+              ]
+            },
+            {
+              "id": "winterFx",
+              "phase": "winter",
+              "title": "Efectos de invierno",
+              "mode": "sim",
+              "list": [
+                "Se resuelven todos los Efectos obligatorios de invierno."
+              ]
+            },
+            {
+              "id": "cleanup",
+              "phase": "winter",
+              "title": "Limpieza",
+              "mode": "sim",
+              "list": [
+                "Los Heraldos del mapa vuelven a vuestros tableros.",
+                "Los Partidarios del mapa van a la **pila de Perdidas**.",
+                "Los marcadores de Choque vuelven a su sitio.",
+                "Las cartas activas sin Influencia encima van a vuestro descarte. Si tienen Influencia (por Despliegue), quitadles 1 y se quedan."
+              ]
+            },
+            {
+              "id": "advance",
+              "phase": "winter",
+              "title": "Avanzar la ronda",
+              "mode": "one",
+              "list": [
+                "Avanza el marcador de Ronda. Si era la ronda {rounds}, se acaba la partida.",
+                "Fin: si tu Lugar de Poder está vacío, ganas 1 de Influencia por cada 2 de Saber. Gana quien más Influencia tenga.",
+                "Empate: Favor del Reino; si no, orden de turno."
+              ],
+              "tip": "Si no era la última ronda, volvéis al Inicio del año: robar hasta el tamaño de mano y reordenar."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "title": "Conceptos",
+      "blocks": [
+        {
+          "kind": "text",
+          "title": "Objetivo",
+          "text": "Tener más **Influencia** al final de la ronda {rounds}. Empate: gana quien tenga el **Favor del Reino**; si ninguno de los empatados lo tiene, quien vaya más arriba en el Orden."
+        },
+        {
+          "kind": "cards",
+          "title": "Acciones frente a Efectos",
+          "items": [
+            {
+              "id": "action",
+              "title": "Acción (borde circular)",
+              "text": "Opcional. Cada una, una vez por ronda. Solo en los pasos de acción: **Primavera**, **Día** (dentro de cada choque) y **Otoño**. Se resuelven en orden de turno."
+            },
+            {
+              "id": "effect",
+              "title": "Efecto (borde hexagonal)",
+              "text": "Obligatorio y automático. Puede saltar varias veces por ronda. Solo en los pasos de efectos: **Noche** (dentro de cada choque) e **Invierno**. Todos a la vez."
+            }
+          ]
+        },
+        {
+          "kind": "table",
+          "title": "Para qué sirve una carta de Facción",
+          "note": "La misma carta puede acabar haciendo una de estas cosas. Elegir cuál es el corazón del juego.",
+          "columns": [
+            "Uso",
+            "Cuándo",
+            "Qué cuenta",
+            "Dónde acaba"
+          ],
+          "rows": [
+            [
+              "Pujar",
+              "Primavera",
+              "Solo la fuerza",
+              "Ocupando la carta del Reino, o vuelve a la mano"
+            ],
+            [
+              "Ocupar",
+              "Al ganar o robar una carta del Reino",
+              "Su fuerza la defiende de robos",
+              "En tu tablero, bajo la carta del Reino"
+            ],
+            [
+              "Combatir",
+              "Verano (junto a una región)",
+              "Fuerza, Órdenes y rasgos",
+              "Descarte en invierno"
+            ],
+            [
+              "Gobernar",
+              "Otoño (o Castillo)",
+              "Votos",
+              "En un Consejo hasta que la saquen"
+            ],
+            [
+              "Viajar",
+              "Otoño (o Páramo)",
+              "Saber",
+              "Pila de Perdidas (no vuelve al mazo)"
+            ]
+          ]
+        },
+        {
+          "kind": "text",
+          "title": "Desgaste",
+          "text": "Si tienes que robar y tu mazo está vacío: barajas tu descarte como mazo nuevo, tu tamaño de mano baja 1 (gira el marcador) y robas hasta el nuevo tamaño. Límites: nunca menos de 3 ni más de 8. Lo que está en la pila de Perdidas no vuelve."
+        },
+        {
+          "kind": "cards",
+          "title": "Los tres Consejos",
+          "items": [
+            {
+              "id": "relics",
+              "title": "Reliquias",
+              "text": "Al cobrar la recompensa de Heraldo, puedes retirar cartas tuyas de aquí y ganas Influencia igual a sus votos."
+            },
+            {
+              "id": "secrets",
+              "title": "Secretos",
+              "text": "Acción: coloca tantos marcadores de Facción como votos tengas, en Localizaciones. Con 4 tuyos en una Localización, los quitas y cobras su recompensa (sin la Influencia impresa). Los marcadores se quedan de ronda en ronda."
+            },
+            {
+              "id": "oaths",
+              "title": "Juramentos",
+              "text": "Acción: recupera tantos Partidarios (del mapa o de la pila de Perdidas) como votos tengas aquí. Si tienes la mayoría, uno más."
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "title": "Saber y Lugar de Poder",
+          "text": "El Saber solo se puede gastar en el momento en que lo ganas. Con él compras en tu Lugar de Poder: cartas Avanzadas (van a la mano, o encima del mazo si tienes la mano llena) y cartas de Cuartel general (van a tu suministro como habilidad permanente). Si vacías el Lugar de Poder, al final cada 2 de Saber valen 1 de Influencia."
+        }
+      ]
+    },
+    {
+      "id": "commands",
+      "title": "Órdenes y rasgos",
+      "blocks": [
+        {
+          "kind": "cards",
+          "title": "Órdenes",
+          "note": "Van en negrita en las cartas. Solo funcionan si la carta está activa (boca arriba junto a una región), salvo Despliegue.",
+          "items": [
+            {
+              "id": "ambush",
+              "title": "Emboscada",
+              "text": "Añade una carta de tu mano boca abajo a este choque. Se revela al acabar el Día. Una vez por choque.",
+              "meta": "Día"
+            },
+            {
+              "id": "retreat",
+              "title": "Retirada",
+              "text": "Devuelve a tu mano cualquier carta activa tuya de esta región (incluida esta) y, si quieres, tu Heraldo y Partidarios a tu tablero.",
+              "meta": "Día"
+            },
+            {
+              "id": "flank",
+              "title": "Flanqueo",
+              "text": "Mueve esta carta a otra región aún sin resolver. Allí estará activa y sale de este choque.",
+              "meta": "Día"
+            },
+            {
+              "id": "rally",
+              "title": "Reagrupar",
+              "text": "Sobre sí misma: esta carta activa vuelve a tu mano. Cualquiera X: hasta X cartas activas tuyas vuelven a la mano.",
+              "meta": "Según la carta"
+            },
+            {
+              "id": "deploy",
+              "title": "Despliegue X",
+              "text": "Desde la mano: ponla boca arriba junto a una región (activa) con X de Influencia encima. Cada invierno pierde 1 y sigue en juego.",
+              "meta": "Según la carta"
+            },
+            {
+              "id": "deadly",
+              "title": "Letal",
+              "text": "Elimina todas las cartas activas rivales de este choque y van a la pila de Perdidas. No afecta a las Invulnerables.",
+              "meta": "Noche · obligatorio"
+            }
+          ]
+        },
+        {
+          "kind": "cards",
+          "title": "Rasgos",
+          "items": [
+            {
+              "id": "invuln",
+              "title": "Invulnerable",
+              "text": "No puede ser eliminada, ni por Letal ni por nada."
+            },
+            {
+              "id": "resil",
+              "title": "Resistente",
+              "text": "Si la eliminan, va a tu descarte en vez de a la pila de Perdidas."
+            },
+            {
+              "id": "path",
+              "title": "Exploradora",
+              "text": "Si viajas con ella, va a tu descarte en vez de a la pila de Perdidas. Ganas el Saber igual."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "factions",
+      "title": "Facciones",
+      "blocks": [
+        {
+          "kind": "text",
+          "title": "Qué tienen en común y qué cambia",
+          "text": "Las cuatro Facciones empiezan con el **mismo mazo básico** (solo cambia el dibujo). Lo que las diferencia está en sus componentes:"
+        },
+        {
+          "kind": "cards",
+          "items": [
+            {
+              "id": "tactics",
+              "title": "4 losetas de Táctica",
+              "text": "En tu tablero. Habilidades potentes que se agotan al usarlas (algunas tienen varios usos con marcadores)."
+            },
+            {
+              "id": "adv",
+              "title": "Cartas Avanzadas",
+              "text": "En tu Lugar de Poder. Personajes únicos que compras con Saber y entran en tu mazo."
+            },
+            {
+              "id": "hq",
+              "title": "Cartas de Cuartel general",
+              "text": "También en tu Lugar de Poder. Habilidades permanentes que se quedan en tu suministro."
+            },
+            {
+              "id": "fav",
+              "title": "Acción del Favor del Reino",
+              "text": "Impresa en tu tablero. Solo la usas mientras tienes el Favor."
+            }
+          ]
+        },
+        {
+          "kind": "cards",
+          "title": "Estilo de cada una",
+          "items": [
+            {
+              "id": "nob",
+              "title": "Nobleza",
+              "text": "Defensa sólida, aguantar y ejercer control. Los antiguos herederos del reino."
+            },
+            {
+              "id": "cla",
+              "title": "Clanes",
+              "text": "Movilidad, impulso y fuerza abrumadora. Exiliados que vuelven por mar."
+            },
+            {
+              "id": "upr",
+              "title": "Alzamiento",
+              "text": "Intrigas, fintas y eliminar cartas rivales. Sindicatos, imprentas y conspiración."
+            },
+            {
+              "id": "gat",
+              "title": "Congregación",
+              "text": "Manipular cartas, subversión y acumular poder poco a poco. Un culto que crece cada noche."
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

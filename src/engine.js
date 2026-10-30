@@ -72,6 +72,15 @@ function resolveSteps(steps, ctx) {
     });
 }
 
+// Reglas: estructura libre (capítulos → bloques → elementos). Se quitan los elementos
+// cuyo «when» no se cumple y se rellenan las {variables} de todos los textos.
+function resolveDeep(x, ctx) {
+  if (typeof x === 'string') return fill(x, ctx);
+  if (Array.isArray(x)) return x.filter(v => !(v && typeof v === 'object' && !Array.isArray(v) && !evalCondition(v.when, ctx))).map(v => resolveDeep(v, ctx));
+  if (x && typeof x === 'object') return Object.fromEntries(Object.entries(x).filter(([k]) => k !== 'when').map(([k, v]) => [k, resolveDeep(v, ctx)]));
+  return x;
+}
+
 export function generateGuide(game, answers = {}) {
   const { ctx, visible } = buildContext(game, answers);
   if (ctx.players < game.players.min || ctx.players > game.players.max)
@@ -88,6 +97,7 @@ export function generateGuide(game, answers = {}) {
     .filter(r => evalCondition(r.when, ctx))
     .map(r => ({ id: r.id, title: fill(r.title, ctx), items: resolveSteps(r.items, ctx) }))
     .filter(r => r.items.length > 0);
+  const rules = game.rules ? resolveDeep(game.rules, ctx) : null;
   let scoring = null;
   if (game.scoring) {
     const sc = game.scoring;
@@ -100,5 +110,5 @@ export function generateGuide(game, answers = {}) {
     };
     if (!scoring.categories.length) scoring = null;
   }
-  return { ctx, visible, sections, events, reference, scoring };
+  return { ctx, visible, sections, events, reference, rules, scoring };
 }
